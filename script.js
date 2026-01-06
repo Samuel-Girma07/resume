@@ -3,41 +3,170 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Initial Setup
     setupMobileMenu();
-    updateActiveLink(); // Ensure correct link is active on initial load
-    setupPageTransitions();
+    setupSPANavigation();
+    handleInitialHash();
+    setupScrollReveal();
+    setupBackToTop();
 });
 
-function setupPageTransitions() {
-    const transitionTargets = document.querySelectorAll('.main-content, .sidebar, .hamburger');
-    if (transitionTargets.length === 0) return;
+// Hide loading screen after page loads
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+        setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+        }, 800); // Show loader for at least 800ms
+    }
+});
 
-    // Trigger Entry Animation for all targets
+// Scroll Reveal Animation using Intersection Observer
+function setupScrollReveal() {
+    const revealElements = document.querySelectorAll('.card, .timeline-item');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target); // Only animate once
+            }
+        });
+    }, {
+        root: document.querySelector('.main-content'),
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach(el => observer.observe(el));
+}
+
+// Back to Top Button
+function setupBackToTop() {
+    const backToTopBtn = document.getElementById('back-to-top');
+    const mainContent = document.querySelector('.main-content');
+
+    if (backToTopBtn && mainContent) {
+        backToTopBtn.addEventListener('click', () => {
+            mainContent.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+}
+
+// SPA Navigation - Instant page switching without reload
+function setupSPANavigation() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page');
+    const indicator = document.querySelector('.nav-indicator');
+    const navContainer = document.querySelector('.nav-links');
+
+    // Add page-loaded class immediately for smooth initial display
+    const transitionTargets = document.querySelectorAll('.main-content, .sidebar, .hamburger');
     requestAnimationFrame(() => {
         transitionTargets.forEach(target => target.classList.add('page-loaded'));
     });
 
-    // Handle Exit Animations for Nav Links
-    const navLinks = document.querySelectorAll('.nav-links a, .sidebar .btn, .sidebar a');
+    // Helper to move indicator
+    function moveIndicator(targetLink) {
+        if (!targetLink || !indicator) return;
+
+        const linkRect = targetLink.getBoundingClientRect();
+        const containerRect = navContainer.getBoundingClientRect();
+        const offsetLeft = linkRect.left - containerRect.left;
+
+        indicator.style.width = `${linkRect.width}px`;
+        indicator.style.transform = `translateX(${offsetLeft}px)`;
+        indicator.style.opacity = '1';
+    }
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
+            e.preventDefault();
+            const targetPage = link.getAttribute('data-page');
 
-            // Only animate internal links that aren't the current page
-            if (href && !href.startsWith('#') && !link.target && !href.includes('mailto:') && !href.includes('tel:')) {
-                const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-                if (href === currentPath) return;
+            // Update active nav link
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
 
-                e.preventDefault();
-                transitionTargets.forEach(target => {
-                    target.classList.remove('page-loaded');
-                    target.classList.add('page-exit');
-                });
+            // Move indicator to clicked link
+            moveIndicator(link);
 
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 400); // Matches CSS animation duration
+            // Show target page, hide others
+            pages.forEach(page => {
+                if (page.id === targetPage) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+
+            // Update URL hash without page reload
+            history.pushState(null, '', `#${targetPage}`);
+
+            // Scroll to top of main content
+            document.querySelector('.main-content').scrollTop = 0;
+        });
+
+        // Hover Effect
+        link.addEventListener('mouseenter', () => {
+            moveIndicator(link);
+        });
+    });
+
+    // Mouse Leave Nav Container -> Return to Active
+    if (navContainer) {
+        navContainer.addEventListener('mouseleave', () => {
+            const activeLink = document.querySelector('.nav-link.active');
+            if (activeLink) {
+                moveIndicator(activeLink);
+            } else {
+                indicator.style.opacity = '0';
             }
         });
+    }
+
+    // Handle Window Resize
+    window.addEventListener('resize', () => {
+        const activeLink = document.querySelector('.nav-link.active');
+        if (activeLink) moveIndicator(activeLink);
+    });
+
+    // Initialize indicator position on load
+    setTimeout(() => {
+        handleInitialHash(); // Find active link
+        const initialActive = document.querySelector('.nav-link.active');
+        if (initialActive) moveIndicator(initialActive);
+    }, 100);
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', () => {
+        handleInitialHash();
+        const activeLink = document.querySelector('.nav-link.active');
+        if (activeLink) moveIndicator(activeLink);
+    });
+}
+
+// Handle initial page load based on URL hash
+function handleInitialHash() {
+    const hash = window.location.hash.slice(1) || 'about';
+    const navLinks = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page');
+
+    navLinks.forEach(link => {
+        if (link.getAttribute('data-page') === hash) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+
+    pages.forEach(page => {
+        if (page.id === hash) {
+            page.classList.add('active');
+        } else {
+            page.classList.remove('active');
+        }
     });
 }
 
@@ -75,20 +204,6 @@ function setupMobileMenu() {
             }
         });
     }
-}
-
-function updateActiveLink() {
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    const navLinks = document.querySelectorAll('.nav-links a');
-
-    navLinks.forEach(link => {
-        const linkHref = link.getAttribute('href');
-        if (linkHref === currentPath || (currentPath === '' && linkHref === 'index.html')) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
 }
 
 // Fluid Cursor Animation (Vanilla JS Adaptation)

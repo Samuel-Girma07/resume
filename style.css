@@ -243,21 +243,39 @@ canvas#fluid {
 
 /* Navbar */
 .navbar {
-  position: absolute;
-  top: 40px;
-  right: 80px;
-  z-index: 10;
-  background: rgba(30, 30, 30, 0.8);
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  margin-right: 0;
+  margin-top: -20px;
+  width: fit-content;
+  z-index: 100;
+  background: rgba(30, 30, 30, 0.4);
   padding: 15px 30px;
   border-radius: 30px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 215, 0, 0.05);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Enhance navbar on scroll (optional hover effect) */
+.navbar:hover {
+  background: rgba(30, 30, 30, 0.6);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 215, 0, 0.1);
 }
 
 .nav-links {
   list-style: none;
   display: flex;
   gap: 30px;
+  position: relative;
+  /* Needed for absolute positioning of indicator */
 }
 
 .nav-links a {
@@ -266,8 +284,10 @@ canvas#fluid {
   font-family: 'Poppins', sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
-  transition: var(--transition);
+  transition: color 0.3s ease;
   position: relative;
+  z-index: 1;
+  /* Keep text above indicator */
 }
 
 .nav-links a:hover,
@@ -275,15 +295,26 @@ canvas#fluid {
   color: var(--accent-color);
 }
 
-.nav-links a.active::after {
-  content: '';
+/* Sliding Indicator */
+.nav-indicator {
   position: absolute;
   bottom: -5px;
   left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--accent-color);
+  height: 3px;
+  background-color: var(--accent-color);
   border-radius: 2px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+  /* Cool gold glow */
+  opacity: 0;
+  /* Hidden initially until JS sets position */
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Remove old underlining */
+.nav-links a.active::after {
+  content: none;
 }
 
 /* Hamburger Menu (Mobile Only) */
@@ -783,4 +814,250 @@ p.intro-text {
     font-size: 2rem;
   }
 
+}
+
+/* SPA Page Styles */
+.page {
+  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Smooth page container */
+#page-container {
+  margin-top: 40px;
+  padding-top: 20px;
+}
+
+/* ============================================
+   NEW STYLES - Enhancements
+   ============================================ */
+
+/* Tag Styling */
+.tag {
+  background: rgba(255, 215, 0, 0.15);
+  color: var(--accent-color);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  transition: var(--transition);
+}
+
+.tag:hover {
+  background: rgba(255, 215, 0, 0.25);
+  border-color: var(--accent-color);
+}
+
+/* Contact Info Links */
+.contact-info a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+  color: var(--accent-color);
+}
+
+/* Loading Screen */
+#loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+}
+
+.loader-ring::before,
+.loader-ring::after {
+  content: '';
+  position: absolute;
+  border: 3px solid transparent;
+  border-radius: 50%;
+}
+
+.loader-ring::before {
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border-top-color: rgba(255, 215, 0, 0.5);
+  animation: spin 1.8s linear infinite reverse;
+}
+
+.loader-ring::after {
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  border-top-color: rgba(255, 215, 0, 0.25);
+  animation: spin 2.4s linear infinite;
+}
+
+.loader-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Footer */
+.footer {
+  width: 100%;
+  padding: 30px 80px;
+  margin-top: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(18, 18, 18, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.footer p {
+  color: var(--text-grey);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.back-to-top {
+  min-width: 40px;
+  min-height: 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  color: var(--bg-color);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.back-to-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+/* Scroll Reveal Animations */
+.card,
+.timeline-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.card.revealed,
+.timeline-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animation delays for cards */
+.cards-grid .card:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.cards-grid .card:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.cards-grid .card:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.cards-grid .card:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
+.cards-grid .card:nth-child(5) {
+  transition-delay: 0.5s;
+}
+
+.cards-grid .card:nth-child(6) {
+  transition-delay: 0.6s;
+}
+
+/* Staggered animation delays for timeline items */
+.timeline .timeline-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.timeline .timeline-item:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.timeline .timeline-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.timeline .timeline-item:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
+/* Mobile Footer */
+@media (max-width: 768px) {
+  .footer {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
 }

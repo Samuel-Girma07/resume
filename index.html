@@ -5,11 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samuel Girma - Portfolio</title>
+    <meta name="description"
+        content="Samuel Girma - Computer Science Student & Web Developer based in Addis Ababa. View my portfolio, resume, and projects.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Samuel Girma - Portfolio">
+    <meta property="og:description"
+        content="Computer Science Student & Web Developer based in Addis Ababa. View my portfolio, resume, and projects.">
+    <meta property="og:image" content="PHOTO.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="loader-ring"></div>
+            <span class="loader-text">SG</span>
+        </div>
+    </div>
+
     <canvas id="fluid"></canvas>
 
     <!-- Mobile Hamburger -->
@@ -21,14 +46,14 @@
     <aside class="sidebar">
         <div class="profile-container">
             <div id="profile-orb" class="orb-canvas-container"></div>
-            <img src="PHOTO.jpg" alt="Samuel Girma" class="profile-img">
+            <img src="PHOTO.jpg" alt="Samuel Girma" class="profile-img" loading="lazy">
         </div>
         <h1>Samuel Girma</h1>
         <div class="badge">Computer Science Student</div>
 
         <ul class="contact-info">
-            <li><i class="fas fa-envelope"></i> naodtskuyomi@gmail.com</li>
-            <li><i class="fas fa-phone"></i> +251 948 998 804</li>
+            <li><i class="fas fa-envelope"></i> <a href="mailto:naodtskuyomi@gmail.com">naodtskuyomi@gmail.com</a></li>
+            <li><i class="fas fa-phone"></i> <a href="tel:+251948998804">+251 948 998 804</a></li>
             <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
         </ul>
 
@@ -47,59 +72,272 @@
         <!-- Navbar -->
         <nav class="navbar">
             <ul class="nav-links">
-                <li><a href="index.html" class="active">About</a></li>
-                <li><a href="resume.html">Resume</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#about" class="nav-link active" data-page="about">About</a></li>
+                <li><a href="#resume" class="nav-link" data-page="resume">Resume</a></li>
+                <li><a href="#projects" class="nav-link" data-page="projects">Projects</a></li>
+                <li><a href="#contact" class="nav-link" data-page="contact">Contact</a></li>
+                <div class="nav-indicator"></div>
             </ul>
         </nav>
 
-        <section>
-            <h2 class="page-title">About Me</h2>
-            <br> <!-- Spacing -->
-            <p class="intro-text">
-                I am a dynamic Third-Year Computer Science student at American College of Technology, passionate about
-                creating beautiful, functional digital experiences. I blend technical skills with creative design to
-                build engaging solutions.
-            </p>
+        <!-- Page Container -->
+        <div id="page-container">
+            <!-- About Page -->
+            <section id="about" class="page active">
+                <h2 class="page-title">About Me</h2>
+                <br> <!-- Spacing -->
+                <p class="intro-text">
+                    I am a dynamic Third-Year Computer Science student at American College of Technology, passionate
+                    about
+                    creating beautiful, functional digital experiences. I blend technical skills with creative design to
+                    build engaging solutions.
+                </p>
 
-            <h3 class="section-title">What I Do</h3>
-            <div class="cards-grid">
-                <!-- Service 1 -->
-                <div class="card">
-                    <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-code icon"></i>
-                        <h3>Web Development</h3>
-                        <p>Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user
-                            experiences.</p>
+                <h3 class="section-title">What I Do</h3>
+                <div class="cards-grid">
+                    <!-- Service 1 -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-code icon"></i>
+                            <h3>Web Development</h3>
+                            <p>Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user
+                                experiences.</p>
+                        </div>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-database icon"></i>
+                            <h3>Data Analysis</h3>
+                            <p>Data scraping & cleaning using Python & Octoparse to turn raw data into actionable
+                                insights.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-paint-brush icon"></i>
+                            <h3>Graphic Design</h3>
+                            <p>Visual identities & branding using Figma & Adobe Suite to communicate efficient visual
+                                stories.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resume Page -->
+            <section id="resume" class="page">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 class="page-title">Resume</h2>
+                </div>
+
+                <h3 class="section-title"><i class="fas fa-graduation-cap"
+                        style="color:var(--accent-color); margin-right:10px;"></i> Education</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="timeline-date">2022 - Present</span>
+                        <h4 class="timeline-title">BSc Computer Science</h4>
+                        <p class="timeline-subtitle">American College of Technology</p>
+                        <p>Focusing on software development, algorithms, and data structures.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-date">2019 - 2022</span>
+                        <h4 class="timeline-title">High School Diploma</h4>
+                        <p class="timeline-subtitle">Falcon Academy</p>
                     </div>
                 </div>
 
-                <!-- Service 2 -->
-                <div class="card">
-                    <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-database icon"></i>
-                        <h3>Data Analysis</h3>
-                        <p>Data scraping & cleaning using Python & Octoparse to turn raw data into actionable insights.
-                        </p>
+                <h3 class="section-title"><i class="fas fa-briefcase"
+                        style="color:var(--accent-color); margin-right:10px;"></i> Experience</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="timeline-date">2023 - Present</span>
+                        <h4 class="timeline-title">Freelance Web Developer</h4>
+                        <p class="timeline-subtitle">Self-Employed</p>
+                        <p>Building responsive websites and landing pages for local businesses.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-date">2024</span>
+                        <h4 class="timeline-title">Graphic Designer</h4>
+                        <p class="timeline-subtitle">College Event Branding</p>
+                        <p>Designed visual assets, posters, and social media content for major college events.</p>
                     </div>
                 </div>
 
-                <!-- Service 3 -->
-                <div class="card">
-                    <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-paint-brush icon"></i>
-                        <h3>Graphic Design</h3>
-                        <p>Visual identities & branding using Figma & Adobe Suite to communicate efficient visual
-                            stories.
-                        </p>
+                <h3 class="section-title">My Skills</h3>
+                <div class="skills-marquee-container">
+                    <div class="skills-marquee-content">
+                        <!-- Original Set -->
+                        <div class="skill-item"><i class="fab fa-java" style="color: #007396;"></i> Java</div>
+                        <div class="skill-item"><i class="fab fa-python" style="color: #3776AB;"></i> Python</div>
+                        <div class="skill-item"><i class="fab fa-js" style="color: #F7DF1E;"></i> JavaScript</div>
+                        <div class="skill-item"><i class="fas fa-code" style="color: #00599C;"></i> C++</div>
+                        <div class="skill-item"><i class="fab fa-android" style="color: #7F52FF;"></i> Kotlin</div>
+                        <div class="skill-item"><i class="fas fa-database" style="color: #4479A1;"></i> SQL</div>
+                        <div class="skill-item"><i class="fab fa-html5" style="color: #E34F26;"></i> HTML5</div>
+                        <div class="skill-item"><i class="fab fa-css3-alt" style="color: #1572B6;"></i> CSS3</div>
+                        <div class="skill-item"><i class="fas fa-brain" style="color: #9B59B6;"></i> Prompt Eng.</div>
+                        <div class="skill-item"><i class="fab fa-figma" style="color: #F24E1E;"></i> Figma</div>
+                        <div class="skill-item"><i class="fas fa-image" style="color: #31A8FF;"></i> Photoshop</div>
+                        <div class="skill-item"><i class="fas fa-pen-nib" style="color: #FF9A00;"></i> Illustrator</div>
+
+                        <!-- Duplicate Set for Seamless Loop -->
+                        <div class="skill-item"><i class="fab fa-java" style="color: #007396;"></i> Java</div>
+                        <div class="skill-item"><i class="fab fa-python" style="color: #3776AB;"></i> Python</div>
+                        <div class="skill-item"><i class="fab fa-js" style="color: #F7DF1E;"></i> JavaScript</div>
+                        <div class="skill-item"><i class="fas fa-code" style="color: #00599C;"></i> C++</div>
+                        <div class="skill-item"><i class="fab fa-android" style="color: #7F52FF;"></i> Kotlin</div>
+                        <div class="skill-item"><i class="fas fa-database" style="color: #4479A1;"></i> SQL</div>
+                        <div class="skill-item"><i class="fab fa-html5" style="color: #E34F26;"></i> HTML5</div>
+                        <div class="skill-item"><i class="fab fa-css3-alt" style="color: #1572B6;"></i> CSS3</div>
+                        <div class="skill-item"><i class="fas fa-brain" style="color: #9B59B6;"></i> Prompt Eng.</div>
+                        <div class="skill-item"><i class="fab fa-figma" style="color: #F24E1E;"></i> Figma</div>
+                        <div class="skill-item"><i class="fas fa-image" style="color: #31A8FF;"></i> Photoshop</div>
+                        <div class="skill-item"><i class="fas fa-pen-nib" style="color: #FF9A00;"></i> Illustrator</div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- Projects Page -->
+            <section id="projects" class="page">
+                <h2 class="page-title">Portfolio</h2>
+                <br><br>
+
+                <div class="cards-grid">
+                    <!-- Project 1 -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-calculator icon"></i>
+                            <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                                <span class="tag">Telegram Bot</span>
+                                <span class="tag">Utility</span>
+                            </div>
+                            <h3>Grade Calculator App</h3>
+                            <p>Calculate your grades easily with this Telegram bot.</p>
+                            <a href="https://t.me/Actgpa" target="_blank" class="btn">Preview Project</a>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-robot icon"></i>
+                            <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                                <span class="tag">Telegram Bot</span>
+                                <span class="tag">Community</span>
+                            </div>
+                            <h3>UReport Bot</h3>
+                            <p>Launch the UReport bot for youth insights.</p>
+                            <a href="https://t.me/YouthInsightsBot" target="_blank" class="btn">Preview Project</a>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-code icon"></i>
+                            <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                                <span class="tag">Python</span>
+                                <span class="tag">Web Scraping</span>
+                            </div>
+                            <h3>Scraping Project</h3>
+                            <p>Automated scripts for data scraping projects.</p>
+                            <a href="https://t.me/Scrapingproject" target="_blank" class="btn">Preview Project</a>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Movie Suggestion System -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-film icon"></i>
+                            <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                                <span class="tag">Java</span>
+                                <span class="tag">Algorithm</span>
+                            </div>
+                            <h3>Movie Suggestion System</h3>
+                            <p>Intelligent recommendation system analyzing user patterns to suggest personalized films.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Project 5: University Meal Management System -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-utensils icon"></i>
+                            <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                                <span class="tag">SQL</span>
+                                <span class="tag">Database</span>
+                            </div>
+                            <h3>University Meal System</h3>
+                            <p>Robust management for university cafeterias handling scheduling, student plans, and
+                                inventory.</p>
+                        </div>
+                    </div>
+
+                    <!-- Project 6: College Event Branding -->
+                    <div class="card">
+                        <span class="card-anim"></span>
+                        <div class="content">
+                            <i class="fas fa-paint-brush icon"></i>
+                            <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                                <span class="tag">Design</span>
+                                <span class="tag">Branding</span>
+                            </div>
+                            <h3>College Event Branding</h3>
+                            <p>Visual assets and promotional graphics for various college events and social media.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Page -->
+            <section id="contact" class="page">
+                <h2 class="page-title">Contact Me</h2>
+                <br><br>
+
+                <form action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" class="form-control" rows="5"
+                            placeholder="Let's work together..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane"
+                            style="margin-left: 5px;"></i></button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; Samuel Girma 2026. All rights reserved.</p>
+            <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+        </footer>
     </main>
 
     <script src="script.js"></script>
