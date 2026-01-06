@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Samuel Girma</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="fluid"></canvas>
+
+    <button class="hamburger" aria-label="Toggle Menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside class="sidebar">
+        <div class="profile-container">
+            <div id="profile-orb" class="orb-canvas-container"></div>
+            <img src="PHOTO.jpg" alt="Samuel Girma" class="profile-img">
+        </div>
+        <h1>Samuel Girma</h1>
+        <div class="badge">Computer Science Student</div>
+
+        <ul class="contact-info">
+            <li><i class="fas fa-envelope"></i> naodtskuyomi@gmail.com</li>
+            <li><i class="fas fa-phone"></i> +251 948 998 804</li>
+            <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
+        </ul>
+
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank"><i
+                    class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/Samuel-Girma07" target="_blank"><i class="fab fa-github"></i></a>
+        </div>
+
+        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top: 20px; font-size: 0.9rem;"><i
+                class="fas fa-download"></i> Download CV</a>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">About</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="projects.html" class="active">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <section>
+            <h2 class="page-title">Portfolio</h2>
+            <br><br>
+
+            <div class="cards-grid">
+                <!-- Project 1 -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-calculator icon"></i>
+                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                            <span class="tag">Telegram Bot</span>
+                            <span class="tag">Utility</span>
+                        </div>
+                        <h3>Grade Calculator App</h3>
+                        <p>Calculate your grades easily with this Telegram bot.</p>
+                        <a href="https://t.me/Actgpa" target="_blank" class="btn">Preview Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-robot icon"></i>
+                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                            <span class="tag">Telegram Bot</span>
+                            <span class="tag">Community</span>
+                        </div>
+                        <h3>UReport Bot</h3>
+                        <p>Launch the UReport bot for youth insights.</p>
+                        <a href="https://t.me/YouthInsightsBot" target="_blank" class="btn">Preview Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-code icon"></i>
+                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                            <span class="tag">Python</span>
+                            <span class="tag">Web Scraping</span>
+                        </div>
+                        <h3>Scraping Project</h3>
+                        <p>Automated scripts for data scraping projects.</p>
+                        <a href="https://t.me/Scrapingproject" target="_blank" class="btn">Preview Project</a>
+                    </div>
+                </div>
+
+                <!-- Project 4: Movie Suggestion System -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-film icon"></i>
+                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                            <span class="tag">Java</span>
+                            <span class="tag">Algorithm</span>
+                        </div>
+                        <h3>Movie Suggestion System</h3>
+                        <p>Intelligent recommendation system analyzing user patterns to suggest personalized films.</p>
+                    </div>
+                </div>
+
+                <!-- Project 5: University Meal Management System -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-utensils icon"></i>
+                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                            <span class="tag">SQL</span>
+                            <span class="tag">Database</span>
+                        </div>
+                        <h3>University Meal System</h3>
+                        <p>Robust management for university cafeterias handling scheduling, student plans, and
+                            inventory.</p>
+                    </div>
+                </div>
+
+                <!-- Project 6: College Event Branding -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-paint-brush icon"></i>
+                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
+                            <span class="tag">Design</span>
+                            <span class="tag">Branding</span>
+                        </div>
+                        <h3>College Event Branding</h3>
+                        <p>Visual assets and promotional graphics for various college events and social media.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
+    <script src="orb_effect.js"></script>
+</body>
+
+</html>

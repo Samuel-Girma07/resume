@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Samuel Girma</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="fluid"></canvas>
+
+    <button class="hamburger" aria-label="Toggle Menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside class="sidebar">
+        <div class="profile-container">
+            <div id="profile-orb" class="orb-canvas-container"></div>
+            <img src="PHOTO.jpg" alt="Samuel Girma" class="profile-img">
+        </div>
+        <h1>Samuel Girma</h1>
+        <div class="badge">Computer Science Student</div>
+
+        <ul class="contact-info">
+            <li><i class="fas fa-envelope"></i> naodtskuyomi@gmail.com</li>
+            <li><i class="fas fa-phone"></i> +251 948 998 804</li>
+            <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
+        </ul>
+
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank"><i
+                    class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/Samuel-Girma07" target="_blank"><i class="fab fa-github"></i></a>
+        </div>
+
+        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top: 20px; font-size: 0.9rem;"><i
+                class="fas fa-download"></i> Download CV</a>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">About</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </nav>
+
+        <section>
+            <h2 class="page-title">Contact Me</h2>
+            <br><br>
+
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Your Message</label>
+                    <textarea id="message" name="message" class="form-control" rows="5"
+                        placeholder="Let's work together..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane"
+                        style="margin-left: 5px;"></i></button>
+            </form>
+
+
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
+    <script src="orb_effect.js"></script>
+</body>
+
+</html>

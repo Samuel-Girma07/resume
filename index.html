@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuel Girma - Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="fluid"></canvas>
+
+    <!-- Mobile Hamburger -->
+    <button class="hamburger" aria-label="Toggle Menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="profile-container">
+            <div id="profile-orb" class="orb-canvas-container"></div>
+            <img src="PHOTO.jpg" alt="Samuel Girma" class="profile-img">
+        </div>
+        <h1>Samuel Girma</h1>
+        <div class="badge">Computer Science Student</div>
+
+        <ul class="contact-info">
+            <li><i class="fas fa-envelope"></i> naodtskuyomi@gmail.com</li>
+            <li><i class="fas fa-phone"></i> +251 948 998 804</li>
+            <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
+        </ul>
+
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank"><i
+                    class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/Samuel-Girma07" target="_blank"><i class="fab fa-github"></i></a>
+        </div>
+
+        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top: 20px; font-size: 0.9rem;"><i
+                class="fas fa-download"></i> Download CV</a>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">About</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <section>
+            <h2 class="page-title">About Me</h2>
+            <br> <!-- Spacing -->
+            <p class="intro-text">
+                I am a dynamic Third-Year Computer Science student at American College of Technology, passionate about
+                creating beautiful, functional digital experiences. I blend technical skills with creative design to
+                build engaging solutions.
+            </p>
+
+            <h3 class="section-title">What I Do</h3>
+            <div class="cards-grid">
+                <!-- Service 1 -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-code icon"></i>
+                        <h3>Web Development</h3>
+                        <p>Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user
+                            experiences.</p>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-database icon"></i>
+                        <h3>Data Analysis</h3>
+                        <p>Data scraping & cleaning using Python & Octoparse to turn raw data into actionable insights.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="card">
+                    <span class="card-anim"></span>
+                    <div class="content">
+                        <i class="fas fa-paint-brush icon"></i>
+                        <h3>Graphic Design</h3>
+                        <p>Visual identities & branding using Figma & Adobe Suite to communicate efficient visual
+                            stories.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
+    <script src="orb_effect.js"></script>
+</body>
+
+</html>

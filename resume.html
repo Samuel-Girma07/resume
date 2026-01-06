@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - Samuel Girma</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <canvas id="fluid"></canvas>
+
+    <button class="hamburger" aria-label="Toggle Menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <aside class="sidebar">
+        <div class="profile-container">
+            <div id="profile-orb" class="orb-canvas-container"></div>
+            <img src="PHOTO.jpg" alt="Samuel Girma" class="profile-img">
+        </div>
+        <h1>Samuel Girma</h1>
+        <div class="badge">Computer Science Student</div>
+
+        <ul class="contact-info">
+            <li><i class="fas fa-envelope"></i> naodtskuyomi@gmail.com</li>
+            <li><i class="fas fa-phone"></i> +251 948 998 804</li>
+            <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
+        </ul>
+
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank"><i
+                    class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/Samuel-Girma07" target="_blank"><i class="fab fa-github"></i></a>
+        </div>
+
+        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top: 20px; font-size: 0.9rem;"><i
+                class="fas fa-download"></i> Download CV</a>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="index.html">About</a></li>
+                <li><a href="resume.html" class="active">Resume</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <section>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 class="page-title">Resume</h2>
+            </div>
+
+            <h3 class="section-title"><i class="fas fa-graduation-cap"
+                    style="color:var(--accent-color); margin-right:10px;"></i> Education</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-date">2022 - Present</span>
+                    <h4 class="timeline-title">BSc Computer Science</h4>
+                    <p class="timeline-subtitle">American College of Technology</p>
+                    <p>Focusing on software development, algorithms, and data structures.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">2019 - 2022</span>
+                    <h4 class="timeline-title">High School Diploma</h4>
+                    <p class="timeline-subtitle">Falcon Academy</p>
+                </div>
+            </div>
+
+            <h3 class="section-title"><i class="fas fa-briefcase"
+                    style="color:var(--accent-color); margin-right:10px;"></i> Experience</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="timeline-date">2023 - Present</span>
+                    <h4 class="timeline-title">Freelance Web Developer</h4>
+                    <p class="timeline-subtitle">Self-Employed</p>
+                    <p>Building responsive websites and landing pages for local businesses.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">2024</span>
+                    <h4 class="timeline-title">Graphic Designer</h4>
+                    <p class="timeline-subtitle">College Event Branding</p>
+                    <p>Designed visual assets, posters, and social media content for major college events.</p>
+                </div>
+            </div>
+
+            <h3 class="section-title">My Skills</h3>
+            <div class="skills-marquee-container">
+                <div class="skills-marquee-content">
+                    <!-- Original Set -->
+                    <div class="skill-item"><i class="fab fa-java" style="color: #007396;"></i> Java</div>
+                    <div class="skill-item"><i class="fab fa-python" style="color: #3776AB;"></i> Python</div>
+                    <div class="skill-item"><i class="fab fa-js" style="color: #F7DF1E;"></i> JavaScript</div>
+                    <div class="skill-item"><i class="fas fa-code" style="color: #00599C;"></i> C++</div>
+                    <div class="skill-item"><i class="fab fa-android" style="color: #7F52FF;"></i> Kotlin</div>
+                    <div class="skill-item"><i class="fas fa-database" style="color: #4479A1;"></i> SQL</div>
+                    <div class="skill-item"><i class="fab fa-html5" style="color: #E34F26;"></i> HTML5</div>
+                    <div class="skill-item"><i class="fab fa-css3-alt" style="color: #1572B6;"></i> CSS3</div>
+                    <div class="skill-item"><i class="fas fa-brain" style="color: #9B59B6;"></i> Prompt Eng.</div>
+                    <div class="skill-item"><i class="fab fa-figma" style="color: #F24E1E;"></i> Figma</div>
+                    <div class="skill-item"><i class="fas fa-image" style="color: #31A8FF;"></i> Photoshop</div>
+                    <div class="skill-item"><i class="fas fa-pen-nib" style="color: #FF9A00;"></i> Illustrator</div>
+
+                    <!-- Duplicate Set for Seamless Loop -->
+                    <div class="skill-item"><i class="fab fa-java" style="color: #007396;"></i> Java</div>
+                    <div class="skill-item"><i class="fab fa-python" style="color: #3776AB;"></i> Python</div>
+                    <div class="skill-item"><i class="fab fa-js" style="color: #F7DF1E;"></i> JavaScript</div>
+                    <div class="skill-item"><i class="fas fa-code" style="color: #00599C;"></i> C++</div>
+                    <div class="skill-item"><i class="fab fa-android" style="color: #7F52FF;"></i> Kotlin</div>
+                    <div class="skill-item"><i class="fas fa-database" style="color: #4479A1;"></i> SQL</div>
+                    <div class="skill-item"><i class="fab fa-html5" style="color: #E34F26;"></i> HTML5</div>
+                    <div class="skill-item"><i class="fab fa-css3-alt" style="color: #1572B6;"></i> CSS3</div>
+                    <div class="skill-item"><i class="fas fa-brain" style="color: #9B59B6;"></i> Prompt Eng.</div>
+                    <div class="skill-item"><i class="fab fa-figma" style="color: #F24E1E;"></i> Figma</div>
+                    <div class="skill-item"><i class="fas fa-image" style="color: #31A8FF;"></i> Photoshop</div>
+                    <div class="skill-item"><i class="fas fa-pen-nib" style="color: #FF9A00;"></i> Illustrator</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
+    <script src="orb_effect.js"></script>
+</body>
+
+</html>
