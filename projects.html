@@ -7,6 +7,310 @@
     <title>Projects - Samuel Girma</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ── Featured Grid ── */
+        .featured-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0;
+            padding: 20px 0 40px;
+        }
+
+        .featured-card {
+            height: auto !important;
+            min-height: 520px;
+        }
+
+        .featured-card::before { left: 80px; width: 60%; }
+        .featured-card::after  { left: 80px; width: 60%; }
+
+        .featured-card:hover::before,
+        .featured-card:hover::after {
+            transform: skewX(0deg);
+            left: 20px;
+            width: calc(100% - 40px);
+        }
+
+        /* ── Two-column content layout ── */
+        .featured-content {
+            display: grid !important;
+            grid-template-columns: 55% 45% !important;
+            flex-direction: unset !important;
+            justify-content: unset !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: auto !important;
+            gap: 0;
+            align-items: stretch;
+        }
+
+        .featured-card:hover .featured-content {
+            left: -20px;
+            padding: 0 !important;
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* ── Slider ── */
+        .project-slider {
+            position: relative;
+            border-radius: 8px 0 0 8px;
+            overflow: hidden;
+            min-height: 480px;
+        }
+
+        .slider-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .slider-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(135deg, #181818 0%, #222 100%);
+        }
+
+        .slide-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text-grey);
+        }
+
+        .slide-placeholder i {
+            font-size: 2.8rem;
+            color: rgba(255, 215, 0, 0.2);
+        }
+
+        .slide-placeholder span {
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            opacity: 0.4;
+            text-transform: uppercase;
+        }
+
+        .slide img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: var(--accent-color);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            z-index: 10;
+            backdrop-filter: blur(6px);
+        }
+
+        .slider-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+            border-color: var(--accent-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slider-prev { left: 14px; }
+        .slider-next { right: 14px; }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 7px;
+            z-index: 10;
+        }
+
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+        }
+
+        .slider-dot.active {
+            background: var(--accent-color);
+            width: 26px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* ── Project Info Panel ── */
+        .project-info {
+            padding: 38px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .project-name-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .project-name-row .proj-icon {
+            font-size: 1.7rem;
+            color: var(--accent-color);
+            filter: drop-shadow(0 0 8px rgba(255,215,0,0.4));
+        }
+
+        .project-name-row h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.85rem !important;
+            color: var(--text-white) !important;
+            margin: 0 !important;
+            letter-spacing: -0.3px;
+        }
+
+        .project-desc {
+            font-size: 0.92rem;
+            line-height: 1.78;
+            color: var(--text-grey);
+            margin-bottom: 22px;
+        }
+
+        .tech-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* ── Tech Marquee ── */
+        .card-tech-marquee {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+            padding: 6px 0;
+            margin-bottom: 22px;
+        }
+
+        .card-tech-marquee-track {
+            display: flex;
+            gap: 10px;
+            width: max-content;
+            animation: scroll 22s linear infinite;
+        }
+
+        .card-tech-marquee:hover .card-tech-marquee-track {
+            animation-play-state: paused;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 6px 13px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--text-white);
+            font-size: 0.78rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .tech-item:hover {
+            border-color: rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .tech-item img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .tech-item i {
+            font-size: 0.95rem;
+        }
+
+        /* ── Preview Button ── */
+        .project-preview-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-color);
+            color: #000;
+            border: 1px solid transparent;
+            padding: 11px 26px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88rem;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+
+        .project-preview-btn:hover {
+            background: transparent;
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.2);
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 900px) {
+            .featured-content {
+                grid-template-columns: 1fr !important;
+            }
+            .project-slider {
+                border-radius: 8px 8px 0 0;
+                min-height: 260px;
+                height: 260px;
+            }
+            .project-info {
+                padding: 26px 22px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -31,13 +335,13 @@
         </ul>
 
         <div class="social-icons">
-            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank"><i
-                    class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank"><i class="fab fa-linkedin-in"></i></a>
             <a href="https://github.com/Samuel-Girma07" target="_blank"><i class="fab fa-github"></i></a>
         </div>
 
-        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top: 20px; font-size: 0.9rem;"><i
-                class="fas fa-download"></i> Download CV</a>
+        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top: 20px; font-size: 0.9rem;">
+            <i class="fas fa-download"></i> Download CV
+        </a>
     </aside>
 
     <main class="main-content">
@@ -54,94 +358,131 @@
             <h2 class="page-title">Portfolio</h2>
             <br><br>
 
-            <div class="cards-grid">
-                <!-- Project 1 -->
-                <div class="card">
-                    <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-calculator icon"></i>
-                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
-                            <span class="tag">Telegram Bot</span>
-                            <span class="tag">Utility</span>
-                        </div>
-                        <h3>Grade Calculator App</h3>
-                        <p>Calculate your grades easily with this Telegram bot.</p>
-                        <a href="https://t.me/Actgpa" target="_blank" class="btn">Preview Project</a>
-                    </div>
-                </div>
+            <div class="cards-grid featured-grid">
 
-                <!-- Project 2 -->
-                <div class="card">
+                <!-- ── StudyLens Featured Project Card ── -->
+                <div class="card featured-card">
                     <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-robot icon"></i>
-                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
-                            <span class="tag">Telegram Bot</span>
-                            <span class="tag">Community</span>
-                        </div>
-                        <h3>UReport Bot</h3>
-                        <p>Launch the UReport bot for youth insights.</p>
-                        <a href="https://t.me/YouthInsightsBot" target="_blank" class="btn">Preview Project</a>
-                    </div>
-                </div>
+                    <div class="content featured-content">
 
-                <!-- Project 3 -->
-                <div class="card">
-                    <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-code icon"></i>
-                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
-                            <span class="tag">Python</span>
-                            <span class="tag">Web Scraping</span>
-                        </div>
-                        <h3>Scraping Project</h3>
-                        <p>Automated scripts for data scraping projects.</p>
-                        <a href="https://t.me/Scrapingproject" target="_blank" class="btn">Preview Project</a>
-                    </div>
-                </div>
+                        <!-- LEFT: Image Slider -->
+                        <div class="project-slider">
+                            <div class="slider-wrapper">
+                                <div class="slider-track" id="sliderTrack">
 
-                <!-- Project 4: Movie Suggestion System -->
-                <div class="card">
-                    <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-film icon"></i>
-                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
-                            <span class="tag">Java</span>
-                            <span class="tag">Algorithm</span>
-                        </div>
-                        <h3>Movie Suggestion System</h3>
-                        <p>Intelligent recommendation system analyzing user patterns to suggest personalized films.</p>
-                    </div>
-                </div>
+                                    <div class="slide">
+                                        <div class="slide-placeholder">
+                                            <i class="fas fa-image"></i>
+                                            <span>Screenshot 1</span>
+                                        </div>
+                                        <img src="slide1.jpg" alt="StudyLens Screenshot 1" onerror="this.style.opacity='0'">
+                                    </div>
 
-                <!-- Project 5: University Meal Management System -->
-                <div class="card">
-                    <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-utensils icon"></i>
-                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
-                            <span class="tag">SQL</span>
-                            <span class="tag">Database</span>
-                        </div>
-                        <h3>University Meal System</h3>
-                        <p>Robust management for university cafeterias handling scheduling, student plans, and
-                            inventory.</p>
-                    </div>
-                </div>
+                                    <div class="slide">
+                                        <div class="slide-placeholder">
+                                            <i class="fas fa-image"></i>
+                                            <span>Screenshot 2</span>
+                                        </div>
+                                        <img src="slide2.jpg" alt="StudyLens Screenshot 2" onerror="this.style.opacity='0'">
+                                    </div>
 
-                <!-- Project 6: College Event Branding -->
-                <div class="card">
-                    <span class="card-anim"></span>
-                    <div class="content">
-                        <i class="fas fa-paint-brush icon"></i>
-                        <div class="tags" style="display: flex; gap: 5px; margin-bottom: 5px;">
-                            <span class="tag">Design</span>
-                            <span class="tag">Branding</span>
+                                    <div class="slide">
+                                        <div class="slide-placeholder">
+                                            <i class="fas fa-image"></i>
+                                            <span>Screenshot 3</span>
+                                        </div>
+                                        <img src="slide3.jpg" alt="StudyLens Screenshot 3" onerror="this.style.opacity='0'">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <button class="slider-btn slider-prev" onclick="changeSlide(-1)" aria-label="Previous">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="slider-btn slider-next" onclick="changeSlide(1)" aria-label="Next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+
+                            <div class="slider-dots">
+                                <span class="slider-dot active" onclick="goToSlide(0)"></span>
+                                <span class="slider-dot" onclick="goToSlide(1)"></span>
+                                <span class="slider-dot" onclick="goToSlide(2)"></span>
+                            </div>
                         </div>
-                        <h3>College Event Branding</h3>
-                        <p>Visual assets and promotional graphics for various college events and social media.</p>
+                        <!-- END Slider -->
+
+                        <!-- RIGHT: Project Info -->
+                        <div class="project-info">
+
+                            <div class="project-tags">
+                                <span class="tag">AI Powered</span>
+                                <span class="tag">Full Stack</span>
+                                <span class="tag">Web App</span>
+                            </div>
+
+                            <div class="project-name-row">
+                                <i class="fas fa-magnifying-glass proj-icon"></i>
+                                <h3>StudyLens</h3>
+                            </div>
+
+                            <p class="project-desc">
+                                An AI-powered resource searching and study platform. Students discover, organize, and
+                                retain learning materials through intelligent search, spaced repetition algorithms,
+                                and personalized analytics dashboards.
+                            </p>
+
+                            <div class="tech-label">Tech Stack</div>
+
+                            <div class="card-tech-marquee">
+                                <div class="card-tech-marquee-track">
+
+                                    <!-- Original 14 -->
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
+                                    <div class="tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
+                                    <div class="tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
+                                    <div class="tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
+                                    <div class="tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
+                                    <div class="tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
+                                    <div class="tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
+                                    <div class="tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
+                                    <div class="tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
+
+                                    <!-- Duplicate 14 for seamless loop -->
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
+                                    <div class="tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
+                                    <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
+                                    <div class="tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
+                                    <div class="tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
+                                    <div class="tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
+                                    <div class="tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
+                                    <div class="tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
+                                    <div class="tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
+                                    <div class="tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
+
+                                </div>
+                            </div>
+
+                            <a href="#" target="_blank" class="project-preview-btn">
+                                Preview Project <i class="fas fa-external-link-alt"></i>
+                            </a>
+
+                        </div>
+                        <!-- END Project Info -->
+
                     </div>
                 </div>
+                <!-- END StudyLens Card -->
+
             </div>
         </section>
     </main>
@@ -149,6 +490,32 @@
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
+    <script>
+        // ── Slider Logic ──
+        let currentSlide = 0;
+        const TOTAL_SLIDES = 3;
+
+        function changeSlide(direction) {
+            currentSlide = (currentSlide + direction + TOTAL_SLIDES) % TOTAL_SLIDES;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        function updateSlider() {
+            const track = document.getElementById('sliderTrack');
+            if (track) track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        // Auto-advance every 4s
+        setInterval(() => changeSlide(1), 4000);
+    </script>
 </body>
 
 </html>
