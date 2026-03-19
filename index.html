@@ -276,6 +276,7 @@
             transition: all 0.25s ease;
             width: fit-content;
             border: 1px solid transparent;
+            margin-top: 20px;
         }
 
         .sl-btn:hover {
@@ -619,7 +620,7 @@
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
     <script>
-        // projects.html slider
+        // SPA projects slider
         (function () {
             let cur = 0;
             const total = 3;
@@ -629,11 +630,23 @@
 
             function update() {
                 if (!track) return;
-                track.style.transform = `translateX(-${cur * 100}%)`;
+                track.style.transform = 'translateX(-' + (cur * 100) + '%)';
                 numEl.textContent = String(cur + 1).padStart(2, '0');
-                dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+                dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
             }
 
             window.spaSlChange = function (dir) {
                 cur = (cur + dir + total) % total;
-      
+                update();
+            };
+
+            window.spaSlGo = function (idx) {
+                cur = idx;
+                update();
+            };
+
+            setInterval(function () { spaSlChange(1); }, 4500);
+        })();
+    </script>
+</body>
+</html>
