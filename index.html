@@ -367,6 +367,190 @@
             .sl-watermark { font-size: 3.5rem; }
             .sl-title { font-size: 1.7rem; }
         }
+
+        /* ════════════════════════════════
+           WHAT I DO — TILT GLASS CARDS
+        ════════════════════════════════ */
+        .wid-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            padding: 32px 0 20px;
+            perspective: 1000px;
+        }
+
+        .wid-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 215, 0, 0.14);
+            border-radius: 16px;
+            padding: 32px 28px 28px;
+            overflow: hidden;
+            cursor: default;
+            transform-style: preserve-3d;
+            transition: border-color 0.35s ease, box-shadow 0.35s ease;
+            will-change: transform;
+        }
+
+        .wid-card:hover {
+            border-color: rgba(255, 215, 0, 0.45);
+            box-shadow:
+                0 0 0 1px rgba(255, 215, 0, 0.08),
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(255, 215, 0, 0.06);
+        }
+
+        /* Sweeping border trace */
+        .wid-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            background: conic-gradient(
+                from var(--angle, 0deg),
+                transparent 0deg,
+                rgba(255, 215, 0, 0.6) 60deg,
+                transparent 120deg
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+            mask: linear-gradient(#000 0 0) content-box,
+                  linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            -webkit-mask: linear-gradient(#000 0 0) content-box,
+                          linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            padding: 1px;
+        }
+
+        .wid-card:hover::before {
+            opacity: 1;
+            animation: borderTrace 2.5s linear infinite;
+        }
+
+        @keyframes borderTrace {
+            to { --angle: 360deg; }
+        }
+
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        /* Mouse-follow shine */
+        .wid-shine {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+            background: radial-gradient(
+                circle 180px at var(--mx, 50%) var(--my, 50%),
+                rgba(255, 215, 0, 0.07) 0%,
+                transparent 70%
+            );
+        }
+
+        .wid-card:hover .wid-shine {
+            opacity: 1;
+        }
+
+        /* Top row: number + icon */
+        .wid-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .wid-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: rgba(255, 215, 0, 0.35);
+            transition: color 0.3s ease;
+        }
+
+        .wid-card:hover .wid-num {
+            color: rgba(255, 215, 0, 0.7);
+        }
+
+        .wid-icon-wrap {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(255, 215, 0, 0.07);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: rgba(255, 215, 0, 0.6);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .wid-card:hover .wid-icon-wrap {
+            background: rgba(255, 215, 0, 0.14);
+            border-color: rgba(255, 215, 0, 0.4);
+            color: #FFD700;
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.2);
+        }
+
+        .wid-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        .wid-desc {
+            font-size: 0.875rem;
+            line-height: 1.75;
+            color: var(--text-grey);
+            position: relative;
+            z-index: 2;
+            transition: color 0.3s ease;
+        }
+
+        .wid-card:hover .wid-desc {
+            color: rgba(200, 200, 200, 0.85);
+        }
+
+        /* Bottom accent bar that expands on hover */
+        .wid-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(255,215,0,0.8), rgba(255,215,0,0.2));
+            border-radius: 0 0 16px 16px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 3;
+        }
+
+        .wid-card:hover .wid-bar {
+            width: 100%;
+        }
+
+        @media (max-width: 860px) {
+            .wid-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
     </style>
 </head>
 
@@ -431,10 +615,43 @@
                     design to build engaging solutions.
                 </p>
                 <h3 class="section-title">What I Do</h3>
-                <div class="cards-grid">
-                    <div class="card"><span class="card-anim"></span><div class="content"><i class="fas fa-code icon"></i><h3>Web Development</h3><p>Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user experiences.</p></div></div>
-                    <div class="card"><span class="card-anim"></span><div class="content"><i class="fas fa-database icon"></i><h3>Data Analysis</h3><p>Data scraping & cleaning using Python & Octoparse to turn raw data into actionable insights.</p></div></div>
-                    <div class="card"><span class="card-anim"></span><div class="content"><i class="fas fa-paint-brush icon"></i><h3>Graphic Design</h3><p>Visual identities & branding using Figma & Adobe Suite to communicate efficient visual stories.</p></div></div>
+                <div class="wid-grid">
+                    <div class="wid-card" data-index="01">
+                        <div class="wid-shine"></div>
+                        <div class="wid-top">
+                            <span class="wid-num">01</span>
+                            <div class="wid-icon-wrap">
+                                <i class="fas fa-code"></i>
+                            </div>
+                        </div>
+                        <h3 class="wid-title">Web Development</h3>
+                        <p class="wid-desc">Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user experiences.</p>
+                        <div class="wid-bar"></div>
+                    </div>
+                    <div class="wid-card" data-index="02">
+                        <div class="wid-shine"></div>
+                        <div class="wid-top">
+                            <span class="wid-num">02</span>
+                            <div class="wid-icon-wrap">
+                                <i class="fas fa-database"></i>
+                            </div>
+                        </div>
+                        <h3 class="wid-title">Data Analysis</h3>
+                        <p class="wid-desc">Data scraping & cleaning using Python & Octoparse to turn raw data into actionable insights.</p>
+                        <div class="wid-bar"></div>
+                    </div>
+                    <div class="wid-card" data-index="03">
+                        <div class="wid-shine"></div>
+                        <div class="wid-top">
+                            <span class="wid-num">03</span>
+                            <div class="wid-icon-wrap">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                        </div>
+                        <h3 class="wid-title">Graphic Design</h3>
+                        <p class="wid-desc">Visual identities & branding using Figma & Adobe Suite to communicate efficient visual stories.</p>
+                        <div class="wid-bar"></div>
+                    </div>
                 </div>
             </section>
 
@@ -628,7 +845,39 @@
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
     <script>
-        // SPA projects slider
+        // Tilt + shine effect for about cards
+        (function () {
+            const cards = document.querySelectorAll('.wid-card');
+            const MAX_TILT = 10;
+
+            cards.forEach(card => {
+                const shine = card.querySelector('.wid-shine');
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const cx = rect.width / 2;
+                    const cy = rect.height / 2;
+                    const rx = ((y - cy) / cy) * -MAX_TILT;
+                    const ry = ((x - cx) / cx) * MAX_TILT;
+
+                    card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+                    shine.style.setProperty('--mx', x + 'px');
+                    shine.style.setProperty('--my', y + 'px');
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+                    card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.35s ease, box-shadow 0.35s ease';
+                });
+
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = 'transform 0.1s ease, border-color 0.35s ease, box-shadow 0.35s ease';
+                });
+            });
+        })();
+
         (function () {
             let cur = 0;
             const total = 3;
