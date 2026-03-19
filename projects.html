@@ -81,49 +81,6 @@
             background: #141414;
         }
 
-        /* Placeholder art */
-        .sl-slide-ph {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-        }
-
-        .sl-slide-ph-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255,215,0,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,215,0,0.04) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        .sl-slide-ph-icon {
-            position: relative;
-            z-index: 1;
-            width: 64px; height: 64px;
-            border: 1px solid rgba(255,215,0,0.2);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            color: rgba(255,215,0,0.3);
-            background: rgba(255,215,0,0.04);
-        }
-
-        .sl-slide-ph-label {
-            position: relative;
-            z-index: 1;
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.2);
-        }
-
         .sl-slide img {
             position: absolute;
             inset: 0;
@@ -453,7 +410,7 @@
         <div class="badge">Computer Science Student</div>
 
         <ul class="contact-info">
-            <li><i class="fas fa-envelope"></i> naodtskuyomi@gmail.com</li>
+            <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e28c838d86969189979b8d8f8ba2858f838b8ecc818d8f">[email&#160;protected]</a></li>
             <li><i class="fas fa-phone"></i> +251 948 998 804</li>
             <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
         </ul>
@@ -490,30 +447,15 @@
                         <div class="sl-track" id="slTrack">
 
                             <div class="sl-slide">
-                                <div class="sl-slide-ph">
-                                    <div class="sl-slide-ph-grid"></div>
-                                    <div class="sl-slide-ph-icon"><i class="fas fa-magnifying-glass"></i></div>
-                                    <span class="sl-slide-ph-label">slide1.jpg</span>
-                                </div>
-                                <img src="slide1.jpg" alt="StudyLens screenshot 1" onerror="this.remove()">
+                                <img src="slide1.jpg" alt="StudyLens screenshot 1">
                             </div>
 
                             <div class="sl-slide">
-                                <div class="sl-slide-ph">
-                                    <div class="sl-slide-ph-grid"></div>
-                                    <div class="sl-slide-ph-icon"><i class="fas fa-brain"></i></div>
-                                    <span class="sl-slide-ph-label">slide2.jpg</span>
-                                </div>
-                                <img src="slide2.jpg" alt="StudyLens screenshot 2" onerror="this.remove()">
+                                <img src="slide2.jpg" alt="StudyLens screenshot 2">
                             </div>
 
                             <div class="sl-slide">
-                                <div class="sl-slide-ph">
-                                    <div class="sl-slide-ph-grid"></div>
-                                    <div class="sl-slide-ph-icon"><i class="fas fa-chart-bar"></i></div>
-                                    <span class="sl-slide-ph-label">slide3.jpg</span>
-                                </div>
-                                <img src="slide3.jpg" alt="StudyLens screenshot 3" onerror="this.remove()">
+                                <img src="slide3.jpg" alt="StudyLens screenshot 3">
                             </div>
 
                         </div>
@@ -556,6 +498,41 @@
                                 personalized analytics dashboards.
                             </p>
 
+                            <p class="sl-stack-label">Tech Stack</p>
+
+                            <div class="sl-tech-marquee">
+                                <div class="sl-tech-track">
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
+                                    <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
+                                    <div class="sl-tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
+                                    <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
+                                    <div class="sl-tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
+                                    <div class="sl-tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
+                                    <div class="sl-tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
+                                    <div class="sl-tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
+                                    <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
+                                    <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
+                                    <div class="sl-tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
+                                    <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
+                                    <div class="sl-tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
+                                    <div class="sl-tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
+                                    <div class="sl-tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
+                                    <div class="sl-tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
+                                    <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
+                                </div>
+                            </div>
+
                             <a href="https://study-lens-blue.vercel.app" target="_blank" class="sl-btn">
                                 Preview Project <i class="fas fa-arrow-up-right-from-square"></i>
                             </a>
@@ -571,46 +548,6 @@
                                 <span class="sl-tag">Full Stack</span>
                                 <span class="sl-tag">Web App</span>
                             </div>
-
-                            <p class="sl-stack-label">Tech Stack</p>
-
-                            <div class="sl-tech-marquee">
-                                <div class="sl-tech-track">
-
-                                    <!-- Set 1 -->
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
-                                    <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
-                                    <div class="sl-tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
-                                    <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
-                                    <div class="sl-tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
-                                    <div class="sl-tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
-                                    <div class="sl-tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
-                                    <div class="sl-tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
-                                    <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
-
-                                    <!-- Set 2 (duplicate for seamless loop) -->
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
-                                    <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
-                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
-                                    <div class="sl-tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
-                                    <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
-                                    <div class="sl-tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
-                                    <div class="sl-tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
-                                    <div class="sl-tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
-                                    <div class="sl-tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
-                                    <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
-
-                                </div>
-                            </div>
                         </div>
 
                     </div><!-- /.sl-body -->
@@ -619,7 +556,7 @@
         </section>
     </main>
 
-    <script src="script.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
     <script>
@@ -638,17 +575,4 @@
 
             window.slChange = function (dir) {
                 cur = (cur + dir + total) % total;
-                update();
-            };
-
-            window.slGo = function (idx) {
-                cur = idx;
-                update();
-            };
-
-            setInterval(() => slChange(1), 4500);
-        })();
-    </script>
-</body>
-
-</html>
+                
