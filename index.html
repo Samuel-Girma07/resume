@@ -551,6 +551,120 @@
                 gap: 16px;
             }
         }
+
+        /* ═══════════════════════════════════════
+           FEATURE 1 — CUSTOM MAGNETIC CURSOR
+        ═══════════════════════════════════════ */
+        html, body, * { cursor: none !important; }
+
+        #cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 6px; height: 6px;
+            background: #FFD700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0;
+            will-change: transform;
+            box-shadow: 0 0 8px rgba(255,215,0,0.9), 0 0 18px rgba(255,215,0,0.35);
+            transition: opacity 0.2s ease;
+        }
+
+        #cursor-ring {
+            position: fixed;
+            top: 0; left: 0;
+            width: 36px; height: 36px;
+            border: 1.5px solid rgba(255,215,0,0.55);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99998;
+            opacity: 0;
+            will-change: transform;
+            transition: opacity 0.3s ease, border-color 0.22s ease;
+        }
+
+        @media (pointer: coarse) {
+            html, body, * { cursor: auto !important; }
+            #cursor-dot, #cursor-ring { display: none; }
+        }
+
+        /* ═══════════════════════════════════════
+           FEATURE 3 — TYPEWRITER SUBTITLE
+        ═══════════════════════════════════════ */
+        #typewriter-subtitle {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.75rem;
+            color: rgba(255,215,0,0.6);
+            letter-spacing: 2.5px;
+            text-align: center;
+            margin-top: -14px;
+            margin-bottom: 24px;
+            min-height: 1.4em;
+            text-transform: uppercase;
+        }
+
+        #typewriter-subtitle::after {
+            content: '|';
+            color: var(--accent-color);
+            animation: twBlink 0.85s step-end infinite;
+            font-weight: 200;
+            margin-left: 1px;
+        }
+
+        @keyframes twBlink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+
+        /* ═══════════════════════════════════════
+           FEATURE 4 — TIMELINE STAGGER + LINE DRAW
+        ═══════════════════════════════════════ */
+        #resume .timeline {
+            position: relative;
+        }
+
+        #resume .timeline::after {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            width: 2px;
+            height: 0;
+            background: linear-gradient(to bottom, #FFD700 0%, rgba(255,215,0,0.2) 100%);
+            box-shadow: 0 0 10px rgba(255,215,0,0.5);
+            transition: height 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
+        }
+
+        #resume .timeline.tl-active::after {
+            height: 100%;
+        }
+
+        /* Override: slide from left instead of slide up */
+        .timeline-item {
+            transform: translateX(-32px);
+            transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-item.revealed,
+        .timeline-item.tl-revealed {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ═══════════════════════════════════════
+           FEATURE 5 — PARALLAX PROFILE DEPTH
+        ═══════════════════════════════════════ */
+        .profile-img {
+            transition: box-shadow 0.3s ease;
+            will-change: transform;
+        }
+
+        .orb-canvas-container {
+            will-change: transform;
+        }
     </style>
 </head>
 
@@ -563,6 +677,8 @@
     </div>
 
     <canvas id="fluid"></canvas>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
 
     <button class="hamburger" aria-label="Toggle Menu">
         <i class="fas fa-bars"></i>
@@ -575,8 +691,7 @@
         </div>
         <h1>Samuel Girma</h1>
         <div class="badge">Computer Science Student</div>
-
-        <ul class="contact-info">
+        <p id="typewriter-subtitle"></p>
             <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection#593738363d2d2a322c20363430193e34383035773a3634"><span class="__cf_email__" data-cfemail="274946484353544c525e484a4e67404a464e4b0944484a">[email&#160;protected]</span></a></li>
             <li><i class="fas fa-phone"></i> <a href="tel:+251948998804">+251 948 998 804</a></li>
             <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
@@ -845,64 +960,270 @@
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
     <script>
-        // Tilt + shine effect for about cards
+        /* ═══════════════════════════════════════════════════════
+           EXISTING: TILT + SHINE  (about page cards)
+        ═══════════════════════════════════════════════════════ */
         (function () {
             const cards = document.querySelectorAll('.wid-card');
             const MAX_TILT = 10;
-
             cards.forEach(card => {
                 const shine = card.querySelector('.wid-shine');
-
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    const cx = rect.width / 2;
-                    const cy = rect.height / 2;
+                    const cx = rect.width / 2, cy = rect.height / 2;
                     const rx = ((y - cy) / cy) * -MAX_TILT;
                     const ry = ((x - cx) / cx) * MAX_TILT;
-
                     card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
-                    shine.style.setProperty('--mx', x + 'px');
-                    shine.style.setProperty('--my', y + 'px');
+                    if (shine) {
+                        shine.style.setProperty('--mx', x + 'px');
+                        shine.style.setProperty('--my', y + 'px');
+                    }
                 });
-
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
                     card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.35s ease, box-shadow 0.35s ease';
                 });
-
                 card.addEventListener('mouseenter', () => {
                     card.style.transition = 'transform 0.1s ease, border-color 0.35s ease, box-shadow 0.35s ease';
                 });
             });
         })();
 
+        /* ═══════════════════════════════════════════════════════
+           EXISTING: SPA PROJECTS SLIDER
+        ═══════════════════════════════════════════════════════ */
         (function () {
             let cur = 0;
             const total = 3;
             const track = document.getElementById('slTrackSPA');
-            const numEl = document.getElementById('slNumSPA');
-            const dots  = document.querySelectorAll('#spaSlDots .sl-dot');
-
+            const numEl  = document.getElementById('slNumSPA');
+            const dots   = document.querySelectorAll('#spaSlDots .sl-dot');
             function update() {
                 if (!track) return;
                 track.style.transform = 'translateX(-' + (cur * 100) + '%)';
                 numEl.textContent = String(cur + 1).padStart(2, '0');
                 dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
             }
-
-            window.spaSlChange = function (dir) {
-                cur = (cur + dir + total) % total;
-                update();
-            };
-
-            window.spaSlGo = function (idx) {
-                cur = idx;
-                update();
-            };
-
+            window.spaSlChange = function (dir) { cur = (cur + dir + total) % total; update(); };
+            window.spaSlGo    = function (idx)  { cur = idx; update(); };
             setInterval(function () { spaSlChange(1); }, 4500);
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           FEATURE 1: CUSTOM MAGNETIC CURSOR
+        ═══════════════════════════════════════════════════════ */
+        (function initCursor() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            const dot  = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            if (!dot || !ring) return;
+
+            var mx = -200, my = -200;
+            var rx = -200, ry = -200;
+            var prx = -200, pry = -200;
+            var ringScale = 1, targetScale = 1;
+            var isVisible = false, isHovering = false, prevHovering = false;
+
+            var hoverSel = 'a, button, input, textarea, label, .wid-card, .back-to-top, .sl-arr';
+
+            document.addEventListener('mousemove', function(e) {
+                mx = e.clientX; my = e.clientY;
+                if (!isVisible) {
+                    rx = mx; ry = my; prx = mx; pry = my;
+                    isVisible = true;
+                    dot.style.opacity  = '1';
+                    ring.style.opacity = '1';
+                }
+            });
+
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.closest && e.target.closest(hoverSel)) {
+                    isHovering = true; targetScale = 1.65;
+                }
+            });
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.closest && e.target.closest(hoverSel)) {
+                    isHovering = false; targetScale = 1;
+                }
+            });
+            document.addEventListener('mouseleave', function() {
+                dot.style.opacity = '0'; ring.style.opacity = '0';
+            });
+            document.addEventListener('mouseenter', function() {
+                if (isVisible) { ring.style.opacity = '1'; }
+            });
+
+            function lerp(a, b, t) { return a + (b - a) * t; }
+
+            function tick() {
+                prx = rx; pry = ry;
+                rx = lerp(rx, mx, 0.13);
+                ry = lerp(ry, my, 0.13);
+                ringScale = lerp(ringScale, targetScale, 0.12);
+
+                var dvx  = rx - prx, dvy = ry - pry;
+                var spd  = Math.sqrt(dvx * dvx + dvy * dvy);
+                var ang  = Math.atan2(dvy, dvx) * 180 / Math.PI;
+                var str  = Math.min(spd * 0.07, 0.38);
+                var sx   = (1 + str) * ringScale;
+                var sy   = Math.max((1 - str * 0.45) * ringScale, 0.3);
+
+                dot.style.transform  = 'translate(' + (mx - 3) + 'px, ' + (my - 3) + 'px)';
+                ring.style.transform = 'translate(' + (rx - 18) + 'px, ' + (ry - 18) + 'px) rotate(' + ang + 'deg) scale(' + sx + ',' + sy + ')';
+
+                // Only update on state change to respect CSS transition
+                if (isHovering !== prevHovering) {
+                    dot.style.opacity      = isHovering ? '0' : (isVisible ? '1' : '0');
+                    ring.style.borderColor = isHovering ? 'rgba(255,215,0,0.95)' : 'rgba(255,215,0,0.55)';
+                    prevHovering = isHovering;
+                }
+
+                requestAnimationFrame(tick);
+            }
+            tick();
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           FEATURE 2: TEXT SCRAMBLE ON PAGE TITLES
+        ═══════════════════════════════════════════════════════ */
+        (function initScramble() {
+            var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%';
+
+            function scramble(el) {
+                if (!el || el._scrambling) return;
+                var original = el.dataset.original || el.textContent.trim();
+                el.dataset.original = original;
+                el._scrambling = true;
+                var frame = 0;
+                var totalFrames = original.length * 3;
+                clearInterval(el._scrambleTimer);
+                el._scrambleTimer = setInterval(function() {
+                    el.textContent = original.split('').map(function(ch, i) {
+                        if (ch === ' ') return ' ';
+                        if (i < Math.floor(frame / 3)) return ch;
+                        return CHARS[Math.floor(Math.random() * CHARS.length)];
+                    }).join('');
+                    frame++;
+                    if (frame > totalFrames) {
+                        clearInterval(el._scrambleTimer);
+                        el.textContent = original;
+                        el._scrambling = false;
+                    }
+                }, 32);
+            }
+
+            document.querySelectorAll('.page').forEach(function(page) {
+                new MutationObserver(function() {
+                    if (page.classList.contains('active')) {
+                        var title = page.querySelector('.page-title');
+                        if (title) scramble(title);
+                    }
+                }).observe(page, { attributes: true, attributeFilter: ['class'] });
+            });
+
+            // Fire on initial page after loading screen
+            var initialPage = document.querySelector('.page.active');
+            if (initialPage) {
+                setTimeout(function() {
+                    var t = initialPage.querySelector('.page-title');
+                    if (t) scramble(t);
+                }, 950);
+            }
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           FEATURE 3: TYPEWRITER SIDEBAR SUBTITLE
+        ═══════════════════════════════════════════════════════ */
+        (function initTypewriter() {
+            var el = document.getElementById('typewriter-subtitle');
+            if (!el) return;
+            var roles = ['Web Developer', 'Data Analyst', 'Graphic Designer'];
+            var rIdx = 0, cIdx = 0, deleting = false;
+
+            function tick() {
+                var word = roles[rIdx];
+                if (!deleting) {
+                    cIdx++;
+                    el.textContent = word.slice(0, cIdx);
+                    if (cIdx === word.length) {
+                        return setTimeout(function() { deleting = true; tick(); }, 1800);
+                    }
+                } else {
+                    cIdx--;
+                    el.textContent = word.slice(0, cIdx);
+                    if (cIdx === 0) {
+                        deleting = false;
+                        rIdx = (rIdx + 1) % roles.length;
+                        return setTimeout(tick, 320);
+                    }
+                }
+                setTimeout(tick, deleting ? 42 : 88);
+            }
+            setTimeout(tick, 1400);
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           FEATURE 4: TIMELINE STAGGER + LINE DRAW
+        ═══════════════════════════════════════════════════════ */
+        (function initTimeline() {
+            var resumePage = document.getElementById('resume');
+            if (!resumePage) return;
+            var activated = false;
+
+            function activate() {
+                if (activated) return;
+                activated = true;
+
+                // Draw the gold line on each timeline after display settles
+                resumePage.querySelectorAll('.timeline').forEach(function(tl) {
+                    setTimeout(function() { tl.classList.add('tl-active'); }, 80);
+                });
+
+                // Stagger items left-to-right reveal
+                resumePage.querySelectorAll('.timeline-item').forEach(function(item, i) {
+                    setTimeout(function() {
+                        item.classList.add('tl-revealed');
+                    }, 180 + i * 145);
+                });
+            }
+
+            new MutationObserver(function() {
+                if (resumePage.classList.contains('active')) activate();
+            }).observe(resumePage, { attributes: true, attributeFilter: ['class'] });
+
+            if (resumePage.classList.contains('active')) {
+                setTimeout(activate, 200);
+            }
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           FEATURE 5: PARALLAX DEPTH ON SIDEBAR PROFILE
+        ═══════════════════════════════════════════════════════ */
+        (function initParallax() {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            var img = document.querySelector('.profile-img');
+            var orb = document.querySelector('.orb-canvas-container');
+            if (!img && !orb) return;
+
+            var tx = 0, ty = 0, cx = 0, cy = 0;
+
+            document.addEventListener('mousemove', function(e) {
+                tx = (e.clientX / window.innerWidth  - 0.5) * 2;
+                ty = (e.clientY / window.innerHeight - 0.5) * 2;
+            });
+
+            function lerp(a, b, t) { return a + (b - a) * t; }
+
+            function tick() {
+                cx = lerp(cx, tx, 0.055);
+                cy = lerp(cy, ty, 0.055);
+                if (img) img.style.transform = 'translate(' + (cx * 5) + 'px, ' + (cy * 5) + 'px)';
+                if (orb) orb.style.transform = 'translate(' + (-cx * 11) + 'px, ' + (-cy * 11) + 'px)';
+                requestAnimationFrame(tick);
+            }
+            tick();
         })();
     </script>
 </body>
