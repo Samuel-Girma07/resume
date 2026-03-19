@@ -5,333 +5,408 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samuel Girma - Portfolio</title>
-    <meta name="description"
-        content="Samuel Girma - Computer Science Student & Web Developer based in Addis Ababa. View my portfolio, resume, and projects.">
+    <meta name="description" content="Samuel Girma - Computer Science Student & Web Developer based in Addis Ababa.">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
-    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Samuel Girma - Portfolio">
-    <meta property="og:description"
-        content="Computer Science Student & Web Developer based in Addis Ababa. View my portfolio, resume, and projects.">
+    <meta property="og:description" content="Computer Science Student & Web Developer based in Addis Ababa.">
     <meta property="og:image" content="PHOTO.jpg">
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* ── Featured Grid ── */
-        .featured-grid {
-            grid-template-columns: 1fr !important;
-            gap: 0;
-            padding: 20px 0 40px;
-        }
+        /* ════════════════════════════════════════
+           STUDYLENS CARD — EDITORIAL DARK GLASS
+        ════════════════════════════════════════ */
+        .showcase-wrapper { padding: 10px 0 60px; }
 
-        .featured-card {
-            height: auto !important;
-            min-height: 520px;
-        }
-
-        .featured-card::before { left: 80px; width: 60%; }
-        .featured-card::after  { left: 80px; width: 60%; }
-
-        .featured-card:hover::before,
-        .featured-card:hover::after {
-            transform: skewX(0deg);
-            left: 20px;
-            width: calc(100% - 40px);
-        }
-
-        /* ── Two-column content layout ── */
-        .featured-content {
-            display: grid !important;
-            grid-template-columns: 55% 45% !important;
-            flex-direction: unset !important;
-            justify-content: unset !important;
-            padding: 0 !important;
-            width: 100% !important;
-            height: auto !important;
-            gap: 0;
-            align-items: stretch;
-        }
-
-        .featured-card:hover .featured-content {
-            left: -20px;
-            padding: 0 !important;
-            background: rgba(255,255,255,0.08);
-        }
-
-        /* ── Slider ── */
-        .project-slider {
+        .sl-card {
             position: relative;
-            border-radius: 8px 0 0 8px;
+            background: rgba(18, 18, 18, 0.82);
+            border: 1px solid rgba(255, 215, 0, 0.18);
+            border-radius: 18px;
             overflow: hidden;
-            min-height: 480px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.03),
+                0 24px 60px rgba(0,0,0,0.55),
+                0 0 80px rgba(255,215,0,0.03);
+            transition: box-shadow 0.4s ease, border-color 0.4s ease;
         }
 
-        .slider-wrapper {
+        .sl-card:hover {
+            border-color: rgba(255, 215, 0, 0.38);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.04),
+                0 32px 80px rgba(0,0,0,0.65),
+                0 0 120px rgba(255,215,0,0.06);
+        }
+
+        .sl-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            transition: left 0.6s cubic-bezier(0.4,0,0.2,1);
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .sl-card:hover::before { left: 100%; }
+
+        /* Slider */
+        .sl-slider {
+            position: relative;
             width: 100%;
-            height: 100%;
+            height: 340px;
             overflow: hidden;
+            border-radius: 18px 18px 0 0;
         }
 
-        .slider-track {
+        .sl-track {
             display: flex;
             height: 100%;
-            transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
         }
 
-        .slide {
+        .sl-slide {
             flex: 0 0 100%;
-            width: 100%;
             height: 100%;
             position: relative;
-            background: linear-gradient(135deg, #181818 0%, #222 100%);
+            background: #141414;
         }
 
-        .slide-placeholder {
+        .sl-slide-ph {
             position: absolute;
             inset: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            color: var(--text-grey);
+            gap: 14px;
         }
 
-        .slide-placeholder i {
-            font-size: 2.8rem;
-            color: rgba(255, 215, 0, 0.2);
+        .sl-slide-ph-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,215,0,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,215,0,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
-        .slide-placeholder span {
-            font-size: 0.8rem;
-            letter-spacing: 1.5px;
-            opacity: 0.4;
+        .sl-slide-ph-icon {
+            position: relative; z-index: 1;
+            width: 64px; height: 64px;
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem;
+            color: rgba(255,215,0,0.3);
+            background: rgba(255,215,0,0.04);
+        }
+
+        .sl-slide-ph-label {
+            position: relative; z-index: 1;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
         }
 
-        .slide img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
+        .sl-slide img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
-            display: block;
-            transition: opacity 0.3s ease;
         }
 
-        .slider-btn {
+        .sl-slider::after {
+            content: '';
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.55);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: var(--accent-color);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s ease;
+            bottom: 0; left: 0; right: 0;
+            height: 120px;
+            background: linear-gradient(to top, rgba(18,18,18,0.95) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .sl-counter {
+            position: absolute;
+            top: 18px; right: 18px;
             z-index: 10;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.7);
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 5px 11px;
+            border-radius: 30px;
+            backdrop-filter: blur(8px);
+        }
+
+        .sl-counter span { color: var(--accent-color); }
+
+        .sl-arr {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(10,10,10,0.7);
+            border: 1px solid rgba(255,215,0,0.25);
+            color: var(--accent-color);
+            width: 36px; height: 56px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.22s ease;
             backdrop-filter: blur(6px);
         }
 
-        .slider-btn:hover {
+        .sl-arr:hover {
             background: var(--accent-color);
             color: #000;
             border-color: var(--accent-color);
-            transform: translateY(-50%) scale(1.1);
         }
 
-        .slider-prev { left: 14px; }
-        .slider-next { right: 14px; }
+        .sl-arr-prev { left: 16px; }
+        .sl-arr-next { right: 16px; }
 
-        .slider-dots {
+        .sl-dots {
             position: absolute;
-            bottom: 16px;
-            left: 50%;
+            bottom: 20px; left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 7px;
+            display: flex; gap: 6px;
             z-index: 10;
         }
 
-        .slider-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
+        .sl-dot {
+            height: 3px; width: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
             cursor: pointer;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             border: none;
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
         }
 
-        .slider-dot.active {
+        .sl-dot.active {
             background: var(--accent-color);
-            width: 26px;
-            border-radius: 4px;
-            box-shadow: 0 0 10px var(--accent-color);
+            width: 42px;
+            box-shadow: 0 0 8px var(--accent-color);
         }
 
-        /* ── Project Info Panel ── */
-        .project-info {
-            padding: 38px 36px;
+        /* Body */
+        .sl-body {
+            display: grid;
+            grid-template-columns: 1fr 1px 1fr;
+            gap: 0;
+            padding: 34px 38px 38px;
+        }
+
+        .sl-divider {
+            background: linear-gradient(to bottom, transparent, rgba(255,215,0,0.25) 30%, rgba(255,215,0,0.25) 70%, transparent);
+            margin: 0 36px;
+        }
+
+        .sl-left {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            padding-right: 8px;
         }
 
-        .project-tags {
-            display: flex;
-            gap: 7px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
+        .sl-watermark {
+            font-family: 'Syne', sans-serif;
+            font-size: 5rem;
+            font-weight: 800;
+            color: rgba(255,215,0,0.04);
+            line-height: 1;
+            margin-bottom: -20px;
+            user-select: none;
+            pointer-events: none;
+            letter-spacing: -2px;
         }
 
-        .project-name-row {
+        .sl-title-row {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            margin-bottom: 6px;
+        }
+
+        .sl-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-white);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .sl-live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.25);
+            border-radius: 30px;
+            padding: 4px 10px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #4ade80;
+        }
+
+        .sl-live-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: livePulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.75); }
+        }
+
+        .sl-subtitle {
+            font-size: 0.78rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            opacity: 0.7;
             margin-bottom: 14px;
         }
 
-        .project-name-row .proj-icon {
-            font-size: 1.7rem;
-            color: var(--accent-color);
-            filter: drop-shadow(0 0 8px rgba(255,215,0,0.4));
-        }
-
-        .project-name-row h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.85rem !important;
-            color: var(--text-white) !important;
-            margin: 0 !important;
-            letter-spacing: -0.3px;
-        }
-
-        .project-desc {
-            font-size: 0.92rem;
-            line-height: 1.78;
+        .sl-desc {
+            font-size: 0.9rem;
+            line-height: 1.8;
             color: var(--text-grey);
-            margin-bottom: 22px;
+            margin-bottom: 28px;
+            max-width: 380px;
         }
 
-        .tech-label {
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            color: var(--accent-color);
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        /* ── Tech Marquee ── */
-        .card-tech-marquee {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-            padding: 6px 0;
-            margin-bottom: 22px;
-        }
-
-        .card-tech-marquee-track {
-            display: flex;
-            gap: 10px;
-            width: max-content;
-            animation: scroll 22s linear infinite;
-        }
-
-        .card-tech-marquee:hover .card-tech-marquee-track {
-            animation-play-state: paused;
-        }
-
-        .tech-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            padding: 6px 13px;
-            border-radius: 9px;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            color: var(--text-white);
-            font-size: 0.78rem;
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: border-color 0.25s ease, transform 0.25s ease;
-        }
-
-        .tech-item:hover {
-            border-color: rgba(255, 215, 0, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .tech-item img {
-            width: 16px;
-            height: 16px;
-            object-fit: contain;
-        }
-
-        .tech-item i {
-            font-size: 0.95rem;
-        }
-
-        /* ── Preview Button ── */
-        .project-preview-btn {
+        .sl-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 9px;
             background: var(--accent-color);
             color: #000;
-            border: 1px solid transparent;
-            padding: 11px 26px;
-            border-radius: 50px;
+            padding: 12px 28px;
+            border-radius: 10px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.88rem;
-            transition: all 0.3s ease;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
             width: fit-content;
+            border: 1px solid transparent;
         }
 
-        .project-preview-btn:hover {
+        .sl-btn:hover {
             background: transparent;
             color: var(--accent-color);
             border-color: var(--accent-color);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 8px 24px rgba(255,215,0,0.2);
         }
 
-        /* ── Mobile ── */
-        @media (max-width: 900px) {
-            .featured-content {
-                grid-template-columns: 1fr !important;
-            }
-            .project-slider {
-                border-radius: 8px 8px 0 0;
-                min-height: 260px;
-                height: 260px;
-            }
-            .project-info {
-                padding: 26px 22px;
-            }
+        .sl-right {
+            display: flex;
+            flex-direction: column;
+            padding-left: 8px;
+        }
+
+        .sl-tags {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .sl-tag {
+            background: rgba(255,215,0,0.08);
+            color: var(--accent-color);
+            border: 1px solid rgba(255,215,0,0.18);
+            padding: 4px 13px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .sl-stack-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .sl-tech-marquee {
+            overflow: hidden;
+            width: 100%;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            padding: 4px 0;
+        }
+
+        .sl-tech-track {
+            display: flex;
+            gap: 8px;
+            width: max-content;
+            animation: scroll 20s linear infinite;
+        }
+
+        .sl-tech-marquee:hover .sl-tech-track {
+            animation-play-state: paused;
+        }
+
+        .sl-tech-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.07);
+            padding: 5px 11px;
+            border-radius: 8px;
+            font-size: 0.74rem;
+            color: rgba(255,255,255,0.75);
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .sl-tech-item:hover { border-color: rgba(255,215,0,0.35); color: #fff; }
+        .sl-tech-item img { width: 15px; height: 15px; object-fit: contain; }
+        .sl-tech-item i { font-size: 0.88rem; }
+
+        @media (max-width: 860px) {
+            .sl-slider { height: 240px; }
+            .sl-body { grid-template-columns: 1fr; padding: 26px 24px 30px; }
+            .sl-divider { display: none; }
+            .sl-left { padding-right: 0; margin-bottom: 28px; }
+            .sl-right { padding-left: 0; }
+            .sl-watermark { font-size: 3.5rem; }
+            .sl-title { font-size: 1.7rem; }
         }
     </style>
 </head>
 
 <body>
-    <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loader">
             <div class="loader-ring"></div>
@@ -341,12 +416,10 @@
 
     <canvas id="fluid"></canvas>
 
-    <!-- Mobile Hamburger -->
     <button class="hamburger" aria-label="Toggle Menu">
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="profile-container">
             <div id="profile-orb" class="orb-canvas-container"></div>
@@ -366,14 +439,12 @@
             <a href="https://github.com/Samuel-Girma07" target="_blank"><i class="fab fa-github"></i></a>
         </div>
 
-        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top: 20px; font-size: 0.9rem;">
+        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top:20px;font-size:0.9rem;">
             <i class="fas fa-download"></i> Download CV
         </a>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Navbar -->
         <nav class="navbar">
             <ul class="nav-links">
                 <li><a href="#about" class="nav-link active" data-page="about">About</a></li>
@@ -384,10 +455,9 @@
             </ul>
         </nav>
 
-        <!-- Page Container -->
         <div id="page-container">
 
-            <!-- About Page -->
+            <!-- About -->
             <section id="about" class="page active">
                 <h2 class="page-title">About Me</h2>
                 <br>
@@ -396,257 +466,199 @@
                     about creating beautiful, functional digital experiences. I blend technical skills with creative
                     design to build engaging solutions.
                 </p>
-
                 <h3 class="section-title">What I Do</h3>
                 <div class="cards-grid">
-                    <div class="card">
-                        <span class="card-anim"></span>
-                        <div class="content">
-                            <i class="fas fa-code icon"></i>
-                            <h3>Web Development</h3>
-                            <p>Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user experiences.</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <span class="card-anim"></span>
-                        <div class="content">
-                            <i class="fas fa-database icon"></i>
-                            <h3>Data Analysis</h3>
-                            <p>Data scraping & cleaning using Python & Octoparse to turn raw data into actionable insights.</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <span class="card-anim"></span>
-                        <div class="content">
-                            <i class="fas fa-paint-brush icon"></i>
-                            <h3>Graphic Design</h3>
-                            <p>Visual identities & branding using Figma & Adobe Suite to communicate efficient visual stories.</p>
-                        </div>
-                    </div>
+                    <div class="card"><span class="card-anim"></span><div class="content"><i class="fas fa-code icon"></i><h3>Web Development</h3><p>Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user experiences.</p></div></div>
+                    <div class="card"><span class="card-anim"></span><div class="content"><i class="fas fa-database icon"></i><h3>Data Analysis</h3><p>Data scraping & cleaning using Python & Octoparse to turn raw data into actionable insights.</p></div></div>
+                    <div class="card"><span class="card-anim"></span><div class="content"><i class="fas fa-paint-brush icon"></i><h3>Graphic Design</h3><p>Visual identities & branding using Figma & Adobe Suite to communicate efficient visual stories.</p></div></div>
                 </div>
             </section>
 
-            <!-- Resume Page -->
+            <!-- Resume -->
             <section id="resume" class="page">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                     <h2 class="page-title">Resume</h2>
                 </div>
-
-                <h3 class="section-title"><i class="fas fa-graduation-cap" style="color:var(--accent-color); margin-right:10px;"></i> Education</h3>
+                <h3 class="section-title"><i class="fas fa-graduation-cap" style="color:var(--accent-color);margin-right:10px;"></i> Education</h3>
                 <div class="timeline">
-                    <div class="timeline-item">
-                        <span class="timeline-date">2022 - Present</span>
-                        <h4 class="timeline-title">BSc Computer Science</h4>
-                        <p class="timeline-subtitle">American College of Technology</p>
-                        <p>Focusing on software development, algorithms, and data structures.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-date">2019 - 2022</span>
-                        <h4 class="timeline-title">High School Diploma</h4>
-                        <p class="timeline-subtitle">Falcon Academy</p>
-                    </div>
+                    <div class="timeline-item"><span class="timeline-date">2022 - Present</span><h4 class="timeline-title">BSc Computer Science</h4><p class="timeline-subtitle">American College of Technology</p><p>Focusing on software development, algorithms, and data structures.</p></div>
+                    <div class="timeline-item"><span class="timeline-date">2019 - 2022</span><h4 class="timeline-title">High School Diploma</h4><p class="timeline-subtitle">Falcon Academy</p></div>
                 </div>
-
-                <h3 class="section-title"><i class="fas fa-briefcase" style="color:var(--accent-color); margin-right:10px;"></i> Experience</h3>
+                <h3 class="section-title"><i class="fas fa-briefcase" style="color:var(--accent-color);margin-right:10px;"></i> Experience</h3>
                 <div class="timeline">
-                    <div class="timeline-item">
-                        <span class="timeline-date">2023 - Present</span>
-                        <h4 class="timeline-title">Freelance Web Developer</h4>
-                        <p class="timeline-subtitle">Self-Employed</p>
-                        <p>Building responsive websites and landing pages for local businesses.</p>
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-date">2024</span>
-                        <h4 class="timeline-title">Graphic Designer</h4>
-                        <p class="timeline-subtitle">College Event Branding</p>
-                        <p>Designed visual assets, posters, and social media content for major college events.</p>
-                    </div>
+                    <div class="timeline-item"><span class="timeline-date">2023 - Present</span><h4 class="timeline-title">Freelance Web Developer</h4><p class="timeline-subtitle">Self-Employed</p><p>Building responsive websites and landing pages for local businesses.</p></div>
+                    <div class="timeline-item"><span class="timeline-date">2024</span><h4 class="timeline-title">Graphic Designer</h4><p class="timeline-subtitle">College Event Branding</p><p>Designed visual assets, posters, and social media content for major college events.</p></div>
                 </div>
-
                 <h3 class="section-title">My Skills</h3>
                 <div class="skills-marquee-container">
                     <div class="skills-marquee-content">
-                        <div class="skill-item"><i class="fab fa-java" style="color: #007396;"></i> Java</div>
-                        <div class="skill-item"><i class="fab fa-python" style="color: #3776AB;"></i> Python</div>
-                        <div class="skill-item"><i class="fab fa-js" style="color: #F7DF1E;"></i> JavaScript</div>
-                        <div class="skill-item"><i class="fas fa-code" style="color: #00599C;"></i> C++</div>
-                        <div class="skill-item"><i class="fab fa-android" style="color: #7F52FF;"></i> Kotlin</div>
-                        <div class="skill-item"><i class="fas fa-database" style="color: #4479A1;"></i> SQL</div>
-                        <div class="skill-item"><i class="fab fa-html5" style="color: #E34F26;"></i> HTML5</div>
-                        <div class="skill-item"><i class="fab fa-css3-alt" style="color: #1572B6;"></i> CSS3</div>
-                        <div class="skill-item"><i class="fas fa-brain" style="color: #9B59B6;"></i> Prompt Eng.</div>
-                        <div class="skill-item"><i class="fab fa-figma" style="color: #F24E1E;"></i> Figma</div>
-                        <div class="skill-item"><i class="fas fa-image" style="color: #31A8FF;"></i> Photoshop</div>
-                        <div class="skill-item"><i class="fas fa-pen-nib" style="color: #FF9A00;"></i> Illustrator</div>
-                        <div class="skill-item"><i class="fab fa-java" style="color: #007396;"></i> Java</div>
-                        <div class="skill-item"><i class="fab fa-python" style="color: #3776AB;"></i> Python</div>
-                        <div class="skill-item"><i class="fab fa-js" style="color: #F7DF1E;"></i> JavaScript</div>
-                        <div class="skill-item"><i class="fas fa-code" style="color: #00599C;"></i> C++</div>
-                        <div class="skill-item"><i class="fab fa-android" style="color: #7F52FF;"></i> Kotlin</div>
-                        <div class="skill-item"><i class="fas fa-database" style="color: #4479A1;"></i> SQL</div>
-                        <div class="skill-item"><i class="fab fa-html5" style="color: #E34F26;"></i> HTML5</div>
-                        <div class="skill-item"><i class="fab fa-css3-alt" style="color: #1572B6;"></i> CSS3</div>
-                        <div class="skill-item"><i class="fas fa-brain" style="color: #9B59B6;"></i> Prompt Eng.</div>
-                        <div class="skill-item"><i class="fab fa-figma" style="color: #F24E1E;"></i> Figma</div>
-                        <div class="skill-item"><i class="fas fa-image" style="color: #31A8FF;"></i> Photoshop</div>
-                        <div class="skill-item"><i class="fas fa-pen-nib" style="color: #FF9A00;"></i> Illustrator</div>
+                        <div class="skill-item"><i class="fab fa-java" style="color:#007396"></i> Java</div>
+                        <div class="skill-item"><i class="fab fa-python" style="color:#3776AB"></i> Python</div>
+                        <div class="skill-item"><i class="fab fa-js" style="color:#F7DF1E"></i> JavaScript</div>
+                        <div class="skill-item"><i class="fas fa-code" style="color:#00599C"></i> C++</div>
+                        <div class="skill-item"><i class="fab fa-android" style="color:#7F52FF"></i> Kotlin</div>
+                        <div class="skill-item"><i class="fas fa-database" style="color:#4479A1"></i> SQL</div>
+                        <div class="skill-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+                        <div class="skill-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+                        <div class="skill-item"><i class="fas fa-brain" style="color:#9B59B6"></i> Prompt Eng.</div>
+                        <div class="skill-item"><i class="fab fa-figma" style="color:#F24E1E"></i> Figma</div>
+                        <div class="skill-item"><i class="fas fa-image" style="color:#31A8FF"></i> Photoshop</div>
+                        <div class="skill-item"><i class="fas fa-pen-nib" style="color:#FF9A00"></i> Illustrator</div>
+                        <div class="skill-item"><i class="fab fa-java" style="color:#007396"></i> Java</div>
+                        <div class="skill-item"><i class="fab fa-python" style="color:#3776AB"></i> Python</div>
+                        <div class="skill-item"><i class="fab fa-js" style="color:#F7DF1E"></i> JavaScript</div>
+                        <div class="skill-item"><i class="fas fa-code" style="color:#00599C"></i> C++</div>
+                        <div class="skill-item"><i class="fab fa-android" style="color:#7F52FF"></i> Kotlin</div>
+                        <div class="skill-item"><i class="fas fa-database" style="color:#4479A1"></i> SQL</div>
+                        <div class="skill-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+                        <div class="skill-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+                        <div class="skill-item"><i class="fas fa-brain" style="color:#9B59B6"></i> Prompt Eng.</div>
+                        <div class="skill-item"><i class="fab fa-figma" style="color:#F24E1E"></i> Figma</div>
+                        <div class="skill-item"><i class="fas fa-image" style="color:#31A8FF"></i> Photoshop</div>
+                        <div class="skill-item"><i class="fas fa-pen-nib" style="color:#FF9A00"></i> Illustrator</div>
                     </div>
                 </div>
             </section>
 
-            <!-- Projects Page -->
+            <!-- Projects -->
             <section id="projects" class="page">
                 <h2 class="page-title">Portfolio</h2>
                 <br><br>
 
-                <div class="cards-grid featured-grid">
+                <div class="showcase-wrapper">
+                    <div class="sl-card">
 
-                    <!-- ── StudyLens Featured Project Card ── -->
-                    <div class="card featured-card">
-                        <span class="card-anim"></span>
-                        <div class="content featured-content">
+                        <div class="sl-slider">
+                            <div class="sl-track" id="slTrackSPA">
 
-                            <!-- LEFT: Image Slider -->
-                            <div class="project-slider">
-                                <div class="slider-wrapper">
-                                    <div class="slider-track" id="sliderTrackSPA">
-
-                                        <div class="slide">
-                                            <div class="slide-placeholder">
-                                                <i class="fas fa-image"></i>
-                                                <span>Screenshot 1</span>
-                                            </div>
-                                            <img src="slide1.jpg" alt="StudyLens Screenshot 1" onerror="this.style.opacity='0'">
-                                        </div>
-
-                                        <div class="slide">
-                                            <div class="slide-placeholder">
-                                                <i class="fas fa-image"></i>
-                                                <span>Screenshot 2</span>
-                                            </div>
-                                            <img src="slide2.jpg" alt="StudyLens Screenshot 2" onerror="this.style.opacity='0'">
-                                        </div>
-
-                                        <div class="slide">
-                                            <div class="slide-placeholder">
-                                                <i class="fas fa-image"></i>
-                                                <span>Screenshot 3</span>
-                                            </div>
-                                            <img src="slide3.jpg" alt="StudyLens Screenshot 3" onerror="this.style.opacity='0'">
-                                        </div>
-
+                                <div class="sl-slide">
+                                    <div class="sl-slide-ph">
+                                        <div class="sl-slide-ph-grid"></div>
+                                        <div class="sl-slide-ph-icon"><i class="fas fa-magnifying-glass"></i></div>
+                                        <span class="sl-slide-ph-label">slide1.jpg</span>
                                     </div>
+                                    <img src="slide1.jpg" alt="StudyLens screenshot 1" onerror="this.remove()">
                                 </div>
 
-                                <button class="slider-btn slider-prev" onclick="spaChangeSlide(-1)" aria-label="Previous">
-                                    <i class="fas fa-chevron-left"></i>
-                                </button>
-                                <button class="slider-btn slider-next" onclick="spaChangeSlide(1)" aria-label="Next">
-                                    <i class="fas fa-chevron-right"></i>
-                                </button>
-
-                                <div class="slider-dots" id="spaDots">
-                                    <span class="slider-dot active" onclick="spaGoToSlide(0)"></span>
-                                    <span class="slider-dot" onclick="spaGoToSlide(1)"></span>
-                                    <span class="slider-dot" onclick="spaGoToSlide(2)"></span>
-                                </div>
-                            </div>
-
-                            <!-- RIGHT: Project Info -->
-                            <div class="project-info">
-
-                                <div class="project-tags">
-                                    <span class="tag">AI Powered</span>
-                                    <span class="tag">Full Stack</span>
-                                    <span class="tag">Web App</span>
-                                </div>
-
-                                <div class="project-name-row">
-                                    <i class="fas fa-magnifying-glass proj-icon"></i>
-                                    <h3>StudyLens</h3>
-                                </div>
-
-                                <p class="project-desc">
-                                    An AI-powered resource searching and study platform. Students discover, organize, and
-                                    retain learning materials through intelligent search, spaced repetition algorithms,
-                                    and personalized analytics dashboards.
-                                </p>
-
-                                <div class="tech-label">Tech Stack</div>
-
-                                <div class="card-tech-marquee">
-                                    <div class="card-tech-marquee-track">
-
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
-                                        <div class="tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
-                                        <div class="tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
-                                        <div class="tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
-                                        <div class="tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
-                                        <div class="tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
-                                        <div class="tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
-                                        <div class="tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
-                                        <div class="tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
-
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
-                                        <div class="tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
-                                        <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
-                                        <div class="tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
-                                        <div class="tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
-                                        <div class="tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
-                                        <div class="tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
-                                        <div class="tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
-                                        <div class="tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
-                                        <div class="tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
-
+                                <div class="sl-slide">
+                                    <div class="sl-slide-ph">
+                                        <div class="sl-slide-ph-grid"></div>
+                                        <div class="sl-slide-ph-icon"><i class="fas fa-brain"></i></div>
+                                        <span class="sl-slide-ph-label">slide2.jpg</span>
                                     </div>
+                                    <img src="slide2.jpg" alt="StudyLens screenshot 2" onerror="this.remove()">
                                 </div>
 
-                                <a href="#" target="_blank" class="project-preview-btn">
-                                    Preview Project <i class="fas fa-external-link-alt"></i>
-                                </a>
+                                <div class="sl-slide">
+                                    <div class="sl-slide-ph">
+                                        <div class="sl-slide-ph-grid"></div>
+                                        <div class="sl-slide-ph-icon"><i class="fas fa-chart-bar"></i></div>
+                                        <span class="sl-slide-ph-label">slide3.jpg</span>
+                                    </div>
+                                    <img src="slide3.jpg" alt="StudyLens screenshot 3" onerror="this.remove()">
+                                </div>
 
                             </div>
 
+                            <div class="sl-counter"><span id="slNumSPA">01</span> / 03</div>
+
+                            <button class="sl-arr sl-arr-prev" onclick="spaSlChange(-1)" aria-label="Previous">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="sl-arr sl-arr-next" onclick="spaSlChange(1)" aria-label="Next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+
+                            <div class="sl-dots" id="spaSlDots">
+                                <button class="sl-dot active" onclick="spaSlGo(0)"></button>
+                                <button class="sl-dot" onclick="spaSlGo(1)"></button>
+                                <button class="sl-dot" onclick="spaSlGo(2)"></button>
+                            </div>
                         </div>
-                    </div>
 
+                        <div class="sl-body">
+                            <div class="sl-left">
+                                <div class="sl-watermark">SL</div>
+                                <div class="sl-title-row">
+                                    <h3 class="sl-title">StudyLens</h3>
+                                    <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
+                                </div>
+                                <p class="sl-subtitle">AI-Powered Resource Platform</p>
+                                <p class="sl-desc">
+                                    A full-stack study platform where students discover, organize, and retain learning
+                                    materials through intelligent AI search, spaced repetition algorithms, and
+                                    personalized analytics dashboards.
+                                </p>
+                                <a href="https://study-lens-blue.vercel.app" target="_blank" class="sl-btn">
+                                    Preview Project <i class="fas fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+
+                            <div class="sl-divider"></div>
+
+                            <div class="sl-right">
+                                <div class="sl-tags">
+                                    <span class="sl-tag">AI Powered</span>
+                                    <span class="sl-tag">Full Stack</span>
+                                    <span class="sl-tag">Web App</span>
+                                </div>
+
+                                <p class="sl-stack-label">Tech Stack</p>
+
+                                <div class="sl-tech-marquee">
+                                    <div class="sl-tech-track">
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
+                                        <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
+                                        <div class="sl-tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
+                                        <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
+                                        <div class="sl-tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
+                                        <div class="sl-tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
+                                        <div class="sl-tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
+                                        <div class="sl-tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
+                                        <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
+                                        <!-- duplicate -->
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
+                                        <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
+                                        <div class="sl-tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
+                                        <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
+                                        <div class="sl-tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
+                                        <div class="sl-tech-item"><i class="fas fa-cube" style="color:#f97316"></i> Zustand</div>
+                                        <div class="sl-tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
+                                        <div class="sl-tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
+                                        <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </section>
 
-            <!-- Contact Page -->
+            <!-- Contact -->
             <section id="contact" class="page">
                 <h2 class="page-title">Contact Me</h2>
                 <br><br>
-
                 <form action="#" method="POST">
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Your Message</label>
-                        <textarea id="message" name="message" class="form-control" rows="5" placeholder="Let's work together..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane" style="margin-left: 5px;"></i></button>
+                    <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required></div>
+                    <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required></div>
+                    <div class="form-group"><label for="message">Your Message</label><textarea id="message" name="message" class="form-control" rows="5" placeholder="Let's work together..." required></textarea></div>
+                    <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane" style="margin-left:5px;"></i></button>
                 </form>
             </section>
 
         </div>
 
-        <!-- Footer -->
         <footer class="footer">
             <p>&copy; Samuel Girma 2026. All rights reserved.</p>
             <button id="back-to-top" class="back-to-top" aria-label="Back to top">
@@ -659,29 +671,33 @@
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
     <script>
-        // ── SPA Slider (separate state from projects.html) ──
-        let spaSlide = 0;
-        const SPA_TOTAL = 3;
+        // projects.html slider
+        (function () {
+            let cur = 0;
+            const total = 3;
+            const track = document.getElementById('slTrackSPA');
+            const numEl = document.getElementById('slNumSPA');
+            const dots  = document.querySelectorAll('#spaSlDots .sl-dot');
 
-        function spaChangeSlide(dir) {
-            spaSlide = (spaSlide + dir + SPA_TOTAL) % SPA_TOTAL;
-            spaUpdateSlider();
-        }
+            function update() {
+                if (!track) return;
+                track.style.transform = `translateX(-${cur * 100}%)`;
+                numEl.textContent = String(cur + 1).padStart(2, '0');
+                dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+            }
 
-        function spaGoToSlide(idx) {
-            spaSlide = idx;
-            spaUpdateSlider();
-        }
+            window.spaSlChange = function (dir) {
+                cur = (cur + dir + total) % total;
+                update();
+            };
 
-        function spaUpdateSlider() {
-            const track = document.getElementById('sliderTrackSPA');
-            if (track) track.style.transform = `translateX(-${spaSlide * 100}%)`;
-            document.querySelectorAll('#spaDots .slider-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === spaSlide);
-            });
-        }
+            window.spaSlGo = function (idx) {
+                cur = idx;
+                update();
+            };
 
-        setInterval(() => spaChangeSlide(1), 4000);
+            setInterval(() => spaSlChange(1), 4500);
+        })();
     </script>
 </body>
 
