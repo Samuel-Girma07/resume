@@ -1085,6 +1085,26 @@
         })();
 
         /* ═══════════════════════════════════════════════════════
+           FEATURE: SPA PROJECTS SLIDER 2 (TechShop Ethiopia)
+        ═══════════════════════════════════════════════════════ */
+        (function () {
+            let cur = 0;
+            const total = 3;
+            const track = document.getElementById('slTrackSPA2');
+            const numEl  = document.getElementById('slNumSPA2');
+            const dots   = document.querySelectorAll('#spaSlDots2 .sl-dot');
+            function update() {
+                if (!track) return;
+                track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+                numEl.textContent = String(cur + 1).padStart(2, '0');
+                dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+            }
+            window.spaSlChange2 = function (dir) { cur = (cur + dir + total) % total; update(); };
+            window.spaSlGo2    = function (idx)  { cur = idx; update(); };
+            setInterval(function () { spaSlChange2(1); }, 4500);
+        })();
+
+        /* ═══════════════════════════════════════════════════════
            FEATURE 1: CUSTOM MAGNETIC CURSOR
         ═══════════════════════════════════════════════════════ */
         (function initCursor() {
