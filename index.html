@@ -1232,4 +1232,14 @@
 
             function tick() {
                 cx = lerp(cx, tx, 0.055);
-                cy = lerp(cy, ty
+                cy = lerp(cy, ty, 0.055);
+                img.style.transform =
+                    'translate(' + (cx * 8) + 'px, ' + (cy * 8) + 'px) scale(1.04)';
+                requestAnimationFrame(tick);
+            }
+            tick();
+        })();
+
+    </script>
+</body>
+</html>
