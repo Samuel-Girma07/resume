@@ -24,9 +24,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ════════════════════════════════════════
-           STUDYLENS CARD — EDITORIAL DARK GLASS
-        ════════════════════════════════════════ */
         .showcase-wrapper { padding: 10px 0 60px; }
 
         .sl-card {
@@ -37,21 +34,13 @@
             overflow: hidden;
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.03),
-                0 24px 60px rgba(0,0,0,0.55),
-                0 0 80px rgba(255,215,0,0.03);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 24px 60px rgba(0,0,0,0.55), 0 0 80px rgba(255,215,0,0.03);
             transition: box-shadow 0.4s ease, border-color 0.4s ease;
         }
-
         .sl-card:hover {
             border-color: rgba(255, 215, 0, 0.38);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.04),
-                0 32px 80px rgba(0,0,0,0.65),
-                0 0 120px rgba(255,215,0,0.06);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 32px 80px rgba(0,0,0,0.65), 0 0 120px rgba(255,215,0,0.06);
         }
-
         .sl-card::before {
             content: '';
             position: absolute;
@@ -62,10 +51,8 @@
             z-index: 20;
             pointer-events: none;
         }
-
         .sl-card:hover::before { left: 100%; }
 
-        /* Slider */
         .sl-slider {
             position: relative;
             width: 100%;
@@ -73,26 +60,22 @@
             overflow: hidden;
             border-radius: 18px 18px 0 0;
         }
-
         .sl-track {
             display: flex;
             height: 100%;
             transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
         }
-
         .sl-slide {
             flex: 0 0 100%;
             height: 100%;
             position: relative;
             background: #141414;
         }
-
         .sl-slide img {
             position: absolute; inset: 0;
             width: 100%; height: 100%;
             object-fit: cover;
         }
-
         .sl-slider::after {
             content: '';
             position: absolute;
@@ -102,15 +85,12 @@
             pointer-events: none;
             z-index: 5;
         }
-
         .sl-counter {
             position: absolute;
             top: 18px; right: 18px;
             z-index: 10;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
             color: rgba(255,255,255,0.7);
             background: rgba(0,0,0,0.5);
             border: 1px solid rgba(255,255,255,0.1);
@@ -118,9 +98,7 @@
             border-radius: 30px;
             backdrop-filter: blur(8px);
         }
-
         .sl-counter span { color: var(--accent-color); }
-
         .sl-arr {
             position: absolute;
             top: 50%; transform: translateY(-50%);
@@ -136,16 +114,9 @@
             transition: all 0.22s ease;
             backdrop-filter: blur(6px);
         }
-
-        .sl-arr:hover {
-            background: var(--accent-color);
-            color: #000;
-            border-color: var(--accent-color);
-        }
-
+        .sl-arr:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
         .sl-arr-prev { left: 16px; }
         .sl-arr-next { right: 16px; }
-
         .sl-dots {
             position: absolute;
             bottom: 20px; left: 50%;
@@ -153,207 +124,110 @@
             display: flex; gap: 6px;
             z-index: 10;
         }
-
         .sl-dot {
             height: 3px; width: 20px;
             background: rgba(255,255,255,0.2);
             border-radius: 2px;
-            cursor: pointer;
-            border: none;
+            cursor: pointer; border: none;
             transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
         }
+        .sl-dot.active { background: var(--accent-color); width: 42px; box-shadow: 0 0 8px var(--accent-color); }
 
-        .sl-dot.active {
-            background: var(--accent-color);
-            width: 42px;
-            box-shadow: 0 0 8px var(--accent-color);
-        }
-
-        /* Body */
         .sl-body {
             display: grid;
             grid-template-columns: 1fr 1px 1fr;
             gap: 0;
             padding: 34px 38px 38px;
         }
-
         .sl-divider {
             background: linear-gradient(to bottom, transparent, rgba(255,215,0,0.25) 30%, rgba(255,215,0,0.25) 70%, transparent);
             margin: 0 36px;
         }
-
-        .sl-left {
-            display: flex;
-            flex-direction: column;
-            padding-right: 8px;
-        }
-
+        .sl-left { display: flex; flex-direction: column; padding-right: 8px; }
         .sl-watermark {
             font-family: 'Orbitron', sans-serif;
-            font-size: 5rem;
-            font-weight: 800;
+            font-size: 5rem; font-weight: 800;
             color: rgba(255,215,0,0.04);
-            line-height: 1;
-            margin-bottom: -20px;
-            user-select: none;
-            pointer-events: none;
-            letter-spacing: -2px;
+            line-height: 1; margin-bottom: -20px;
+            user-select: none; pointer-events: none; letter-spacing: -2px;
         }
-
-        .sl-title-row {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 6px;
-        }
-
+        .sl-title-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
         .sl-title {
             font-family: 'Syne', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 2.2rem; font-weight: 800;
             color: var(--text-white);
-            letter-spacing: -1px;
-            line-height: 1;
+            letter-spacing: -1px; line-height: 1;
         }
-
         .sl-live-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            display: inline-flex; align-items: center; gap: 6px;
             background: rgba(34,197,94,0.1);
             border: 1px solid rgba(34,197,94,0.25);
-            border-radius: 30px;
-            padding: 4px 10px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #4ade80;
+            border-radius: 30px; padding: 4px 10px;
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: #4ade80;
         }
-
         .sl-live-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
+            width: 6px; height: 6px; border-radius: 50%;
             background: #4ade80;
             animation: livePulse 1.8s ease-in-out infinite;
         }
-
         @keyframes livePulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.4; transform: scale(0.75); }
         }
-
         .sl-subtitle {
-            font-size: 0.78rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--accent-color);
-            opacity: 0.7;
-            margin-bottom: 14px;
+            font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase;
+            color: var(--accent-color); opacity: 0.7; margin-bottom: 14px;
         }
-
         .sl-desc {
-            font-size: 0.9rem;
-            line-height: 1.8;
-            color: var(--text-grey);
-            margin-bottom: 28px;
-            max-width: 380px;
+            font-size: 0.9rem; line-height: 1.8;
+            color: var(--text-grey); margin-bottom: 28px; max-width: 380px;
         }
-
         .sl-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            background: var(--accent-color);
-            color: #000;
-            padding: 12px 28px;
-            border-radius: 10px;
+            display: inline-flex; align-items: center; gap: 9px;
+            background: var(--accent-color); color: #000;
+            padding: 12px 28px; border-radius: 10px;
             text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            transition: all 0.25s ease;
-            width: fit-content;
-            border: 1px solid transparent;
-            margin-top: 20px;
+            font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px;
+            transition: all 0.25s ease; width: fit-content;
+            border: 1px solid transparent; margin-top: 20px;
         }
-
         .sl-btn:hover {
-            background: transparent;
-            color: var(--accent-color);
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255,215,0,0.2);
+            background: transparent; color: var(--accent-color); border-color: var(--accent-color);
+            transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,215,0,0.2);
         }
-
-        .sl-right {
-            display: flex;
-            flex-direction: column;
-            padding-left: 8px;
-        }
-
-        .sl-tags {
-            display: flex;
-            gap: 7px;
-            flex-wrap: wrap;
-            margin-bottom: 22px;
-        }
-
+        .sl-right { display: flex; flex-direction: column; padding-left: 8px; }
+        .sl-tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 22px; }
         .sl-tag {
-            background: rgba(255,215,0,0.08);
-            color: var(--accent-color);
+            background: rgba(255,215,0,0.08); color: var(--accent-color);
             border: 1px solid rgba(255,215,0,0.18);
-            padding: 4px 13px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            padding: 4px 13px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.5px;
         }
-
         .sl-stack-label {
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: rgba(255,255,255,0.3);
-            margin-bottom: 10px;
-            font-weight: 600;
+            font-size: 0.62rem; text-transform: uppercase; letter-spacing: 3px;
+            color: rgba(255,255,255,0.3); margin-bottom: 10px; font-weight: 600;
         }
-
         .sl-tech-marquee {
-            overflow: hidden;
-            width: 100%;
+            overflow: hidden; width: 100%;
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
             -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
             padding: 4px 0;
         }
-
         .sl-tech-track {
-            display: flex;
-            gap: 8px;
-            width: max-content;
+            display: flex; gap: 8px; width: max-content;
             animation: scroll 20s linear infinite;
         }
-
-        .sl-tech-marquee:hover .sl-tech-track {
-            animation-play-state: paused;
-        }
-
+        .sl-tech-marquee:hover .sl-tech-track { animation-play-state: paused; }
         .sl-tech-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: flex; align-items: center; gap: 6px;
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.07);
-            padding: 5px 11px;
-            border-radius: 8px;
-            font-size: 0.74rem;
-            color: rgba(255,255,255,0.75);
-            white-space: nowrap;
-            flex-shrink: 0;
+            padding: 5px 11px; border-radius: 8px;
+            font-size: 0.74rem; color: rgba(255,255,255,0.75);
+            white-space: nowrap; flex-shrink: 0;
             transition: border-color 0.2s, color 0.2s;
         }
-
         .sl-tech-item:hover { border-color: rgba(255,215,0,0.35); color: #fff; }
         .sl-tech-item img { width: 15px; height: 15px; object-fit: contain; }
         .sl-tech-item i { font-size: 0.88rem; }
@@ -368,305 +242,123 @@
             .sl-title { font-size: 1.7rem; }
         }
 
-        /* ════════════════════════════════
-           WHAT I DO — TILT GLASS CARDS
-        ════════════════════════════════ */
+        /* WHAT I DO — TILT GLASS CARDS */
         .wid-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            padding: 32px 0 20px;
+            gap: 24px; padding: 32px 0 20px;
             perspective: 1000px;
         }
-
         .wid-card {
             position: relative;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 215, 0, 0.14);
-            border-radius: 16px;
-            padding: 32px 28px 28px;
-            overflow: hidden;
-            cursor: default;
+            border-radius: 16px; padding: 32px 28px 28px;
+            overflow: hidden; cursor: default;
             transform-style: preserve-3d;
             transition: border-color 0.35s ease, box-shadow 0.35s ease;
             will-change: transform;
         }
-
         .wid-card:hover {
             border-color: rgba(255, 215, 0, 0.45);
-            box-shadow:
-                0 0 0 1px rgba(255, 215, 0, 0.08),
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                0 0 40px rgba(255, 215, 0, 0.06);
+            box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.08), 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(255, 215, 0, 0.06);
         }
-
-        /* Sweeping border trace */
         .wid-card::before {
             content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            background: conic-gradient(
-                from var(--angle, 0deg),
-                transparent 0deg,
-                rgba(255, 215, 0, 0.6) 60deg,
-                transparent 120deg
-            );
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-            mask: linear-gradient(#000 0 0) content-box,
-                  linear-gradient(#000 0 0);
+            position: absolute; inset: 0; border-radius: 16px;
+            background: conic-gradient(from var(--angle, 0deg), transparent 0deg, rgba(255, 215, 0, 0.6) 60deg, transparent 120deg);
+            opacity: 0; transition: opacity 0.3s ease; z-index: 0;
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
             mask-composite: exclude;
-            -webkit-mask: linear-gradient(#000 0 0) content-box,
-                          linear-gradient(#000 0 0);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
             -webkit-mask-composite: xor;
             padding: 1px;
         }
+        .wid-card:hover::before { opacity: 1; animation: borderTrace 2.5s linear infinite; }
+        @keyframes borderTrace { to { --angle: 360deg; } }
+        @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
 
-        .wid-card:hover::before {
-            opacity: 1;
-            animation: borderTrace 2.5s linear infinite;
-        }
-
-        @keyframes borderTrace {
-            to { --angle: 360deg; }
-        }
-
-        @property --angle {
-            syntax: '<angle>';
-            initial-value: 0deg;
-            inherits: false;
-        }
-
-        /* Mouse-follow shine */
         .wid-shine {
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1;
-            background: radial-gradient(
-                circle 180px at var(--mx, 50%) var(--my, 50%),
-                rgba(255, 215, 0, 0.07) 0%,
-                transparent 70%
-            );
+            position: absolute; inset: 0; border-radius: 16px;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 1;
+            background: radial-gradient(circle 180px at var(--mx, 50%) var(--my, 50%), rgba(255, 215, 0, 0.07) 0%, transparent 70%);
         }
-
-        .wid-card:hover .wid-shine {
-            opacity: 1;
-        }
-
-        /* Top row: number + icon */
-        .wid-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 22px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .wid-num {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            color: rgba(255, 215, 0, 0.35);
-            transition: color 0.3s ease;
-        }
-
-        .wid-card:hover .wid-num {
-            color: rgba(255, 215, 0, 0.7);
-        }
-
+        .wid-card:hover .wid-shine { opacity: 1; }
+        .wid-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; position: relative; z-index: 2; }
+        .wid-num { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; color: rgba(255, 215, 0, 0.35); transition: color 0.3s ease; }
+        .wid-card:hover .wid-num { color: rgba(255, 215, 0, 0.7); }
         .wid-icon-wrap {
-            width: 46px;
-            height: 46px;
-            border-radius: 12px;
-            background: rgba(255, 215, 0, 0.07);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            color: rgba(255, 215, 0, 0.6);
+            width: 46px; height: 46px; border-radius: 12px;
+            background: rgba(255, 215, 0, 0.07); border: 1px solid rgba(255, 215, 0, 0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; color: rgba(255, 215, 0, 0.6);
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         .wid-card:hover .wid-icon-wrap {
-            background: rgba(255, 215, 0, 0.14);
-            border-color: rgba(255, 215, 0, 0.4);
-            color: #FFD700;
-            transform: translateY(-4px) scale(1.08);
+            background: rgba(255, 215, 0, 0.14); border-color: rgba(255, 215, 0, 0.4);
+            color: #FFD700; transform: translateY(-4px) scale(1.08);
             box-shadow: 0 8px 24px rgba(255, 215, 0, 0.2);
         }
-
-        .wid-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-white);
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 2;
-            transition: color 0.3s ease;
-        }
-
-        .wid-desc {
-            font-size: 0.875rem;
-            line-height: 1.75;
-            color: var(--text-grey);
-            position: relative;
-            z-index: 2;
-            transition: color 0.3s ease;
-        }
-
-        .wid-card:hover .wid-desc {
-            color: rgba(200, 200, 200, 0.85);
-        }
-
-        /* Bottom accent bar that expands on hover */
+        .wid-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 600; color: var(--text-white); margin-bottom: 10px; position: relative; z-index: 2; transition: color 0.3s ease; }
+        .wid-desc { font-size: 0.875rem; line-height: 1.75; color: var(--text-grey); position: relative; z-index: 2; transition: color 0.3s ease; }
+        .wid-card:hover .wid-desc { color: rgba(200, 200, 200, 0.85); }
         .wid-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 2px;
-            width: 0%;
+            position: absolute; bottom: 0; left: 0; height: 2px; width: 0%;
             background: linear-gradient(90deg, rgba(255,215,0,0.8), rgba(255,215,0,0.2));
             border-radius: 0 0 16px 16px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 3;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 3;
         }
+        .wid-card:hover .wid-bar { width: 100%; }
+        @media (max-width: 860px) { .wid-grid { grid-template-columns: 1fr; gap: 16px; } }
 
-        .wid-card:hover .wid-bar {
-            width: 100%;
-        }
-
-        @media (max-width: 860px) {
-            .wid-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-        }
-
-        /* ═══════════════════════════════════════
-           FEATURE 1 — CUSTOM MAGNETIC CURSOR
-        ═══════════════════════════════════════ */
+        /* CUSTOM MAGNETIC CURSOR */
         html, body, * { cursor: none !important; }
-
         #cursor-dot {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 6px; height: 6px;
-            background: #FFD700;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99999;
-            opacity: 0;
+            background: #FFD700; border-radius: 50%;
+            pointer-events: none; z-index: 99999; opacity: 0;
             will-change: transform;
             box-shadow: 0 0 8px rgba(255,215,0,0.9), 0 0 18px rgba(255,215,0,0.35);
             transition: opacity 0.2s ease;
         }
-
         #cursor-ring {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 36px; height: 36px;
-            border: 1.5px solid rgba(255,215,0,0.55);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99998;
-            opacity: 0;
+            border: 1.5px solid rgba(255,215,0,0.55); border-radius: 50%;
+            pointer-events: none; z-index: 99998; opacity: 0;
             will-change: transform;
             transition: opacity 0.3s ease, border-color 0.22s ease;
         }
+        @media (pointer: coarse) { html, body, * { cursor: auto !important; } #cursor-dot, #cursor-ring { display: none; } }
 
-        @media (pointer: coarse) {
-            html, body, * { cursor: auto !important; }
-            #cursor-dot, #cursor-ring { display: none; }
-        }
-
-        /* ═══════════════════════════════════════
-           FEATURE 3 — TYPEWRITER SUBTITLE
-        ═══════════════════════════════════════ */
-
-        /* Tighten badge gap so typewriter sits snugly beneath it */
-        .sidebar .badge {
-            margin-bottom: 6px !important;
-        }
-
+        /* TYPEWRITER SUBTITLE */
+        .sidebar .badge { margin-bottom: 6px !important; }
         #typewriter-subtitle {
             font-family: 'Syne', sans-serif;
-            font-size: 0.75rem;
-            color: rgba(255,215,0,0.6);
-            letter-spacing: 2.5px;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 22px;
-            min-height: 1.4em;
+            font-size: 0.75rem; color: rgba(255,215,0,0.6);
+            letter-spacing: 2.5px; text-align: center;
+            margin-top: 0; margin-bottom: 22px; min-height: 1.4em;
             text-transform: uppercase;
         }
+        #typewriter-subtitle::after { content: '|'; color: var(--accent-color); animation: twBlink 0.85s step-end infinite; font-weight: 200; margin-left: 1px; }
+        @keyframes twBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        #typewriter-subtitle::after {
-            content: '|';
-            color: var(--accent-color);
-            animation: twBlink 0.85s step-end infinite;
-            font-weight: 200;
-            margin-left: 1px;
-        }
-
-        @keyframes twBlink {
-            0%, 100% { opacity: 1; }
-            50%       { opacity: 0; }
-        }
-
-        /* ═══════════════════════════════════════
-           FEATURE 4 — TIMELINE STAGGER + LINE DRAW
-        ═══════════════════════════════════════ */
-        #resume .timeline {
-            position: relative;
-        }
-
+        /* TIMELINE STAGGER + LINE DRAW */
+        #resume .timeline { position: relative; }
         #resume .timeline::after {
-            content: '';
-            position: absolute;
-            left: -2px;
-            top: 0;
-            width: 2px;
-            height: 0;
+            content: ''; position: absolute; left: -2px; top: 0;
+            width: 2px; height: 0;
             background: linear-gradient(to bottom, #FFD700 0%, rgba(255,215,0,0.2) 100%);
             box-shadow: 0 0 10px rgba(255,215,0,0.5);
-            transition: height 1.6s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 1;
+            transition: height 1.6s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1;
         }
+        #resume .timeline.tl-active::after { height: 100%; }
+        .timeline-item { transform: translateX(-32px); transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1), transform 0.65s cubic-bezier(0.4, 0, 0.2, 1); }
+        .timeline-item.revealed, .timeline-item.tl-revealed { opacity: 1; transform: translateX(0); }
 
-        #resume .timeline.tl-active::after {
-            height: 100%;
-        }
-
-        /* Override: slide from left instead of slide up */
-        .timeline-item {
-            transform: translateX(-32px);
-            transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .timeline-item.revealed,
-        .timeline-item.tl-revealed {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        /* ═══════════════════════════════════════
-           FEATURE 5 — PARALLAX PROFILE DEPTH
-        ═══════════════════════════════════════ */
-        .profile-img {
-            transition: box-shadow 0.3s ease;
-            will-change: transform;
-        }
+        /* PARALLAX PROFILE DEPTH */
+        .profile-img { transition: box-shadow 0.3s ease; will-change: transform; }
     </style>
 </head>
 
@@ -724,7 +416,7 @@
 
         <div id="page-container">
 
-            <!-- About -->
+            <!-- ══ ABOUT ══ -->
             <section id="about" class="page active">
                 <h2 class="page-title">About Me</h2>
                 <br>
@@ -737,36 +429,21 @@
                 <div class="wid-grid">
                     <div class="wid-card" data-index="01">
                         <div class="wid-shine"></div>
-                        <div class="wid-top">
-                            <span class="wid-num">01</span>
-                            <div class="wid-icon-wrap">
-                                <i class="fas fa-code"></i>
-                            </div>
-                        </div>
+                        <div class="wid-top"><span class="wid-num">01</span><div class="wid-icon-wrap"><i class="fas fa-code"></i></div></div>
                         <h3 class="wid-title">Web Development</h3>
                         <p class="wid-desc">Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user experiences.</p>
                         <div class="wid-bar"></div>
                     </div>
                     <div class="wid-card" data-index="02">
                         <div class="wid-shine"></div>
-                        <div class="wid-top">
-                            <span class="wid-num">02</span>
-                            <div class="wid-icon-wrap">
-                                <i class="fas fa-database"></i>
-                            </div>
-                        </div>
+                        <div class="wid-top"><span class="wid-num">02</span><div class="wid-icon-wrap"><i class="fas fa-database"></i></div></div>
                         <h3 class="wid-title">Data Analysis</h3>
                         <p class="wid-desc">Data scraping & cleaning using Python & Octoparse to turn raw data into actionable insights.</p>
                         <div class="wid-bar"></div>
                     </div>
                     <div class="wid-card" data-index="03">
                         <div class="wid-shine"></div>
-                        <div class="wid-top">
-                            <span class="wid-num">03</span>
-                            <div class="wid-icon-wrap">
-                                <i class="fas fa-paint-brush"></i>
-                            </div>
-                        </div>
+                        <div class="wid-top"><span class="wid-num">03</span><div class="wid-icon-wrap"><i class="fas fa-paint-brush"></i></div></div>
                         <h3 class="wid-title">Graphic Design</h3>
                         <p class="wid-desc">Visual identities & branding using Figma & Adobe Suite to communicate efficient visual stories.</p>
                         <div class="wid-bar"></div>
@@ -774,7 +451,7 @@
                 </div>
             </section>
 
-            <!-- Resume -->
+            <!-- ══ RESUME ══ -->
             <section id="resume" class="page">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                     <h2 class="page-title">Resume</h2>
@@ -828,47 +505,29 @@
                 </div>
             </section>
 
-            <!-- Projects -->
+            <!-- ══ PROJECTS ══ -->
             <section id="projects" class="page">
                 <h2 class="page-title">Portfolio</h2>
                 <br><br>
 
+                <!-- PROJECT 1: StudyLens -->
                 <div class="showcase-wrapper">
                     <div class="sl-card">
-
                         <div class="sl-slider">
                             <div class="sl-track" id="slTrackSPA">
-
-                                <div class="sl-slide">
-                                    <img src="slide1.jpg" alt="StudyLens screenshot 1">
-                                </div>
-
-                                <div class="sl-slide">
-                                    <img src="slide2.jpg" alt="StudyLens screenshot 2">
-                                </div>
-
-                                <div class="sl-slide">
-                                    <img src="slide3.jpg" alt="StudyLens screenshot 3">
-                                </div>
-
+                                <div class="sl-slide"><img src="slide1.jpg" alt="StudyLens screenshot 1"></div>
+                                <div class="sl-slide"><img src="slide2.jpg" alt="StudyLens screenshot 2"></div>
+                                <div class="sl-slide"><img src="slide3.jpg" alt="StudyLens screenshot 3"></div>
                             </div>
-
                             <div class="sl-counter"><span id="slNumSPA">01</span> / 03</div>
-
-                            <button class="sl-arr sl-arr-prev" onclick="spaSlChange(-1)" aria-label="Previous">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <button class="sl-arr sl-arr-next" onclick="spaSlChange(1)" aria-label="Next">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-
+                            <button class="sl-arr sl-arr-prev" onclick="spaSlChange(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                            <button class="sl-arr sl-arr-next" onclick="spaSlChange(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
                             <div class="sl-dots" id="spaSlDots">
                                 <button class="sl-dot active" onclick="spaSlGo(0)"></button>
                                 <button class="sl-dot" onclick="spaSlGo(1)"></button>
                                 <button class="sl-dot" onclick="spaSlGo(2)"></button>
                             </div>
                         </div>
-
                         <div class="sl-body">
                             <div class="sl-left">
                                 <div class="sl-watermark">SL</div>
@@ -877,14 +536,8 @@
                                     <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
                                 </div>
                                 <p class="sl-subtitle">AI-Powered Resource Platform</p>
-                                <p class="sl-desc">
-                                    A full-stack study platform where students discover, organize, and retain learning
-                                    materials through intelligent AI search, spaced repetition algorithms, and
-                                    personalized analytics dashboards.
-                                </p>
-
+                                <p class="sl-desc">A full-stack study platform where students discover, organize, and retain learning materials through intelligent AI search, spaced repetition algorithms, and personalized analytics dashboards.</p>
                                 <p class="sl-stack-label">Tech Stack</p>
-
                                 <div class="sl-tech-marquee">
                                     <div class="sl-tech-track">
                                         <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
@@ -917,14 +570,9 @@
                                         <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
                                     </div>
                                 </div>
-
-                                <a href="https://study-lens-blue.vercel.app" target="_blank" class="sl-btn">
-                                    Preview Project <i class="fas fa-arrow-up-right-from-square"></i>
-                                </a>
+                                <a href="https://study-lens-blue.vercel.app" target="_blank" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
                             </div>
-
                             <div class="sl-divider"></div>
-
                             <div class="sl-right">
                                 <div class="sl-tags">
                                     <span class="sl-tag">AI Powered</span>
@@ -933,12 +581,80 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
+
+                <!-- PROJECT 2: TechShop Ethiopia -->
+                <div class="showcase-wrapper">
+                    <div class="sl-card">
+                        <div class="sl-slider">
+                            <div class="sl-track" id="slTrackSPA2">
+                                <div class="sl-slide"><img src="ts-slide1.jpg" alt="TechShop Ethiopia screenshot 1"></div>
+                                <div class="sl-slide"><img src="ts-slide2.jpg" alt="TechShop Ethiopia screenshot 2"></div>
+                                <div class="sl-slide"><img src="ts-slide3.jpg" alt="TechShop Ethiopia screenshot 3"></div>
+                            </div>
+                            <div class="sl-counter"><span id="slNumSPA2">01</span> / 03</div>
+                            <button class="sl-arr sl-arr-prev" onclick="spaSlChange2(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                            <button class="sl-arr sl-arr-next" onclick="spaSlChange2(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+                            <div class="sl-dots" id="spaSlDots2">
+                                <button class="sl-dot active" onclick="spaSlGo2(0)"></button>
+                                <button class="sl-dot" onclick="spaSlGo2(1)"></button>
+                                <button class="sl-dot" onclick="spaSlGo2(2)"></button>
+                            </div>
+                        </div>
+                        <div class="sl-body">
+                            <div class="sl-left">
+                                <div class="sl-watermark">TE</div>
+                                <div class="sl-title-row">
+                                    <h3 class="sl-title">TechShop Ethiopia</h3>
+                                    <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
+                                </div>
+                                <p class="sl-subtitle">E-Commerce Platform</p>
+                                <p class="sl-desc">A full-featured Ethiopian tech e-commerce platform with dynamic product listings, shopping cart, user authentication, order management, and an admin dashboard — all built with native PHP and a fully custom MySQL backend.</p>
+                                <p class="sl-stack-label">Tech Stack</p>
+                                <div class="sl-tech-marquee">
+                                    <div class="sl-tech-track">
+                                        <div class="sl-tech-item"><i class="fab fa-php" style="color:#8892BF"></i> PHP 7.4+</div>
+                                        <div class="sl-tech-item"><i class="fas fa-database" style="color:#4479A1"></i> MySQL / MySQLi</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap 4.6</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery"> jQuery 3.7</div>
+                                        <div class="sl-tech-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+                                        <div class="sl-tech-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+                                        <div class="sl-tech-item"><i class="fab fa-font-awesome" style="color:#528DD7"></i> Font Awesome 5</div>
+                                        <div class="sl-tech-item"><i class="fas fa-sliders-h" style="color:#FFD700"></i> Slick Carousel</div>
+                                        <div class="sl-tech-item"><i class="fab fa-google" style="color:#4285F4"></i> Google Fonts</div>
+                                        <div class="sl-tech-item"><i class="fas fa-lock" style="color:#34d399"></i> Native Sessions</div>
+                                        <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#f97316"></i> Prepared Stmts</div>
+                                        <div class="sl-tech-item"><i class="fab fa-php" style="color:#8892BF"></i> PHP 7.4+</div>
+                                        <div class="sl-tech-item"><i class="fas fa-database" style="color:#4479A1"></i> MySQL / MySQLi</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap 4.6</div>
+                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery"> jQuery 3.7</div>
+                                        <div class="sl-tech-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+                                        <div class="sl-tech-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+                                        <div class="sl-tech-item"><i class="fab fa-font-awesome" style="color:#528DD7"></i> Font Awesome 5</div>
+                                        <div class="sl-tech-item"><i class="fas fa-sliders-h" style="color:#FFD700"></i> Slick Carousel</div>
+                                        <div class="sl-tech-item"><i class="fab fa-google" style="color:#4285F4"></i> Google Fonts</div>
+                                        <div class="sl-tech-item"><i class="fas fa-lock" style="color:#34d399"></i> Native Sessions</div>
+                                        <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#f97316"></i> Prepared Stmts</div>
+                                    </div>
+                                </div>
+                                <a href="https://techshopethiopia.gt.tc" target="_blank" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
+                            </div>
+                            <div class="sl-divider"></div>
+                            <div class="sl-right">
+                                <div class="sl-tags">
+                                    <span class="sl-tag">E-Commerce</span>
+                                    <span class="sl-tag">Full Stack</span>
+                                    <span class="sl-tag">Web App</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </section>
 
-            <!-- Contact -->
+            <!-- ══ CONTACT ══ -->
             <section id="contact" class="page">
                 <h2 class="page-title">Contact Me</h2>
                 <br><br>
@@ -960,13 +676,12 @@
         </footer>
     </main>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="script.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
     <script>
-        /* ═══════════════════════════════════════════════════════
-           EXISTING: TILT + SHINE  (about page cards)
-        ═══════════════════════════════════════════════════════ */
+        /* TILT + SHINE */
         (function () {
             const cards = document.querySelectorAll('.wid-card');
             const MAX_TILT = 10;
@@ -974,33 +689,23 @@
                 const shine = card.querySelector('.wid-shine');
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
+                    const x = e.clientX - rect.left, y = e.clientY - rect.top;
                     const cx = rect.width / 2, cy = rect.height / 2;
-                    const rx = ((y - cy) / cy) * -MAX_TILT;
-                    const ry = ((x - cx) / cx) * MAX_TILT;
+                    const rx = ((y - cy) / cy) * -MAX_TILT, ry = ((x - cx) / cx) * MAX_TILT;
                     card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
-                    if (shine) {
-                        shine.style.setProperty('--mx', x + 'px');
-                        shine.style.setProperty('--my', y + 'px');
-                    }
+                    if (shine) { shine.style.setProperty('--mx', x + 'px'); shine.style.setProperty('--my', y + 'px'); }
                 });
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
                     card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.35s ease, box-shadow 0.35s ease';
                 });
-                card.addEventListener('mouseenter', () => {
-                    card.style.transition = 'transform 0.1s ease, border-color 0.35s ease, box-shadow 0.35s ease';
-                });
+                card.addEventListener('mouseenter', () => { card.style.transition = 'transform 0.1s ease, border-color 0.35s ease, box-shadow 0.35s ease'; });
             });
         })();
 
-        /* ═══════════════════════════════════════════════════════
-           EXISTING: SPA PROJECTS SLIDER
-        ═══════════════════════════════════════════════════════ */
+        /* SLIDER 1 — StudyLens */
         (function () {
-            let cur = 0;
-            const total = 3;
+            let cur = 0; const total = 3;
             const track = document.getElementById('slTrackSPA');
             const numEl  = document.getElementById('slNumSPA');
             const dots   = document.querySelectorAll('#spaSlDots .sl-dot');
@@ -1015,104 +720,69 @@
             setInterval(function () { spaSlChange(1); }, 4500);
         })();
 
-        /* ═══════════════════════════════════════════════════════
-           FEATURE 1: CUSTOM MAGNETIC CURSOR
-        ═══════════════════════════════════════════════════════ */
+        /* SLIDER 2 — TechShop Ethiopia */
+        (function () {
+            let cur = 0; const total = 3;
+            const track = document.getElementById('slTrackSPA2');
+            const numEl  = document.getElementById('slNumSPA2');
+            const dots   = document.querySelectorAll('#spaSlDots2 .sl-dot');
+            function update() {
+                if (!track) return;
+                track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+                numEl.textContent = String(cur + 1).padStart(2, '0');
+                dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+            }
+            window.spaSlChange2 = function (dir) { cur = (cur + dir + total) % total; update(); };
+            window.spaSlGo2     = function (idx)  { cur = idx; update(); };
+            setInterval(function () { spaSlChange2(1); }, 4500);
+        })();
+
+        /* MAGNETIC CURSOR */
         (function initCursor() {
             if (window.matchMedia('(pointer: coarse)').matches) return;
-            const dot  = document.getElementById('cursor-dot');
-            const ring = document.getElementById('cursor-ring');
+            const dot = document.getElementById('cursor-dot'), ring = document.getElementById('cursor-ring');
             if (!dot || !ring) return;
-
             var mx = window.innerWidth / 2, my = window.innerHeight / 2;
-            var rx = mx, ry = my;
-            var prx = mx, pry = my;
+            var rx = mx, ry = my, prx = mx, pry = my;
             var ringScale = 1, targetScale = 1;
             var isVisible = false, isHovering = false, prevHovering = false;
-
             var hoverSel = 'a, button, input, textarea, label, .wid-card, .back-to-top, .sl-arr';
-
-            function show() {
-                isVisible = true;
-                dot.style.opacity  = '1';
-                ring.style.opacity = '1';
-            }
-
-            function hide() {
-                dot.style.opacity  = '0';
-                ring.style.opacity = '0';
-            }
-
-            document.addEventListener('mousemove', function(e) {
-                mx = e.clientX; my = e.clientY;
-                if (!isVisible) {
-                    rx = mx; ry = my; prx = mx; pry = my;
-                    show();
-                }
-            });
-
-            /* Show cursor when mouse enters window from outside */
-            document.addEventListener('mouseenter', function(e) {
-                mx = e.clientX; my = e.clientY;
-                rx = mx; ry = my; prx = mx; pry = my;
-                show();
-            });
-
-            document.addEventListener('mouseover', function(e) {
-                if (e.target.closest && e.target.closest(hoverSel)) {
-                    isHovering = true; targetScale = 1.65;
-                }
-            });
-            document.addEventListener('mouseout', function(e) {
-                if (e.target.closest && e.target.closest(hoverSel)) {
-                    isHovering = false; targetScale = 1;
-                }
-            });
+            function show() { isVisible = true; dot.style.opacity = '1'; ring.style.opacity = '1'; }
+            function hide() { dot.style.opacity = '0'; ring.style.opacity = '0'; }
+            document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; if (!isVisible) { rx = mx; ry = my; prx = mx; pry = my; show(); } });
+            document.addEventListener('mouseenter', function(e) { mx = e.clientX; my = e.clientY; rx = mx; ry = my; prx = mx; pry = my; show(); });
+            document.addEventListener('mouseover', function(e) { if (e.target.closest && e.target.closest(hoverSel)) { isHovering = true; targetScale = 1.65; } });
+            document.addEventListener('mouseout', function(e) { if (e.target.closest && e.target.closest(hoverSel)) { isHovering = false; targetScale = 1; } });
             document.addEventListener('mouseleave', function() { hide(); });
-
             function lerp(a, b, t) { return a + (b - a) * t; }
-
             function tick() {
-                prx = rx; pry = ry;
-                rx = lerp(rx, mx, 0.13);
-                ry = lerp(ry, my, 0.13);
+                prx = rx; pry = ry; rx = lerp(rx, mx, 0.13); ry = lerp(ry, my, 0.13);
                 ringScale = lerp(ringScale, targetScale, 0.12);
-
                 var dvx = rx - prx, dvy = ry - pry;
                 var spd = Math.sqrt(dvx * dvx + dvy * dvy);
                 var ang = Math.atan2(dvy, dvx) * 180 / Math.PI;
                 var str = Math.min(spd * 0.07, 0.38);
-                var sx  = (1 + str) * ringScale;
-                var sy  = Math.max((1 - str * 0.45) * ringScale, 0.3);
-
-                dot.style.transform  = 'translate(' + (mx - 3)  + 'px, ' + (my - 3)  + 'px)';
+                var sx = (1 + str) * ringScale, sy = Math.max((1 - str * 0.45) * ringScale, 0.3);
+                dot.style.transform = 'translate(' + (mx - 3) + 'px, ' + (my - 3) + 'px)';
                 ring.style.transform = 'translate(' + (rx - 18) + 'px, ' + (ry - 18) + 'px) rotate(' + ang + 'deg) scale(' + sx + ',' + sy + ')';
-
                 if (isHovering !== prevHovering) {
-                    /* Dot hides on hover, reappears on unhover */
-                    dot.style.opacity      = isHovering ? '0' : (isVisible ? '1' : '0');
+                    dot.style.opacity = isHovering ? '0' : (isVisible ? '1' : '0');
                     ring.style.borderColor = isHovering ? 'rgba(255,215,0,0.95)' : 'rgba(255,215,0,0.55)';
                     prevHovering = isHovering;
                 }
-
                 requestAnimationFrame(tick);
             }
             tick();
         })();
 
-        /* ═══════════════════════════════════════════════════════
-           FEATURE 2: TEXT SCRAMBLE ON PAGE TITLES
-        ═══════════════════════════════════════════════════════ */
+        /* TEXT SCRAMBLE */
         (function initScramble() {
             var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%';
-
             function scramble(el) {
                 if (!el || el._scrambling) return;
                 var original = el.dataset.original || el.textContent.trim();
-                el.dataset.original = original;
-                el._scrambling = true;
-                var frame = 0;
-                var totalFrames = original.length * 3;
+                el.dataset.original = original; el._scrambling = true;
+                var frame = 0, totalFrames = original.length * 3;
                 clearInterval(el._scrambleTimer);
                 el._scrambleTimer = setInterval(function() {
                     el.textContent = original.split('').map(function(ch, i) {
@@ -1121,125 +791,56 @@
                         return CHARS[Math.floor(Math.random() * CHARS.length)];
                     }).join('');
                     frame++;
-                    if (frame > totalFrames) {
-                        clearInterval(el._scrambleTimer);
-                        el.textContent = original;
-                        el._scrambling = false;
-                    }
+                    if (frame > totalFrames) { clearInterval(el._scrambleTimer); el.textContent = original; el._scrambling = false; }
                 }, 32);
             }
-
             document.querySelectorAll('.page').forEach(function(page) {
-                new MutationObserver(function() {
-                    if (page.classList.contains('active')) {
-                        var title = page.querySelector('.page-title');
-                        if (title) scramble(title);
-                    }
-                }).observe(page, { attributes: true, attributeFilter: ['class'] });
+                new MutationObserver(function() { if (page.classList.contains('active')) { var t = page.querySelector('.page-title'); if (t) scramble(t); } }).observe(page, { attributes: true, attributeFilter: ['class'] });
             });
-
-            // Fire on initial page after loading screen
             var initialPage = document.querySelector('.page.active');
-            if (initialPage) {
-                setTimeout(function() {
-                    var t = initialPage.querySelector('.page-title');
-                    if (t) scramble(t);
-                }, 950);
-            }
+            if (initialPage) { setTimeout(function() { var t = initialPage.querySelector('.page-title'); if (t) scramble(t); }, 950); }
         })();
 
-        /* ═══════════════════════════════════════════════════════
-           FEATURE 3: TYPEWRITER SIDEBAR SUBTITLE
-        ═══════════════════════════════════════════════════════ */
+        /* TYPEWRITER */
         (function initTypewriter() {
             var el = document.getElementById('typewriter-subtitle');
             if (!el) return;
             var roles = ['Web Developer', 'Data Analyst', 'Graphic Designer'];
             var rIdx = 0, cIdx = 0, deleting = false;
-
             function tick() {
                 var word = roles[rIdx];
-                if (!deleting) {
-                    cIdx++;
-                    el.textContent = word.slice(0, cIdx);
-                    if (cIdx === word.length) {
-                        return setTimeout(function() { deleting = true; tick(); }, 1800);
-                    }
-                } else {
-                    cIdx--;
-                    el.textContent = word.slice(0, cIdx);
-                    if (cIdx === 0) {
-                        deleting = false;
-                        rIdx = (rIdx + 1) % roles.length;
-                        return setTimeout(tick, 320);
-                    }
-                }
+                if (!deleting) { cIdx++; el.textContent = word.slice(0, cIdx); if (cIdx === word.length) return setTimeout(function() { deleting = true; tick(); }, 1800); }
+                else { cIdx--; el.textContent = word.slice(0, cIdx); if (cIdx === 0) { deleting = false; rIdx = (rIdx + 1) % roles.length; return setTimeout(tick, 320); } }
                 setTimeout(tick, deleting ? 42 : 88);
             }
             setTimeout(tick, 1400);
         })();
 
-        /* ═══════════════════════════════════════════════════════
-           FEATURE 4: TIMELINE STAGGER + LINE DRAW
-        ═══════════════════════════════════════════════════════ */
+        /* TIMELINE STAGGER */
         (function initTimeline() {
             var resumePage = document.getElementById('resume');
             if (!resumePage) return;
             var activated = false;
-
             function activate() {
-                if (activated) return;
-                activated = true;
-
-                // Draw the gold line on each timeline after display settles
-                resumePage.querySelectorAll('.timeline').forEach(function(tl) {
-                    setTimeout(function() { tl.classList.add('tl-active'); }, 80);
-                });
-
-                // Stagger items left-to-right reveal
-                resumePage.querySelectorAll('.timeline-item').forEach(function(item, i) {
-                    setTimeout(function() {
-                        item.classList.add('tl-revealed');
-                    }, 180 + i * 145);
-                });
+                if (activated) return; activated = true;
+                resumePage.querySelectorAll('.timeline').forEach(function(tl) { setTimeout(function() { tl.classList.add('tl-active'); }, 80); });
+                resumePage.querySelectorAll('.timeline-item').forEach(function(item, i) { setTimeout(function() { item.classList.add('tl-revealed'); }, 180 + i * 145); });
             }
-
-            new MutationObserver(function() {
-                if (resumePage.classList.contains('active')) activate();
-            }).observe(resumePage, { attributes: true, attributeFilter: ['class'] });
-
-            if (resumePage.classList.contains('active')) {
-                setTimeout(activate, 200);
-            }
+            new MutationObserver(function() { if (resumePage.classList.contains('active')) activate(); }).observe(resumePage, { attributes: true, attributeFilter: ['class'] });
+            if (resumePage.classList.contains('active')) setTimeout(activate, 200);
         })();
 
-        /* ═══════════════════════════════════════════════════════
-           FEATURE 5: PARALLAX DEPTH ON SIDEBAR PROFILE
-        ═══════════════════════════════════════════════════════ */
+        /* PARALLAX PROFILE */
         (function initParallax() {
             if (window.matchMedia('(pointer: coarse)').matches) return;
             var img = document.querySelector('.profile-img');
             if (!img) return;
-
             var tx = 0, ty = 0, cx = 0, cy = 0;
-
-            document.addEventListener('mousemove', function(e) {
-                tx = (e.clientX / window.innerWidth  - 0.5) * 2;
-                ty = (e.clientY / window.innerHeight - 0.5) * 2;
-            });
-
+            document.addEventListener('mousemove', function(e) { tx = (e.clientX / window.innerWidth - 0.5) * 2; ty = (e.clientY / window.innerHeight - 0.5) * 2; });
             function lerp(a, b, t) { return a + (b - a) * t; }
-
-            function tick() {
-                cx = lerp(cx, tx, 0.055);
-                cy = lerp(cy, ty, 0.055);
-                img.style.transform =
-                    'translate(' + (cx * 8) + 'px, ' + (cy * 8) + 'px) scale(1.04)';
-                requestAnimationFrame(tick);
-            }
+            function tick() { cx = lerp(cx, tx, 0.055); cy = lerp(cy, ty, 0.055); img.style.transform = 'translate(' + (cx * 8) + 'px, ' + (cy * 8) + 'px) scale(1.04)'; requestAnimationFrame(tick); }
             tick();
         })();
-
     </script>
 </body>
 </html>

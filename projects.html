@@ -11,9 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ════════════════════════════════════════
-           STUDYLENS CARD — EDITORIAL DARK GLASS
-        ════════════════════════════════════════ */
         .showcase-wrapper { padding: 10px 0 60px; }
 
         .sl-card {
@@ -24,21 +21,13 @@
             overflow: hidden;
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.03),
-                0 24px 60px rgba(0,0,0,0.55),
-                0 0 80px rgba(255,215,0,0.03);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 24px 60px rgba(0,0,0,0.55), 0 0 80px rgba(255,215,0,0.03);
             transition: box-shadow 0.4s ease, border-color 0.4s ease;
         }
-
         .sl-card:hover {
             border-color: rgba(255, 215, 0, 0.38);
-            box-shadow:
-                0 0 0 1px rgba(255,255,255,0.04),
-                0 32px 80px rgba(0,0,0,0.65),
-                0 0 120px rgba(255,215,0,0.06);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 32px 80px rgba(0,0,0,0.65), 0 0 120px rgba(255,215,0,0.06);
         }
-
         .sl-card::before {
             content: '';
             position: absolute;
@@ -46,312 +35,83 @@
             width: 100%; height: 2px;
             background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
             transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 20;
-            pointer-events: none;
+            z-index: 20; pointer-events: none;
         }
-
         .sl-card:hover::before { left: 100%; }
 
         .sl-slider {
-            position: relative;
-            width: 100%;
-            height: 340px;
-            overflow: hidden;
-            border-radius: 18px 18px 0 0;
+            position: relative; width: 100%; height: 340px;
+            overflow: hidden; border-radius: 18px 18px 0 0;
         }
-
-        .sl-track {
-            display: flex;
-            height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .sl-slide {
-            flex: 0 0 100%;
-            height: 100%;
-            position: relative;
-            background: #141414;
-        }
-
-        .sl-slide img {
-            position: absolute;
-            inset: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-        }
-
+        .sl-track { display: flex; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .sl-slide { flex: 0 0 100%; height: 100%; position: relative; background: #141414; }
+        .sl-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
         .sl-slider::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 120px;
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
             background: linear-gradient(to top, rgba(18,18,18,0.95) 0%, transparent 100%);
-            pointer-events: none;
-            z-index: 5;
+            pointer-events: none; z-index: 5;
         }
-
         .sl-counter {
-            position: absolute;
-            top: 18px; right: 18px;
-            z-index: 10;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: rgba(255,255,255,0.7);
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 5px 11px;
-            border-radius: 30px;
-            backdrop-filter: blur(8px);
+            position: absolute; top: 18px; right: 18px; z-index: 10;
+            font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+            color: rgba(255,255,255,0.7); background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1); padding: 5px 11px;
+            border-radius: 30px; backdrop-filter: blur(8px);
         }
-
         .sl-counter span { color: var(--accent-color); }
-
         .sl-arr {
-            position: absolute;
-            top: 50%; transform: translateY(-50%);
-            z-index: 10;
-            background: rgba(10,10,10,0.7);
-            border: 1px solid rgba(255,215,0,0.25);
-            color: var(--accent-color);
-            width: 36px; height: 56px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            transition: all 0.22s ease;
-            backdrop-filter: blur(6px);
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+            background: rgba(10,10,10,0.7); border: 1px solid rgba(255,215,0,0.25);
+            color: var(--accent-color); width: 36px; height: 56px; border-radius: 8px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; transition: all 0.22s ease; backdrop-filter: blur(6px);
         }
-
-        .sl-arr:hover {
-            background: var(--accent-color);
-            color: #000;
-            border-color: var(--accent-color);
-        }
-
+        .sl-arr:hover { background: var(--accent-color); color: #000; border-color: var(--accent-color); }
         .sl-arr-prev { left: 16px; }
         .sl-arr-next { right: 16px; }
+        .sl-dots { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; }
+        .sl-dot { height: 3px; width: 20px; background: rgba(255,255,255,0.2); border-radius: 2px; cursor: pointer; border: none; transition: all 0.35s cubic-bezier(0.4,0,0.2,1); }
+        .sl-dot.active { background: var(--accent-color); width: 42px; box-shadow: 0 0 8px var(--accent-color); }
 
-        .sl-dots {
-            position: absolute;
-            bottom: 20px; left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 6px;
-            z-index: 10;
-        }
-
-        .sl-dot {
-            height: 3px;
-            width: 20px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-        }
-
-        .sl-dot.active {
-            background: var(--accent-color);
-            width: 42px;
-            box-shadow: 0 0 8px var(--accent-color);
-        }
-
-        .sl-body {
-            display: grid;
-            grid-template-columns: 1fr 1px 1fr;
-            gap: 0;
-            padding: 34px 38px 38px;
-        }
-
-        .sl-divider {
-            background: linear-gradient(to bottom, transparent, rgba(255,215,0,0.25) 30%, rgba(255,215,0,0.25) 70%, transparent);
-            margin: 0 36px;
-        }
-
-        .sl-left {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            padding-right: 8px;
-        }
-
+        .sl-body { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0; padding: 34px 38px 38px; }
+        .sl-divider { background: linear-gradient(to bottom, transparent, rgba(255,215,0,0.25) 30%, rgba(255,215,0,0.25) 70%, transparent); margin: 0 36px; }
+        .sl-left { display: flex; flex-direction: column; gap: 0; padding-right: 8px; }
         .sl-watermark {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 5rem;
-            font-weight: 800;
-            color: rgba(255,215,0,0.04);
-            line-height: 1;
-            margin-bottom: -20px;
-            user-select: none;
-            pointer-events: none;
-            letter-spacing: -2px;
+            font-family: 'Orbitron', sans-serif; font-size: 5rem; font-weight: 800;
+            color: rgba(255,215,0,0.04); line-height: 1; margin-bottom: -20px;
+            user-select: none; pointer-events: none; letter-spacing: -2px;
         }
-
-        .sl-title-row {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 6px;
-        }
-
-        /* EXCEPTION: .sl-title keeps Syne */
-        .sl-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--text-white);
-            letter-spacing: -1px;
-            line-height: 1;
-        }
-
+        .sl-title-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+        .sl-title { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--text-white); letter-spacing: -1px; line-height: 1; }
         .sl-live-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.25);
-            border-radius: 30px;
-            padding: 4px 10px;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #4ade80;
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25);
+            border-radius: 30px; padding: 4px 10px;
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: #4ade80;
         }
-
-        .sl-live-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: #4ade80;
-            animation: livePulse 1.8s ease-in-out infinite;
-        }
-
-        @keyframes livePulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.75); }
-        }
-
-        .sl-subtitle {
-            font-size: 0.78rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--accent-color);
-            opacity: 0.7;
-            margin-bottom: 14px;
-        }
-
-        .sl-desc {
-            font-size: 0.9rem;
-            line-height: 1.8;
-            color: var(--text-grey);
-            margin-bottom: 28px;
-            max-width: 380px;
-        }
-
+        .sl-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: livePulse 1.8s ease-in-out infinite; }
+        @keyframes livePulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.75); } }
+        .sl-subtitle { font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-color); opacity: 0.7; margin-bottom: 14px; }
+        .sl-desc { font-size: 0.9rem; line-height: 1.8; color: var(--text-grey); margin-bottom: 28px; max-width: 380px; }
         .sl-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            background: var(--accent-color);
-            color: #000;
-            padding: 12px 28px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.72rem;
-            letter-spacing: 0.5px;
-            transition: all 0.25s ease;
-            width: fit-content;
-            border: 1px solid transparent;
-            margin-top: 20px;
+            display: inline-flex; align-items: center; gap: 9px;
+            background: var(--accent-color); color: #000;
+            padding: 12px 28px; border-radius: 10px;
+            text-decoration: none; font-family: 'Orbitron', sans-serif;
+            font-weight: 700; font-size: 0.72rem; letter-spacing: 0.5px;
+            transition: all 0.25s ease; width: fit-content; border: 1px solid transparent; margin-top: 20px;
         }
-
-        .sl-btn:hover {
-            background: transparent;
-            color: var(--accent-color);
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255,215,0,0.2);
-        }
-
-        .sl-right {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            padding-left: 8px;
-        }
-
-        .sl-tags {
-            display: flex;
-            gap: 7px;
-            flex-wrap: wrap;
-            margin-bottom: 22px;
-        }
-
-        .sl-tag {
-            background: rgba(255,215,0,0.08);
-            color: var(--accent-color);
-            border: 1px solid rgba(255,215,0,0.18);
-            padding: 4px 13px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .sl-stack-label {
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: rgba(255,255,255,0.3);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .sl-tech-marquee {
-            overflow: hidden;
-            width: 100%;
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-            padding: 4px 0;
-        }
-
-        .sl-tech-track {
-            display: flex;
-            gap: 8px;
-            width: max-content;
-            animation: scroll 20s linear infinite;
-        }
-
-        .sl-tech-marquee:hover .sl-tech-track {
-            animation-play-state: paused;
-        }
-
-        .sl-tech-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.07);
-            padding: 5px 11px;
-            border-radius: 8px;
-            font-size: 0.74rem;
-            color: rgba(255,255,255,0.75);
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: border-color 0.2s, color 0.2s;
-        }
-
-        .sl-tech-item:hover {
-            border-color: rgba(255,215,0,0.35);
-            color: #fff;
-        }
-
+        .sl-btn:hover { background: transparent; color: var(--accent-color); border-color: var(--accent-color); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,215,0,0.2); }
+        .sl-right { display: flex; flex-direction: column; gap: 0; padding-left: 8px; }
+        .sl-tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 22px; }
+        .sl-tag { background: rgba(255,215,0,0.08); color: var(--accent-color); border: 1px solid rgba(255,215,0,0.18); padding: 4px 13px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.5px; }
+        .sl-stack-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 3px; color: rgba(255,255,255,0.3); margin-bottom: 10px; font-weight: 600; }
+        .sl-tech-marquee { overflow: hidden; width: 100%; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); padding: 4px 0; }
+        .sl-tech-track { display: flex; gap: 8px; width: max-content; animation: scroll 20s linear infinite; }
+        .sl-tech-marquee:hover .sl-tech-track { animation-play-state: paused; }
+        .sl-tech-item { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); padding: 5px 11px; border-radius: 8px; font-size: 0.74rem; color: rgba(255,255,255,0.75); white-space: nowrap; flex-shrink: 0; transition: border-color 0.2s, color 0.2s; }
+        .sl-tech-item:hover { border-color: rgba(255,215,0,0.35); color: #fff; }
         .sl-tech-item img { width: 15px; height: 15px; object-fit: contain; }
         .sl-tech-item i { font-size: 0.88rem; }
 
@@ -412,53 +172,34 @@
             <h2 class="page-title">Portfolio</h2>
             <br><br>
 
+            <!-- PROJECT 1: StudyLens -->
             <div class="showcase-wrapper">
                 <div class="sl-card">
-
                     <div class="sl-slider">
                         <div class="sl-track" id="slTrack">
                             <div class="sl-slide"><img src="slide1.jpg" alt="StudyLens screenshot 1"></div>
                             <div class="sl-slide"><img src="slide2.jpg" alt="StudyLens screenshot 2"></div>
                             <div class="sl-slide"><img src="slide3.jpg" alt="StudyLens screenshot 3"></div>
                         </div>
-
                         <div class="sl-counter"><span id="slNum">01</span> / 03</div>
-
-                        <button class="sl-arr sl-arr-prev" onclick="slChange(-1)" aria-label="Previous">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="sl-arr sl-arr-next" onclick="slChange(1)" aria-label="Next">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-
+                        <button class="sl-arr sl-arr-prev" onclick="slChange(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                        <button class="sl-arr sl-arr-next" onclick="slChange(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
                         <div class="sl-dots" id="slDots">
                             <button class="sl-dot active" onclick="slGo(0)" aria-label="Slide 1"></button>
                             <button class="sl-dot" onclick="slGo(1)" aria-label="Slide 2"></button>
                             <button class="sl-dot" onclick="slGo(2)" aria-label="Slide 3"></button>
                         </div>
                     </div>
-
                     <div class="sl-body">
                         <div class="sl-left">
                             <div class="sl-watermark">SL</div>
-
                             <div class="sl-title-row">
                                 <h3 class="sl-title">StudyLens</h3>
-                                <span class="sl-live-badge">
-                                    <span class="sl-live-dot"></span>Live
-                                </span>
+                                <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
                             </div>
-
                             <p class="sl-subtitle">AI-Powered Resource Platform</p>
-
-                            <p class="sl-desc">
-                                A full-stack study platform where students discover, organize, and retain learning
-                                materials through intelligent AI search, spaced repetition algorithms, and
-                                personalized analytics dashboards.
-                            </p>
-
+                            <p class="sl-desc">A full-stack study platform where students discover, organize, and retain learning materials through intelligent AI search, spaced repetition algorithms, and personalized analytics dashboards.</p>
                             <p class="sl-stack-label">Tech Stack</p>
-
                             <div class="sl-tech-marquee">
                                 <div class="sl-tech-track">
                                     <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
@@ -491,14 +232,9 @@
                                     <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
                                 </div>
                             </div>
-
-                            <a href="https://study-lens-blue.vercel.app" target="_blank" class="sl-btn">
-                                Preview Project <i class="fas fa-arrow-up-right-from-square"></i>
-                            </a>
+                            <a href="https://study-lens-blue.vercel.app" target="_blank" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
                         </div>
-
                         <div class="sl-divider"></div>
-
                         <div class="sl-right">
                             <div class="sl-tags">
                                 <span class="sl-tag">AI Powered</span>
@@ -509,6 +245,75 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PROJECT 2: TechShop Ethiopia -->
+            <div class="showcase-wrapper">
+                <div class="sl-card">
+                    <div class="sl-slider">
+                        <div class="sl-track" id="slTrack2">
+                            <div class="sl-slide"><img src="ts-slide1.jpg" alt="TechShop Ethiopia screenshot 1"></div>
+                            <div class="sl-slide"><img src="ts-slide2.jpg" alt="TechShop Ethiopia screenshot 2"></div>
+                            <div class="sl-slide"><img src="ts-slide3.jpg" alt="TechShop Ethiopia screenshot 3"></div>
+                        </div>
+                        <div class="sl-counter"><span id="slNum2">01</span> / 03</div>
+                        <button class="sl-arr sl-arr-prev" onclick="slChange2(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                        <button class="sl-arr sl-arr-next" onclick="slChange2(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+                        <div class="sl-dots" id="slDots2">
+                            <button class="sl-dot active" onclick="slGo2(0)" aria-label="Slide 1"></button>
+                            <button class="sl-dot" onclick="slGo2(1)" aria-label="Slide 2"></button>
+                            <button class="sl-dot" onclick="slGo2(2)" aria-label="Slide 3"></button>
+                        </div>
+                    </div>
+                    <div class="sl-body">
+                        <div class="sl-left">
+                            <div class="sl-watermark">TE</div>
+                            <div class="sl-title-row">
+                                <h3 class="sl-title">TechShop Ethiopia</h3>
+                                <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
+                            </div>
+                            <p class="sl-subtitle">E-Commerce Platform</p>
+                            <p class="sl-desc">A full-featured Ethiopian tech e-commerce platform with dynamic product listings, shopping cart, user authentication, order management, and an admin dashboard — all built with native PHP and a fully custom MySQL backend.</p>
+                            <p class="sl-stack-label">Tech Stack</p>
+                            <div class="sl-tech-marquee">
+                                <div class="sl-tech-track">
+                                    <div class="sl-tech-item"><i class="fab fa-php" style="color:#8892BF"></i> PHP 7.4+</div>
+                                    <div class="sl-tech-item"><i class="fas fa-database" style="color:#4479A1"></i> MySQL / MySQLi</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap 4.6</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery"> jQuery 3.7</div>
+                                    <div class="sl-tech-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+                                    <div class="sl-tech-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+                                    <div class="sl-tech-item"><i class="fab fa-font-awesome" style="color:#528DD7"></i> Font Awesome 5</div>
+                                    <div class="sl-tech-item"><i class="fas fa-sliders-h" style="color:#FFD700"></i> Slick Carousel</div>
+                                    <div class="sl-tech-item"><i class="fab fa-google" style="color:#4285F4"></i> Google Fonts</div>
+                                    <div class="sl-tech-item"><i class="fas fa-lock" style="color:#34d399"></i> Native Sessions</div>
+                                    <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#f97316"></i> Prepared Stmts</div>
+                                    <div class="sl-tech-item"><i class="fab fa-php" style="color:#8892BF"></i> PHP 7.4+</div>
+                                    <div class="sl-tech-item"><i class="fas fa-database" style="color:#4479A1"></i> MySQL / MySQLi</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap 4.6</div>
+                                    <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery"> jQuery 3.7</div>
+                                    <div class="sl-tech-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+                                    <div class="sl-tech-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+                                    <div class="sl-tech-item"><i class="fab fa-font-awesome" style="color:#528DD7"></i> Font Awesome 5</div>
+                                    <div class="sl-tech-item"><i class="fas fa-sliders-h" style="color:#FFD700"></i> Slick Carousel</div>
+                                    <div class="sl-tech-item"><i class="fab fa-google" style="color:#4285F4"></i> Google Fonts</div>
+                                    <div class="sl-tech-item"><i class="fas fa-lock" style="color:#34d399"></i> Native Sessions</div>
+                                    <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#f97316"></i> Prepared Stmts</div>
+                                </div>
+                            </div>
+                            <a href="https://techshopethiopia.gt.tc" target="_blank" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="sl-divider"></div>
+                        <div class="sl-right">
+                            <div class="sl-tags">
+                                <span class="sl-tag">E-Commerce</span>
+                                <span class="sl-tag">Full Stack</span>
+                                <span class="sl-tag">Web App</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </main>
 
@@ -516,30 +321,38 @@
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
     <script>
+        /* SLIDER 1 — StudyLens */
         (function () {
             let cur = 0;
             const total = 3;
             const track = document.getElementById('slTrack');
             const numEl = document.getElementById('slNum');
             const dots  = document.querySelectorAll('#slDots .sl-dot');
-
             function update() {
                 track.style.transform = 'translateX(-' + (cur * 100) + '%)';
                 numEl.textContent = String(cur + 1).padStart(2, '0');
                 dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
             }
-
-            window.slChange = function (dir) {
-                cur = (cur + dir + total) % total;
-                update();
-            };
-
-            window.slGo = function (idx) {
-                cur = idx;
-                update();
-            };
-
+            window.slChange = function (dir) { cur = (cur + dir + total) % total; update(); };
+            window.slGo     = function (idx) { cur = idx; update(); };
             setInterval(function () { slChange(1); }, 4500);
+        })();
+
+        /* SLIDER 2 — TechShop Ethiopia */
+        (function () {
+            let cur = 0;
+            const total = 3;
+            const track = document.getElementById('slTrack2');
+            const numEl = document.getElementById('slNum2');
+            const dots  = document.querySelectorAll('#slDots2 .sl-dot');
+            function update() {
+                track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+                numEl.textContent = String(cur + 1).padStart(2, '0');
+                dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+            }
+            window.slChange2 = function (dir) { cur = (cur + dir + total) % total; update(); };
+            window.slGo2     = function (idx) { cur = idx; update(); };
+            setInterval(function () { slChange2(1); }, 4500);
         })();
     </script>
 </body>
