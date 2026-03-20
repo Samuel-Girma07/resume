@@ -1005,6 +1005,64 @@
                     </div>
                 </div>
 
+                <!-- PROJECT 3: Personal Portfolio -->
+                <div class="showcase-wrapper">
+                    <div class="sl-card">
+                        <div class="sl-slider">
+                            <div class="sl-track" id="slTrackSPA3">
+                                <div class="sl-slide"><img src="pf-slide1.jpg" alt="Personal Portfolio screenshot 1"></div>
+                                <div class="sl-slide"><img src="pf-slide2.jpg" alt="Personal Portfolio screenshot 2"></div>
+                                <div class="sl-slide"><img src="pf-slide3.jpg" alt="Personal Portfolio screenshot 3"></div>
+                            </div>
+                            <div class="sl-counter"><span id="slNumSPA3">01</span> / 03</div>
+                            <button class="sl-arr sl-arr-prev" onclick="spaSlChange3(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                            <button class="sl-arr sl-arr-next" onclick="spaSlChange3(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+                            <div class="sl-dots" id="spaSlDots3">
+                                <button class="sl-dot active" onclick="spaSlGo3(0)"></button>
+                                <button class="sl-dot" onclick="spaSlGo3(1)"></button>
+                                <button class="sl-dot" onclick="spaSlGo3(2)"></button>
+                            </div>
+                        </div>
+                        <div class="sl-body">
+                            <div class="sl-left">
+                                <div class="sl-watermark">PF</div>
+                                <div class="sl-title-row">
+                                    <h3 class="sl-title">Personal Portfolio</h3>
+                                    <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
+                                </div>
+                                <p class="sl-subtitle">Interactive Developer Portfolio</p>
+                                <p class="sl-desc">A dynamic and interactive personal portfolio featuring modern web design, seamless page transitions, an integrated background fluid simulation, custom magnetic cursor effects, and fully responsive project showcases.</p>
+                                <p class="sl-stack-label">Tech Stack</p>
+                                <div class="sl-tech-marquee">
+                                    <div class="sl-tech-track">
+                                        <div class="sl-tech-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+                                        <div class="sl-tech-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+                                        <div class="sl-tech-item"><i class="fab fa-js" style="color:#F7DF1E"></i> Vanilla JS</div>
+                                        <div class="sl-tech-item"><i class="fas fa-cube" style="color:#8892BF"></i> WebGL / OGL</div>
+                                        <div class="sl-tech-item"><i class="fab fa-font-awesome" style="color:#528DD7"></i> Font Awesome 6</div>
+                                        <div class="sl-tech-item"><i class="fab fa-google" style="color:#4285F4"></i> Google Fonts</div>
+                                        <div class="sl-tech-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
+                                        <div class="sl-tech-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
+                                        <div class="sl-tech-item"><i class="fab fa-js" style="color:#F7DF1E"></i> Vanilla JS</div>
+                                        <div class="sl-tech-item"><i class="fas fa-cube" style="color:#8892BF"></i> WebGL / OGL</div>
+                                        <div class="sl-tech-item"><i class="fab fa-font-awesome" style="color:#528DD7"></i> Font Awesome 6</div>
+                                        <div class="sl-tech-item"><i class="fab fa-google" style="color:#4285F4"></i> Google Fonts</div>
+                                    </div>
+                                </div>
+                                <a href="index.html" target="_blank" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
+                            </div>
+                            <div class="sl-divider"></div>
+                            <div class="sl-right">
+                                <div class="sl-tags">
+                                    <span class="sl-tag">Frontend</span>
+                                    <span class="sl-tag">UI/UX</span>
+                                    <span class="sl-tag">Web App</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </section>
 
             <!-- Contact -->
@@ -1102,6 +1160,26 @@
             window.spaSlChange2 = function (dir) { cur = (cur + dir + total) % total; update(); };
             window.spaSlGo2    = function (idx)  { cur = idx; update(); };
             setInterval(function () { spaSlChange2(1); }, 4500);
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           FEATURE: SPA PROJECTS SLIDER 3 (Personal Portfolio)
+        ═══════════════════════════════════════════════════════ */
+        (function () {
+            let cur = 0;
+            const total = 3;
+            const track = document.getElementById('slTrackSPA3');
+            const numEl  = document.getElementById('slNumSPA3');
+            const dots   = document.querySelectorAll('#spaSlDots3 .sl-dot');
+            function update() {
+                if (!track) return;
+                track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+                numEl.textContent = String(cur + 1).padStart(2, '0');
+                dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+            }
+            window.spaSlChange3 = function (dir) { cur = (cur + dir + total) % total; update(); };
+            window.spaSlGo3    = function (idx)  { cur = idx; update(); };
+            setInterval(function () { spaSlChange3(1); }, 4500);
         })();
 
         /* ═══════════════════════════════════════════════════════
