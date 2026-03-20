@@ -43,6 +43,7 @@ body {
   overflow-x: hidden;
   height: 100vh;
   display: flex;
+  cursor: none;
 }
 
 /* Page Transitions */

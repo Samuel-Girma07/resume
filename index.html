@@ -592,14 +592,20 @@
         /* ═══════════════════════════════════════
            FEATURE 3 — TYPEWRITER SUBTITLE
         ═══════════════════════════════════════ */
+
+        /* Tighten badge gap so typewriter sits snugly beneath it */
+        .sidebar .badge {
+            margin-bottom: 6px !important;
+        }
+
         #typewriter-subtitle {
             font-family: 'Syne', sans-serif;
             font-size: 0.75rem;
             color: rgba(255,215,0,0.6);
             letter-spacing: 2.5px;
             text-align: center;
-            margin-top: -14px;
-            margin-bottom: 24px;
+            margin-top: 0;
+            margin-bottom: 22px;
             min-height: 1.4em;
             text-transform: uppercase;
         }
@@ -690,7 +696,7 @@
         <p id="typewriter-subtitle"></p>
 
         <ul class="contact-info">
-            <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="036d626c67777068767a6c6e6a43646e626a6f2d606c6e">[email&#160;protected]</a></li>
+            <li><i class="fas fa-envelope"></i> naodtskuyomi@gmail.com</li>
             <li><i class="fas fa-phone"></i> +251 948 998 804</li>
             <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
         </ul>
@@ -1018,22 +1024,38 @@
             const ring = document.getElementById('cursor-ring');
             if (!dot || !ring) return;
 
-            var mx = -200, my = -200;
-            var rx = -200, ry = -200;
-            var prx = -200, pry = -200;
+            var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+            var rx = mx, ry = my;
+            var prx = mx, pry = my;
             var ringScale = 1, targetScale = 1;
             var isVisible = false, isHovering = false, prevHovering = false;
 
             var hoverSel = 'a, button, input, textarea, label, .wid-card, .back-to-top, .sl-arr';
 
+            function show() {
+                isVisible = true;
+                dot.style.opacity  = '1';
+                ring.style.opacity = '1';
+            }
+
+            function hide() {
+                dot.style.opacity  = '0';
+                ring.style.opacity = '0';
+            }
+
             document.addEventListener('mousemove', function(e) {
                 mx = e.clientX; my = e.clientY;
                 if (!isVisible) {
                     rx = mx; ry = my; prx = mx; pry = my;
-                    isVisible = true;
-                    dot.style.opacity  = '1';
-                    ring.style.opacity = '1';
+                    show();
                 }
+            });
+
+            /* Show cursor when mouse enters window from outside */
+            document.addEventListener('mouseenter', function(e) {
+                mx = e.clientX; my = e.clientY;
+                rx = mx; ry = my; prx = mx; pry = my;
+                show();
             });
 
             document.addEventListener('mouseover', function(e) {
@@ -1046,12 +1068,7 @@
                     isHovering = false; targetScale = 1;
                 }
             });
-            document.addEventListener('mouseleave', function() {
-                dot.style.opacity = '0'; ring.style.opacity = '0';
-            });
-            document.addEventListener('mouseenter', function() {
-                if (isVisible) { ring.style.opacity = '1'; }
-            });
+            document.addEventListener('mouseleave', function() { hide(); });
 
             function lerp(a, b, t) { return a + (b - a) * t; }
 
@@ -1061,18 +1078,18 @@
                 ry = lerp(ry, my, 0.13);
                 ringScale = lerp(ringScale, targetScale, 0.12);
 
-                var dvx  = rx - prx, dvy = ry - pry;
-                var spd  = Math.sqrt(dvx * dvx + dvy * dvy);
-                var ang  = Math.atan2(dvy, dvx) * 180 / Math.PI;
-                var str  = Math.min(spd * 0.07, 0.38);
-                var sx   = (1 + str) * ringScale;
-                var sy   = Math.max((1 - str * 0.45) * ringScale, 0.3);
+                var dvx = rx - prx, dvy = ry - pry;
+                var spd = Math.sqrt(dvx * dvx + dvy * dvy);
+                var ang = Math.atan2(dvy, dvx) * 180 / Math.PI;
+                var str = Math.min(spd * 0.07, 0.38);
+                var sx  = (1 + str) * ringScale;
+                var sy  = Math.max((1 - str * 0.45) * ringScale, 0.3);
 
-                dot.style.transform  = 'translate(' + (mx - 3) + 'px, ' + (my - 3) + 'px)';
+                dot.style.transform  = 'translate(' + (mx - 3)  + 'px, ' + (my - 3)  + 'px)';
                 ring.style.transform = 'translate(' + (rx - 18) + 'px, ' + (ry - 18) + 'px) rotate(' + ang + 'deg) scale(' + sx + ',' + sy + ')';
 
-                // Only update on state change to respect CSS transition
                 if (isHovering !== prevHovering) {
+                    /* Dot hides on hover, reappears on unhover */
                     dot.style.opacity      = isHovering ? '0' : (isVisible ? '1' : '0');
                     ring.style.borderColor = isHovering ? 'rgba(255,215,0,0.95)' : 'rgba(255,215,0,0.55)';
                     prevHovering = isHovering;
