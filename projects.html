@@ -8,18 +8,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
     <style>
         /* ════════════════════════════════════════
            STUDYLENS CARD — EDITORIAL DARK GLASS
         ════════════════════════════════════════ */
+        .showcase-wrapper { padding: 10px 0 60px; }
 
-        .showcase-wrapper {
-            padding: 10px 0 60px;
-        }
-
-        /* ── Card shell ── */
         .sl-card {
             position: relative;
             background: rgba(18, 18, 18, 0.82);
@@ -43,7 +39,6 @@
                 0 0 120px rgba(255,215,0,0.06);
         }
 
-        /* Top beam that sweeps in on hover */
         .sl-card::before {
             content: '';
             position: absolute;
@@ -55,11 +50,8 @@
             pointer-events: none;
         }
 
-        .sl-card:hover::before {
-            left: 100%;
-        }
+        .sl-card:hover::before { left: 100%; }
 
-        /* ── IMAGE SLIDER ── */
         .sl-slider {
             position: relative;
             width: 100%;
@@ -88,7 +80,6 @@
             object-fit: cover;
         }
 
-        /* Gradient fade at bottom of slider */
         .sl-slider::after {
             content: '';
             position: absolute;
@@ -99,12 +90,11 @@
             z-index: 5;
         }
 
-        /* Counter badge top-right */
         .sl-counter {
             position: absolute;
             top: 18px; right: 18px;
             z-index: 10;
-            font-family: 'Syne', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 1px;
@@ -118,7 +108,6 @@
 
         .sl-counter span { color: var(--accent-color); }
 
-        /* Arrow buttons — slim pill style */
         .sl-arr {
             position: absolute;
             top: 50%; transform: translateY(-50%);
@@ -146,7 +135,6 @@
         .sl-arr-prev { left: 16px; }
         .sl-arr-next { right: 16px; }
 
-        /* Line dots */
         .sl-dots {
             position: absolute;
             bottom: 20px; left: 50%;
@@ -172,7 +160,6 @@
             box-shadow: 0 0 8px var(--accent-color);
         }
 
-        /* ── CONTENT PANEL ── */
         .sl-body {
             display: grid;
             grid-template-columns: 1fr 1px 1fr;
@@ -180,13 +167,11 @@
             padding: 34px 38px 38px;
         }
 
-        /* Gold divider */
         .sl-divider {
             background: linear-gradient(to bottom, transparent, rgba(255,215,0,0.25) 30%, rgba(255,215,0,0.25) 70%, transparent);
             margin: 0 36px;
         }
 
-        /* Left column */
         .sl-left {
             display: flex;
             flex-direction: column;
@@ -195,7 +180,7 @@
         }
 
         .sl-watermark {
-            font-family: 'Syne', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-size: 5rem;
             font-weight: 800;
             color: rgba(255,215,0,0.04);
@@ -213,6 +198,7 @@
             margin-bottom: 6px;
         }
 
+        /* EXCEPTION: .sl-title keeps Syne */
         .sl-title {
             font-family: 'Syne', sans-serif;
             font-size: 2.2rem;
@@ -275,9 +261,9 @@
             padding: 12px 28px;
             border-radius: 10px;
             text-decoration: none;
-            font-family: 'Syne', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.72rem;
             letter-spacing: 0.5px;
             transition: all 0.25s ease;
             width: fit-content;
@@ -293,7 +279,6 @@
             box-shadow: 0 8px 24px rgba(255,215,0,0.2);
         }
 
-        /* Right column */
         .sl-right {
             display: flex;
             flex-direction: column;
@@ -328,7 +313,6 @@
             font-weight: 600;
         }
 
-        /* Tech marquee */
         .sl-tech-marquee {
             overflow: hidden;
             width: 100%;
@@ -368,27 +352,15 @@
             color: #fff;
         }
 
-        .sl-tech-item img {
-            width: 15px; height: 15px;
-            object-fit: contain;
-        }
-
+        .sl-tech-item img { width: 15px; height: 15px; object-fit: contain; }
         .sl-tech-item i { font-size: 0.88rem; }
 
-        /* ── Mobile ── */
         @media (max-width: 860px) {
             .sl-slider { height: 240px; }
-
-            .sl-body {
-                grid-template-columns: 1fr;
-                padding: 26px 24px 30px;
-            }
-
+            .sl-body { grid-template-columns: 1fr; padding: 26px 24px 30px; }
             .sl-divider { display: none; }
-
             .sl-left { padding-right: 0; margin-bottom: 28px; }
             .sl-right { padding-left: 0; }
-
             .sl-watermark { font-size: 3.5rem; }
             .sl-title { font-size: 1.7rem; }
         }
@@ -411,7 +383,7 @@
         <div class="badge">Computer Science Student</div>
 
         <ul class="contact-info">
-            <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e28c838d86969189979b8d8f8ba2858f838b8ecc818d8f">[email&#160;protected]</a></li>
+            <li><i class="fas fa-envelope"></i> naodtskuyomi@gmail.com</li>
             <li><i class="fas fa-phone"></i> +251 948 998 804</li>
             <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
         </ul>
@@ -443,22 +415,11 @@
             <div class="showcase-wrapper">
                 <div class="sl-card">
 
-                    <!-- ── Slider ── -->
                     <div class="sl-slider">
                         <div class="sl-track" id="slTrack">
-
-                            <div class="sl-slide">
-                                <img src="slide1.jpg" alt="StudyLens screenshot 1">
-                            </div>
-
-                            <div class="sl-slide">
-                                <img src="slide2.jpg" alt="StudyLens screenshot 2">
-                            </div>
-
-                            <div class="sl-slide">
-                                <img src="slide3.jpg" alt="StudyLens screenshot 3">
-                            </div>
-
+                            <div class="sl-slide"><img src="slide1.jpg" alt="StudyLens screenshot 1"></div>
+                            <div class="sl-slide"><img src="slide2.jpg" alt="StudyLens screenshot 2"></div>
+                            <div class="sl-slide"><img src="slide3.jpg" alt="StudyLens screenshot 3"></div>
                         </div>
 
                         <div class="sl-counter"><span id="slNum">01</span> / 03</div>
@@ -477,10 +438,7 @@
                         </div>
                     </div>
 
-                    <!-- ── Body ── -->
                     <div class="sl-body">
-
-                        <!-- Left -->
                         <div class="sl-left">
                             <div class="sl-watermark">SL</div>
 
@@ -539,10 +497,8 @@
                             </a>
                         </div>
 
-                        <!-- Gold divider -->
                         <div class="sl-divider"></div>
 
-                        <!-- Right -->
                         <div class="sl-right">
                             <div class="sl-tags">
                                 <span class="sl-tag">AI Powered</span>
@@ -550,14 +506,13 @@
                                 <span class="sl-tag">Web App</span>
                             </div>
                         </div>
-
-                    </div><!-- /.sl-body -->
-                </div><!-- /.sl-card -->
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="script.js"></script>
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
     <script src="orb_effect.js"></script>
     <script>

@@ -1,5 +1,5 @@
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
 
 :root {
   --bg-color: #121212;
@@ -37,7 +37,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   background-color: var(--bg-color);
   color: var(--text-grey);
   overflow-x: hidden;
@@ -50,7 +50,6 @@ body {
 .main-content,
 .hamburger {
   opacity: 0;
-  /* Initial state for animation */
 }
 
 .sidebar.page-loaded,
@@ -70,7 +69,6 @@ body {
     opacity: 0;
     transform: translateY(15px);
   }
-
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -82,7 +80,6 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-
   100% {
     opacity: 0;
     transform: translateY(-15px);
@@ -98,7 +95,6 @@ canvas#fluid {
   height: 100%;
   z-index: -1;
   pointer-events: auto;
-  /* Allow interaction */
 }
 
 /* --- Layout --- */
@@ -108,7 +104,6 @@ canvas#fluid {
   width: var(--sidebar-width);
   height: 100vh;
   background-color: rgba(30, 30, 30, 0.6);
-  /* Made transparent as requested */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   position: fixed;
@@ -153,7 +148,6 @@ canvas#fluid {
   border-radius: 50%;
   object-fit: cover;
   border: none;
-  /* Removed yellow circle */
   position: relative;
   z-index: 2;
   transition: var(--transition);
@@ -165,9 +159,11 @@ canvas#fluid {
 }
 
 .sidebar h1 {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Orbitron', sans-serif;
   color: var(--text-white);
-  font-size: 1.8rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
   margin-bottom: 10px;
 }
 
@@ -238,7 +234,6 @@ canvas#fluid {
   padding: 60px 80px;
   position: relative;
   overflow-y: auto;
-  /* Enable scrolling for content */
 }
 
 /* Navbar */
@@ -262,7 +257,6 @@ canvas#fluid {
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Enhance navbar on scroll (optional hover effect) */
 .navbar:hover {
   background: rgba(30, 30, 30, 0.6);
   box-shadow:
@@ -275,19 +269,19 @@ canvas#fluid {
   display: flex;
   gap: 30px;
   position: relative;
-  /* Needed for absolute positioning of indicator */
 }
 
 .nav-links a {
   text-decoration: none;
   color: var(--text-white);
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
   transition: color 0.3s ease;
   position: relative;
   z-index: 1;
-  /* Keep text above indicator */
+  text-transform: uppercase;
 }
 
 .nav-links a:hover,
@@ -305,14 +299,11 @@ canvas#fluid {
   border-radius: 2px;
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
-  /* Cool gold glow */
   opacity: 0;
-  /* Hidden initially until JS sets position */
   pointer-events: none;
   z-index: 0;
 }
 
-/* Remove old underlining */
 .nav-links a.active::after {
   content: none;
 }
@@ -336,10 +327,12 @@ canvas#fluid {
 
 /* Content Sections */
 .page-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.5rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.2rem;
   color: var(--text-white);
   margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
   position: relative;
   display: inline-block;
 }
@@ -356,10 +349,12 @@ canvas#fluid {
 }
 
 .section-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.8rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
   color: var(--text-white);
   margin: 50px 0 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 p.intro-text {
@@ -386,11 +381,9 @@ p.intro-text {
   align-items: center;
   transition: 0.5s;
   background: transparent;
-  /* Make card background transparent as requested */
   border: none;
   padding: 0;
   overflow: visible;
-  /* Allow floating squares to go outside slightly */
 }
 
 .card::before {
@@ -428,8 +421,6 @@ p.intro-text {
   left: 20px;
   width: calc(100% - 40px);
 }
-
-
 
 .card .card-anim {
   display: block;
@@ -492,15 +483,8 @@ p.intro-text {
 }
 
 @keyframes floatingSquare {
-
-  0%,
-  100% {
-    transform: translateY(10px);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(10px); }
+  50%       { transform: translateY(-10px); }
 }
 
 .card .content {
@@ -508,7 +492,6 @@ p.intro-text {
   left: 0;
   padding: 20px 40px;
   background: rgba(255, 255, 255, 0.05);
-  /* Transparent background as requested */
   backdrop-filter: blur(20px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -628,16 +611,20 @@ p.intro-text {
 }
 
 .timeline-date {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--accent-color);
   margin-bottom: 5px;
   display: block;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
 }
 
 .timeline-title {
   color: var(--text-white);
-  font-size: 1.2rem;
-  font-family: 'Poppins', sans-serif;
+  font-size: 1.05rem;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   margin-bottom: 5px;
 }
 
@@ -661,7 +648,6 @@ p.intro-text {
   display: flex;
   gap: 30px;
   width: max-content;
-  /* Ensure content doesn't wrap */
   animation: scroll 30s linear infinite;
 }
 
@@ -670,14 +656,8 @@ p.intro-text {
 }
 
 @keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-    /* Move half the total width (since duplicated) */
-  }
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .skill-item {
@@ -691,9 +671,8 @@ p.intro-text {
   color: var(--text-white);
   transition: var(--transition);
   white-space: nowrap;
-  /* Prevent text wrapping */
   flex-shrink: 0;
-  /* Prevent shrinking */
+  font-size: 0.85rem;
 }
 
 .skill-item:hover {
@@ -703,7 +682,6 @@ p.intro-text {
 }
 
 .skill-item i {
-  /* Color is now handled via inline style for specific branding */
   font-size: 1.5rem;
 }
 
@@ -716,6 +694,8 @@ p.intro-text {
   display: block;
   margin-bottom: 10px;
   color: var(--text-white);
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
 }
 
 .form-control {
@@ -725,7 +705,8 @@ p.intro-text {
   padding: 15px;
   color: var(--text-white);
   border-radius: 10px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
 }
 
 .form-control:focus {
@@ -741,7 +722,6 @@ p.intro-text {
   overflow: hidden;
   margin-top: 50px;
   filter: grayscale(100%) invert(90%);
-  /* Dark map style */
 }
 
 .map-container iframe {
@@ -772,7 +752,6 @@ p.intro-text {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     padding-top: 80px;
-    /* Space for close button if needed */
   }
 
   .sidebar.active {
@@ -784,7 +763,6 @@ p.intro-text {
     width: 100%;
     padding: 30px 20px;
     padding-top: 80px;
-    /* Space for navbar */
   }
 
   .navbar {
@@ -811,9 +789,8 @@ p.intro-text {
   }
 
   .page-title {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
-
 }
 
 /* SPA Page Styles */
@@ -830,15 +807,10 @@ p.intro-text {
   transform: translateY(0);
 }
 
-/* Smooth page container */
 #page-container {
   margin-top: 40px;
   padding-top: 20px;
 }
-
-/* ============================================
-   NEW STYLES - Enhancements
-   ============================================ */
 
 /* Tag Styling */
 .tag {
@@ -934,21 +906,17 @@ p.intro-text {
 }
 
 .loader-text {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Orbitron', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--accent-color);
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  letter-spacing: 2px;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Footer */
@@ -966,8 +934,9 @@ p.intro-text {
 
 .footer p {
   color: var(--text-grey);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin: 0;
+  letter-spacing: 0.3px;
 }
 
 .back-to-top {
@@ -1008,47 +977,17 @@ p.intro-text {
   transform: translateY(0);
 }
 
-/* Staggered animation delays for cards */
-.cards-grid .card:nth-child(1) {
-  transition-delay: 0.1s;
-}
+.cards-grid .card:nth-child(1) { transition-delay: 0.1s; }
+.cards-grid .card:nth-child(2) { transition-delay: 0.2s; }
+.cards-grid .card:nth-child(3) { transition-delay: 0.3s; }
+.cards-grid .card:nth-child(4) { transition-delay: 0.4s; }
+.cards-grid .card:nth-child(5) { transition-delay: 0.5s; }
+.cards-grid .card:nth-child(6) { transition-delay: 0.6s; }
 
-.cards-grid .card:nth-child(2) {
-  transition-delay: 0.2s;
-}
-
-.cards-grid .card:nth-child(3) {
-  transition-delay: 0.3s;
-}
-
-.cards-grid .card:nth-child(4) {
-  transition-delay: 0.4s;
-}
-
-.cards-grid .card:nth-child(5) {
-  transition-delay: 0.5s;
-}
-
-.cards-grid .card:nth-child(6) {
-  transition-delay: 0.6s;
-}
-
-/* Staggered animation delays for timeline items */
-.timeline .timeline-item:nth-child(1) {
-  transition-delay: 0.1s;
-}
-
-.timeline .timeline-item:nth-child(2) {
-  transition-delay: 0.2s;
-}
-
-.timeline .timeline-item:nth-child(3) {
-  transition-delay: 0.3s;
-}
-
-.timeline .timeline-item:nth-child(4) {
-  transition-delay: 0.4s;
-}
+.timeline .timeline-item:nth-child(1) { transition-delay: 0.1s; }
+.timeline .timeline-item:nth-child(2) { transition-delay: 0.2s; }
+.timeline .timeline-item:nth-child(3) { transition-delay: 0.3s; }
+.timeline .timeline-item:nth-child(4) { transition-delay: 0.4s; }
 
 /* Mobile Footer */
 @media (max-width: 768px) {
