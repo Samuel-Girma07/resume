@@ -54,12 +54,22 @@ function setupBackToTop() {
     }
 }
 
-// SPA Navigation - Instant page switching without reload
+// SPA Navigation - Scroll-based page switching with animated transitions
 function setupSPANavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
     const indicator = document.querySelector('.nav-indicator');
     const navContainer = document.querySelector('.nav-links');
+    const mainContent = document.querySelector('.main-content');
+    const footer = document.querySelector('.footer');
+    const scrollDots = document.querySelectorAll('.scroll-progress-dot');
+
+    const PAGE_ORDER = ['about', 'resume', 'projects', 'contact'];
+    let currentIndex = 0;
+    let isTransitioning = false;
+    const TRANSITION_DURATION = 720; // ms, matches CSS animation
+    const SCROLL_COOLDOWN = 900; // ms between scroll events
+    let lastScrollTime = 0;
 
     // Add page-loaded class immediately for smooth initial display
     const transitionTargets = document.querySelectorAll('.main-content, .sidebar, .hamburger');
@@ -67,7 +77,7 @@ function setupSPANavigation() {
         transitionTargets.forEach(target => target.classList.add('page-loaded'));
     });
 
-    // Helper to move indicator
+    // Helper to move nav indicator
     function moveIndicator(targetLink) {
         if (!targetLink || !indicator) return;
 
@@ -80,37 +90,222 @@ function setupSPANavigation() {
         indicator.style.opacity = '1';
     }
 
+    // Update footer visibility
+    function updateFooter(pageId) {
+        if (!footer) return;
+        if (pageId === 'contact') {
+            footer.classList.add('footer-visible');
+        } else {
+            footer.classList.remove('footer-visible');
+        }
+    }
+
+    // Update scroll progress dots
+    function updateScrollDots(pageId) {
+        scrollDots.forEach(dot => {
+            dot.classList.toggle('active', dot.dataset.page === pageId);
+        });
+    }
+
+    // Core animated transition function
+    function transitionToPage(targetIndex, direction) {
+        if (isTransitioning) return;
+        if (targetIndex < 0 || targetIndex >= PAGE_ORDER.length) return;
+        if (targetIndex === currentIndex) return;
+
+        isTransitioning = true;
+
+        const currentPageId = PAGE_ORDER[currentIndex];
+        const targetPageId = PAGE_ORDER[targetIndex];
+        const currentPage = document.getElementById(currentPageId);
+        const targetPage = document.getElementById(targetPageId);
+
+        // Determine direction: 'down' = scrolling down (next), 'up' = scrolling up (prev)
+        const dir = direction || (targetIndex > currentIndex ? 'down' : 'up');
+
+        // Remove all animation classes first
+        pages.forEach(p => {
+            p.classList.remove('anim-enter-up', 'anim-enter-down', 'anim-exit-up', 'anim-exit-down');
+        });
+
+        // Animate out the current page
+        if (dir === 'down') {
+            currentPage.classList.add('anim-exit-up');
+        } else {
+            currentPage.classList.add('anim-exit-down');
+        }
+
+        // After exit animation, swap pages
+        setTimeout(() => {
+            // Hide old page
+            currentPage.classList.remove('active', 'anim-exit-up', 'anim-exit-down');
+
+            // Show new page with entrance animation
+            targetPage.classList.add('active');
+            if (dir === 'down') {
+                targetPage.classList.add('anim-enter-up');
+            } else {
+                targetPage.classList.add('anim-enter-down');
+            }
+
+            // Update nav links
+            navLinks.forEach(l => l.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-link[data-page="${targetPageId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+                moveIndicator(activeLink);
+            }
+
+            // Update URL hash
+            history.pushState(null, '', `#${targetPageId}`);
+
+            // Update footer and dots
+            updateFooter(targetPageId);
+            updateScrollDots(targetPageId);
+
+            // Scroll main content to top
+            mainContent.scrollTop = 0;
+
+            currentIndex = targetIndex;
+
+            // Clean up animation classes after animation completes
+            setTimeout(() => {
+                targetPage.classList.remove('anim-enter-up', 'anim-enter-down');
+                isTransitioning = false;
+            }, TRANSITION_DURATION);
+
+        }, 500); // wait for exit animation (500ms matches pageExitUp/Down duration)
+    }
+
+    // ── Wheel / Scroll Navigation with Accumulator Buffer ──
+    let scrollAccumulator = 0;
+    const SCROLL_TRIGGER_THRESHOLD = 150; // accumulated delta needed to trigger transition
+    let accumulatorResetTimer = null;
+    const EDGE_TOLERANCE = 30; // px from edge before we start accumulating
+
+    function handleWheel(e) {
+        if (isTransitioning) return;
+
+        const now = Date.now();
+        if (now - lastScrollTime < 100) {
+            // Still accumulate but don't trigger too fast
+        }
+
+        // Check if the active page content is scrollable
+        const scrollTop = mainContent.scrollTop;
+        const scrollHeight = mainContent.scrollHeight;
+        const clientHeight = mainContent.clientHeight;
+        const isScrollable = scrollHeight > clientHeight + 10;
+
+        if (isScrollable) {
+            const atBottom = scrollTop + clientHeight >= scrollHeight - EDGE_TOLERANCE;
+            const atTop = scrollTop <= EDGE_TOLERANCE;
+
+            if (e.deltaY > 0 && !atBottom) {
+                // Still has room to scroll down naturally
+                scrollAccumulator = 0;
+                return;
+            }
+            if (e.deltaY < 0 && !atTop) {
+                // Still has room to scroll up naturally
+                scrollAccumulator = 0;
+                return;
+            }
+        }
+
+        // At the edge (or page doesn't scroll) — accumulate
+        e.preventDefault();
+        scrollAccumulator += e.deltaY;
+
+        // Reset accumulator if user stops scrolling for 600ms
+        clearTimeout(accumulatorResetTimer);
+        accumulatorResetTimer = setTimeout(() => {
+            scrollAccumulator = 0;
+        }, 600);
+
+        // Only trigger when enough scroll momentum has built up
+        if (scrollAccumulator > SCROLL_TRIGGER_THRESHOLD) {
+            scrollAccumulator = 0;
+            lastScrollTime = now;
+            if (currentIndex < PAGE_ORDER.length - 1) {
+                transitionToPage(currentIndex + 1, 'down');
+            }
+        } else if (scrollAccumulator < -SCROLL_TRIGGER_THRESHOLD) {
+            scrollAccumulator = 0;
+            lastScrollTime = now;
+            if (currentIndex > 0) {
+                transitionToPage(currentIndex - 1, 'up');
+            }
+        }
+    }
+
+    mainContent.addEventListener('wheel', handleWheel, { passive: false });
+
+    // ── Touch / Swipe Navigation ──
+    let touchStartY = 0;
+    let touchStartTime = 0;
+
+    mainContent.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+        touchStartTime = Date.now();
+    }, { passive: true });
+
+    mainContent.addEventListener('touchend', (e) => {
+        const touchEndY = e.changedTouches[0].clientY;
+        const deltaY = touchStartY - touchEndY;
+        const elapsed = Date.now() - touchStartTime;
+
+        // Require a minimum swipe distance and speed
+        if (Math.abs(deltaY) < 60 || elapsed > 600) return;
+        if (isTransitioning) return;
+
+        if (deltaY > 0 && currentIndex < PAGE_ORDER.length - 1) {
+            transitionToPage(currentIndex + 1, 'down');
+        } else if (deltaY < 0 && currentIndex > 0) {
+            transitionToPage(currentIndex - 1, 'up');
+        }
+    }, { passive: true });
+
+    // ── Keyboard Navigation ──
+    document.addEventListener('keydown', (e) => {
+        if (isTransitioning) return;
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+            if (currentIndex < PAGE_ORDER.length - 1) {
+                e.preventDefault();
+                transitionToPage(currentIndex + 1, 'down');
+            }
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+            if (currentIndex > 0) {
+                e.preventDefault();
+                transitionToPage(currentIndex - 1, 'up');
+            }
+        }
+    });
+
+    // ── Nav Link Click (existing behavior, enhanced with animations) ──
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetPage = link.getAttribute('data-page');
+            const targetIndex = PAGE_ORDER.indexOf(targetPage);
+            if (targetIndex === -1 || targetIndex === currentIndex) return;
 
-            // Update active nav link
-            navLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-
-            // Move indicator to clicked link
-            moveIndicator(link);
-
-            // Show target page, hide others
-            pages.forEach(page => {
-                if (page.id === targetPage) {
-                    page.classList.add('active');
-                } else {
-                    page.classList.remove('active');
-                }
-            });
-
-            // Update URL hash without page reload
-            history.pushState(null, '', `#${targetPage}`);
-
-            // Scroll to top of main content
-            document.querySelector('.main-content').scrollTop = 0;
+            transitionToPage(targetIndex);
         });
 
         // Hover Effect
         link.addEventListener('mouseenter', () => {
             moveIndicator(link);
+        });
+    });
+
+    // ── Scroll Progress Dot Click ──
+    scrollDots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            const targetPage = dot.dataset.page;
+            const targetIndex = PAGE_ORDER.indexOf(targetPage);
+            if (targetIndex === -1 || targetIndex === currentIndex) return;
+            transitionToPage(targetIndex);
         });
     });
 
@@ -141,9 +336,12 @@ function setupSPANavigation() {
 
     // Handle browser back/forward buttons
     window.addEventListener('popstate', () => {
-        handleInitialHash();
-        const activeLink = document.querySelector('.nav-link.active');
-        if (activeLink) moveIndicator(activeLink);
+        const hash = window.location.hash.slice(1) || 'about';
+        const targetIndex = PAGE_ORDER.indexOf(hash);
+        if (targetIndex !== -1 && targetIndex !== currentIndex) {
+            // Use transition for browser navigation too
+            transitionToPage(targetIndex);
+        }
     });
 }
 
@@ -152,6 +350,8 @@ function handleInitialHash() {
     const hash = window.location.hash.slice(1) || 'about';
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
+    const footer = document.querySelector('.footer');
+    const scrollDots = document.querySelectorAll('.scroll-progress-dot');
 
     navLinks.forEach(link => {
         if (link.getAttribute('data-page') === hash) {
@@ -167,6 +367,20 @@ function handleInitialHash() {
         } else {
             page.classList.remove('active');
         }
+    });
+
+    // Update footer visibility on initial load
+    if (footer) {
+        if (hash === 'contact') {
+            footer.classList.add('footer-visible');
+        } else {
+            footer.classList.remove('footer-visible');
+        }
+    }
+
+    // Update scroll dots on initial load
+    scrollDots.forEach(dot => {
+        dot.classList.toggle('active', dot.dataset.page === hash);
     });
 }
 

@@ -794,23 +794,387 @@ p.intro-text {
   }
 }
 
-/* SPA Page Styles */
+/* SPA Page Styles — Scroll-Driven Transitions */
+#page-container {
+  margin-top: 40px;
+  padding-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
 .page {
   display: none;
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  position: relative;
+  will-change: transform, opacity, filter;
 }
 
 .page.active {
   display: block;
-  opacity: 1;
-  transform: translateY(0);
+  animation: pageEnterUp 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-#page-container {
-  margin-top: 40px;
-  padding-top: 20px;
+/* ── Enter animations by direction ── */
+.page.anim-enter-up {
+  display: block;
+  animation: pageEnterUp 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.page.anim-enter-down {
+  display: block;
+  animation: pageEnterDown 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ── Exit animations by direction ── */
+.page.anim-exit-up {
+  display: block;
+  animation: pageExitUp 0.55s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  pointer-events: none;
+}
+
+.page.anim-exit-down {
+  display: block;
+  animation: pageExitDown 0.55s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  pointer-events: none;
+}
+
+/* ── Keyframes — Cinematic Page Transitions ── */
+@keyframes pageEnterUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.92) perspective(1200px) rotateX(4deg);
+    filter: blur(8px) brightness(0.7);
+  }
+  35% {
+    opacity: 0.6;
+    filter: blur(3px) brightness(0.9);
+  }
+  70% {
+    transform: translateY(-6px) scale(1.005) perspective(1200px) rotateX(0deg);
+    filter: blur(0px) brightness(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) perspective(1200px) rotateX(0deg);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+@keyframes pageEnterDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px) scale(0.92) perspective(1200px) rotateX(-4deg);
+    filter: blur(8px) brightness(0.7);
+  }
+  35% {
+    opacity: 0.6;
+    filter: blur(3px) brightness(0.9);
+  }
+  70% {
+    transform: translateY(6px) scale(1.005) perspective(1200px) rotateX(0deg);
+    filter: blur(0px) brightness(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) perspective(1200px) rotateX(0deg);
+    filter: blur(0px) brightness(1);
+  }
+}
+
+@keyframes pageExitUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) skewY(0deg);
+    filter: blur(0px);
+  }
+  60% {
+    opacity: 0.3;
+    transform: translateY(-50px) scale(0.95) skewY(-1.5deg);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(0.88) skewY(-2deg);
+    filter: blur(6px);
+  }
+}
+
+@keyframes pageExitDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1) skewY(0deg);
+    filter: blur(0px);
+  }
+  60% {
+    opacity: 0.3;
+    transform: translateY(50px) scale(0.95) skewY(1.5deg);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(80px) scale(0.88) skewY(2deg);
+    filter: blur(6px);
+  }
+}
+
+/* ── Staggered child reveals — cascading entrance ── */
+.page.active .page-title,
+.page.anim-enter-up .page-title,
+.page.anim-enter-down .page-title {
+  animation: childSlideReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+.page.active .intro-text,
+.page.anim-enter-up .intro-text,
+.page.anim-enter-down .intro-text {
+  animation: childFadeSlide 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+}
+
+.page.active .section-title,
+.page.anim-enter-up .section-title,
+.page.anim-enter-down .section-title {
+  animation: childSlideReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+/* Stagger WID cards on About page */
+.page.active .wid-card:nth-child(1),
+.page.anim-enter-up .wid-card:nth-child(1),
+.page.anim-enter-down .wid-card:nth-child(1) {
+  animation: childCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+.page.active .wid-card:nth-child(2),
+.page.anim-enter-up .wid-card:nth-child(2),
+.page.anim-enter-down .wid-card:nth-child(2) {
+  animation: childCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+.page.active .wid-card:nth-child(3),
+.page.anim-enter-up .wid-card:nth-child(3),
+.page.anim-enter-down .wid-card:nth-child(3) {
+  animation: childCardReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+/* Stagger timeline items on Resume */
+.page.active .timeline-item:nth-child(1),
+.page.anim-enter-up .timeline-item:nth-child(1),
+.page.anim-enter-down .timeline-item:nth-child(1) {
+  animation: childSlideLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+.page.active .timeline-item:nth-child(2),
+.page.anim-enter-up .timeline-item:nth-child(2),
+.page.anim-enter-down .timeline-item:nth-child(2) {
+  animation: childSlideLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.32s both;
+}
+.page.active .timeline-item:nth-child(3),
+.page.anim-enter-up .timeline-item:nth-child(3),
+.page.anim-enter-down .timeline-item:nth-child(3) {
+  animation: childSlideLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.44s both;
+}
+.page.active .timeline-item:nth-child(4),
+.page.anim-enter-up .timeline-item:nth-child(4),
+.page.anim-enter-down .timeline-item:nth-child(4) {
+  animation: childSlideLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.56s both;
+}
+
+/* Stagger project showcase cards */
+.page.active .showcase-wrapper:nth-child(1),
+.page.anim-enter-up .showcase-wrapper:nth-child(1),
+.page.anim-enter-down .showcase-wrapper:nth-child(1) {
+  animation: childScaleReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+.page.active .showcase-wrapper:nth-child(2),
+.page.anim-enter-up .showcase-wrapper:nth-child(2),
+.page.anim-enter-down .showcase-wrapper:nth-child(2) {
+  animation: childScaleReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+.page.active .showcase-wrapper:nth-child(3),
+.page.anim-enter-up .showcase-wrapper:nth-child(3),
+.page.anim-enter-down .showcase-wrapper:nth-child(3) {
+  animation: childScaleReveal 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+/* Contact form stagger */
+.page.active .form-group:nth-child(1),
+.page.anim-enter-up .form-group:nth-child(1),
+.page.anim-enter-down .form-group:nth-child(1) {
+  animation: childFadeSlide 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+.page.active .form-group:nth-child(2),
+.page.anim-enter-up .form-group:nth-child(2),
+.page.anim-enter-down .form-group:nth-child(2) {
+  animation: childFadeSlide 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+.page.active .form-group:nth-child(3),
+.page.anim-enter-up .form-group:nth-child(3),
+.page.anim-enter-down .form-group:nth-child(3) {
+  animation: childFadeSlide 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+/* Skills marquee reveal */
+.page.active .skills-marquee-container,
+.page.anim-enter-up .skills-marquee-container,
+.page.anim-enter-down .skills-marquee-container {
+  animation: childFadeSlide 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+
+/* ── Child Animation Keyframes ── */
+@keyframes childSlideReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes childFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes childCardReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.92);
+    filter: blur(3px);
+  }
+  60% {
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes childSlideLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px) translateY(8px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes childScaleReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+    filter: blur(4px);
+  }
+  50% {
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ── Gold accent line sweep on page enter ── */
+.page.active::before,
+.page.anim-enter-up::before,
+.page.anim-enter-down::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.8) 50%, transparent 100%);
+  animation: accentLineSweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes accentLineSweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* ── Scroll Progress Dots (with pulse animation) ── */
+.scroll-progress {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 150;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.scroll-progress.visible {
+  opacity: 1;
+}
+
+.scroll-progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1.5px solid rgba(255, 215, 0, 0.25);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+}
+
+.scroll-progress-dot::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0);
+  transition: background 0.35s ease;
+}
+
+.scroll-progress-dot.active {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.5), 0 0 24px rgba(255, 215, 0, 0.15);
+  transform: scale(1.35);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.5), 0 0 24px rgba(255, 215, 0, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.7), 0 0 36px rgba(255, 215, 0, 0.25);
+  }
+}
+
+.scroll-progress-dot:hover:not(.active) {
+  background: rgba(255, 215, 0, 0.3);
+  border-color: rgba(255, 215, 0, 0.6);
+  transform: scale(1.2);
 }
 
 /* Tag Styling */
@@ -920,17 +1284,26 @@ p.intro-text {
   100% { transform: rotate(360deg); }
 }
 
-/* Footer */
+/* Footer — only visible on Contact page */
 .footer {
   width: 100%;
   padding: 30px 80px;
   margin-top: 60px;
-  display: flex;
+  display: none;
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   background: rgba(18, 18, 18, 0.5);
   backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+}
+
+.footer.footer-visible {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .footer p {
