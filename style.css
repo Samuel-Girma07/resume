@@ -739,24 +739,43 @@ p.intro-text {
 
   .hamburger {
     display: block;
+    z-index: 200;
   }
 
+  /* ── Phase B: Disable page-loaded animation on sidebar ── */
+  .sidebar.page-loaded {
+    animation: none;
+  }
+
+  /* ── Phase B: Explicit CLOSED state (default on load) ── */
   .sidebar {
     transform: translateY(-100%);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
     width: 100%;
     height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
     position: fixed;
     top: 0;
     left: 0;
-    transition: transform 0.4s ease-in-out;
+    z-index: 150;
+    transition: transform 0.4s ease-in-out,
+                visibility 0.4s ease-in-out,
+                opacity 0.4s ease-in-out;
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     padding-top: 80px;
   }
 
+  /* ── Phase B: Explicit OPEN state (hamburger toggle) ── */
   .sidebar.active {
     transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .main-content {
@@ -766,6 +785,7 @@ p.intro-text {
     padding-top: 80px;
   }
 
+  /* ── Phase C: Fix navbar/hamburger overlap + z-index ── */
   .navbar {
     position: fixed;
     top: 0;
@@ -777,6 +797,8 @@ p.intro-text {
     display: flex;
     justify-content: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 100;
+    padding-right: 60px;
   }
 
   .nav-links {
