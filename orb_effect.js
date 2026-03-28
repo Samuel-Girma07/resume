@@ -290,7 +290,30 @@ class ProfileOrb {
 
 // Initialize on Load
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof ogl !== 'undefined') {
+ // GUARD: Skip orb effect on mobile or reduced motion
+ // This prevents the WebGL context, shaders, and animation loop
+ // from being created on mobile devices.
+ const shouldDisableHeavyEffects = () => {
+ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if (prefersReducedMotion) return true;
+
+ const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+ const hasNoHover = window.matchMedia('(hover: none)').matches;
+ const isSmallScreen = window.innerWidth <= 768;
+
+ // Mobile device: coarse pointer + (no hover OR small screen)
+ if (hasCoarsePointer && (hasNoHover || isSmallScreen)) return true;
+
+ return false;
+ };
+
+ if (shouldDisableHeavyEffects()) {
+ // ProfileOrb class never instantiated. No WebGL context created.
+ // No animation frame loop started.
+ return;
+ }
+
+ if (typeof ogl !== 'undefined') {
         new ProfileOrb('profile-orb', {
             hue: 0,
             hoverIntensity: 0.5,

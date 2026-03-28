@@ -241,30 +241,111 @@ function setupSPANavigation() {
 
     mainContent.addEventListener('wheel', handleWheel, { passive: false });
 
-    // ── Touch / Swipe Navigation ──
-    let touchStartY = 0;
-    let touchStartTime = 0;
+ // ── Touch / Swipe Navigation with Confirmation Zone ──
+ // For non-scrollable pages, require deliberate gesture commitment
+ // to prevent accidental navigation from small swipes.
+ let touchStartY = 0;
+ let touchStartTime = 0;
+ let gestureCommitted = false;
+ let decisionBuffer = 0;
+ const COMMIT_THRESHOLD = 40; // px into gesture before we consider it committed
+ const EDGE_GLOW_DISTANCE = 30; // px before showing visual feedback
 
-    mainContent.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY;
-        touchStartTime = Date.now();
-    }, { passive: true });
+ mainContent.addEventListener('touchstart', (e) => {
+ touchStartY = e.touches[0].clientY;
+ touchStartTime = Date.now();
+ gestureCommitted = false;
+ decisionBuffer = 0;
+ }, { passive: true });
 
-    mainContent.addEventListener('touchend', (e) => {
-        const touchEndY = e.changedTouches[0].clientY;
-        const deltaY = touchStartY - touchEndY;
-        const elapsed = Date.now() - touchStartTime;
+ mainContent.addEventListener('touchmove', (e) => {
+ if (isTransitioning) return;
 
-        // Require a minimum swipe distance and speed
-        if (Math.abs(deltaY) < 60 || elapsed > 600) return;
-        if (isTransitioning) return;
+ const currentY = e.touches[0].clientY;
+ const deltaY = touchStartY - currentY;
+ const direction = deltaY > 0 ? 'down' : 'up';
 
-        if (deltaY > 0 && currentIndex < PAGE_ORDER.length - 1) {
-            transitionToPage(currentIndex + 1, 'down');
-        } else if (deltaY < 0 && currentIndex > 0) {
-            transitionToPage(currentIndex - 1, 'up');
-        }
-    }, { passive: true });
+ // Check scrollability
+ const scrollTop = mainContent.scrollTop;
+ const scrollHeight = mainContent.scrollHeight;
+ const clientHeight = mainContent.clientHeight;
+ const isScrollable = scrollHeight > clientHeight + 10;
+
+ if (!isScrollable) {
+ // Non-scrollable page: track gesture commitment
+ decisionBuffer = Math.abs(deltaY);
+
+ // Show visual hint when approaching commit threshold
+ if (decisionBuffer > EDGE_GLOW_DISTANCE && !gestureCommitted) {
+ mainContent.classList.add(`edge-hint-${direction}`);
+ }
+
+ // Mark as committed when past threshold
+ if (decisionBuffer > COMMIT_THRESHOLD) {
+ gestureCommitted = true;
+ }
+ }
+ }, { passive: true });
+
+ mainContent.addEventListener('touchend', (e) => {
+ // Clear visual hints
+ mainContent.classList.remove('edge-hint-up', 'edge-hint-down');
+
+ const touchEndY = e.changedTouches[0].clientY;
+ const deltaY = touchStartY - touchEndY;
+ const elapsed = Date.now() - touchStartTime;
+ const velocity = Math.abs(deltaY) / elapsed; // px per ms
+
+ // Basic timing checks
+ if (elapsed > 600) return;
+ if (isTransitioning) return;
+
+ // Check scrollability and edge position
+ const scrollTop = mainContent.scrollTop;
+ const scrollHeight = mainContent.scrollHeight;
+ const clientHeight = mainContent.clientHeight;
+ const isScrollable = scrollHeight > clientHeight + 10;
+
+ // Dynamic threshold based on context
+ let threshold;
+
+ if (isScrollable) {
+ // Scrollable pages: check if at edge first
+ const atBottom = scrollTop + clientHeight >= scrollHeight - EDGE_TOLERANCE;
+ const atTop = scrollTop <= EDGE_TOLERANCE;
+
+ if (deltaY > 0 && !atBottom) return;
+ if (deltaY < 0 && !atTop) return;
+
+ threshold = 60; // Standard threshold for scrollable pages
+ } else {
+ // Non-scrollable pages: require gesture commitment
+ if (!gestureCommitted) {
+ // Never passed commit zone - treat as accidental
+ return;
+ }
+
+ // Velocity-adjusted threshold
+ // Fast swipe = intentional, lower threshold
+ // Slow swipe = possibly accidental, higher threshold
+ if (velocity > 0.35) {
+ threshold = 70; // Fast intentional swipe
+ } else if (velocity > 0.2) {
+ threshold = 90; // Medium speed
+ } else {
+ threshold = 120; // Slow, require more distance
+ }
+ }
+
+ if (Math.abs(deltaY) < threshold) return;
+
+ // Execute transition
+ if (deltaY > 0 && currentIndex < PAGE_ORDER.length - 1) {
+ transitionToPage(currentIndex + 1, 'down');
+ } else if (deltaY < 0 && currentIndex > 0) {
+ transitionToPage(currentIndex - 1, 'up');
+ }
+ }, { passive: true });
 
     // ── Keyboard Navigation ──
     document.addEventListener('keydown', (e) => {
@@ -420,11 +501,36 @@ function setupMobileMenu() {
     }
 }
 
+
 // Fluid Cursor Animation (Vanilla JS Adaptation)
 window.addEventListener('load', function () {
     const canvas = document.getElementById('fluid');
     if (!canvas) return;
 
+
+ // GUARD: Skip WebGL initialization on mobile or reduced motion
+ // This prevents the entire WebGL pipeline from initializing,
+ // not just hiding the canvas. Mobile devices will save significant
+ // CPU/GPU resources.
+ const shouldDisableHeavyEffects = () => {
+ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if (prefersReducedMotion) return true;
+
+ const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+ const hasNoHover = window.matchMedia('(hover: none)').matches;
+ const isSmallScreen = window.innerWidth <= 768;
+
+ // Mobile device: coarse pointer + (no hover OR small screen)
+ if (hasCoarsePointer && (hasNoHover || isSmallScreen)) return true;
+
+ return false;
+ };
+
+ if (shouldDisableHeavyEffects()) {
+ // Canvas already hidden via CSS. WebGL initialization skipped entirely.
+ // No WebGL context created, no shaders compiled, no animation loop started.
+ return;
+ }
     resizeCanvas();
 
     let config = {
