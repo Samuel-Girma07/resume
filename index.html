@@ -368,6 +368,41 @@
             .sl-title { font-size: 1.7rem; }
         }
 
+        @media (max-width: 768px) {
+            .sl-card {
+                border-radius: 14px;
+                border-color: rgba(255, 215, 0, 0.12);
+            }
+            .sl-slider {
+                height: 200px;
+                border-radius: 14px 14px 0 0;
+            }
+            .sl-body {
+                grid-template-columns: 1fr;
+                padding: 20px 18px 22px;
+            }
+            .sl-divider { display: none; }
+            .sl-left { padding-right: 0; margin-bottom: 16px; }
+            .sl-right { padding-left: 0; }
+            .sl-watermark { font-size: 2.8rem; margin-bottom: -12px; }
+            .sl-title { font-size: 1.3rem; }
+            .sl-title-row { gap: 10px; margin-bottom: 4px; }
+            .sl-subtitle { font-size: 0.68rem; letter-spacing: 1.5px; margin-bottom: 10px; }
+            .sl-desc { font-size: 0.82rem; line-height: 1.7; margin-bottom: 16px; max-width: 100%; }
+            .sl-btn { padding: 10px 20px; font-size: 0.78rem; border-radius: 8px; margin-top: 10px; }
+            .sl-tags { gap: 6px; margin-bottom: 14px; }
+            .sl-tag { font-size: 0.65rem; padding: 3px 10px; }
+            .sl-stack-label { font-size: 0.58rem; letter-spacing: 2.5px; margin-bottom: 6px; }
+            .sl-tech-item { padding: 4px 9px; font-size: 0.68rem; border-radius: 6px; }
+            .sl-tech-item img { width: 13px; height: 13px; }
+            .sl-counter { top: 12px; right: 12px; font-size: 0.65rem; padding: 4px 9px; }
+            .sl-arr { width: 30px; height: 42px; font-size: 0.7rem; }
+            .sl-arr-prev { left: 8px; }
+            .sl-arr-next { right: 8px; }
+            .sl-dots { bottom: 12px; }
+            .sl-live-badge { font-size: 0.56rem; padding: 3px 8px; }
+        }
+
         /* ════════════════════════════════
            WHAT I DO — TILT GLASS CARDS
         ════════════════════════════════ */
@@ -549,6 +584,39 @@
             .wid-grid {
                 grid-template-columns: 1fr;
                 gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .wid-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                padding: 20px 0 16px;
+                perspective: none;
+            }
+            .wid-card {
+                padding: 22px 18px 18px;
+                border-radius: 14px;
+            }
+            .wid-top {
+                margin-bottom: 14px;
+            }
+            .wid-icon-wrap {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                font-size: 0.95rem;
+            }
+            .wid-title {
+                font-size: 0.9rem;
+                margin-bottom: 6px;
+            }
+            .wid-desc {
+                font-size: 0.8rem;
+                line-height: 1.65;
+            }
+            .wid-num {
+                font-size: 0.62rem;
             }
         }
 
@@ -1086,13 +1154,33 @@
             </button>
         </footer>
 
-        <!-- Scroll Progress Indicator -->
+        <!-- Scroll Progress Indicator (desktop) -->
         <div class="scroll-progress visible" id="scroll-progress">
             <div class="scroll-progress-dot active" data-page="about" title="About"></div>
             <div class="scroll-progress-dot" data-page="resume" title="Resume"></div>
             <div class="scroll-progress-dot" data-page="projects" title="Projects"></div>
             <div class="scroll-progress-dot" data-page="contact" title="Contact"></div>
         </div>
+
+        <!-- Mobile Bottom Tab Navigation -->
+        <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+            <button class="mob-tab active" data-page="about" aria-label="About">
+                <i class="fas fa-user"></i>
+                <span>About</span>
+            </button>
+            <button class="mob-tab" data-page="resume" aria-label="Resume">
+                <i class="fas fa-file-alt"></i>
+                <span>Resume</span>
+            </button>
+            <button class="mob-tab" data-page="projects" aria-label="Projects">
+                <i class="fas fa-code"></i>
+                <span>Projects</span>
+            </button>
+            <button class="mob-tab" data-page="contact" aria-label="Contact">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </button>
+        </nav>
     </main>
 
     <script src="script.js"></script>

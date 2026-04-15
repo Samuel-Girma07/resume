@@ -63,6 +63,7 @@ function setupSPANavigation() {
     const mainContent = document.querySelector('.main-content');
     const footer = document.querySelector('.footer');
     const scrollDots = document.querySelectorAll('.scroll-progress-dot');
+    const mobileBottomTabs = document.querySelectorAll('.mob-tab');
 
     const PAGE_ORDER = ['about', 'resume', 'projects', 'contact'];
     let currentIndex = 0;
@@ -104,6 +105,13 @@ function setupSPANavigation() {
     function updateScrollDots(pageId) {
         scrollDots.forEach(dot => {
             dot.classList.toggle('active', dot.dataset.page === pageId);
+        });
+    }
+
+    // Update mobile bottom nav active tab
+    function updateMobileBottomNav(pageId) {
+        mobileBottomTabs.forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.page === pageId);
         });
     }
 
@@ -159,9 +167,10 @@ function setupSPANavigation() {
             // Update URL hash
             history.pushState(null, '', `#${targetPageId}`);
 
-            // Update footer and dots
+            // Update footer, dots, and mobile bottom nav
             updateFooter(targetPageId);
             updateScrollDots(targetPageId);
+            updateMobileBottomNav(targetPageId);
 
             // Scroll main content to top
             mainContent.scrollTop = 0;
@@ -390,6 +399,16 @@ function setupSPANavigation() {
         });
     });
 
+    // ── Mobile Bottom Tab Click ──
+    mobileBottomTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetPage = tab.dataset.page;
+            const targetIndex = PAGE_ORDER.indexOf(targetPage);
+            if (targetIndex === -1 || targetIndex === currentIndex) return;
+            transitionToPage(targetIndex);
+        });
+    });
+
     // Mouse Leave Nav Container -> Return to Active
     if (navContainer) {
         navContainer.addEventListener('mouseleave', () => {
@@ -462,6 +481,12 @@ function handleInitialHash() {
     // Update scroll dots on initial load
     scrollDots.forEach(dot => {
         dot.classList.toggle('active', dot.dataset.page === hash);
+    });
+
+    // Update mobile bottom nav on initial load
+    const mobileBottomTabs = document.querySelectorAll('.mob-tab');
+    mobileBottomTabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.page === hash);
     });
 }
 
