@@ -368,6 +368,70 @@
             .sl-title { font-size: 1.7rem; }
         }
 
+        /* Phone-specific overrides */
+        @media (max-width: 768px) {
+            .sl-card {
+                border-radius: 14px;
+                border-color: rgba(255, 215, 0, 0.12);
+            }
+            .sl-slider {
+                height: 200px;
+                border-radius: 14px 14px 0 0;
+            }
+            .sl-slider::after { height: 80px; }
+            .sl-counter {
+                top: 12px; right: 12px;
+                font-size: 0.68rem;
+                padding: 4px 9px;
+            }
+            .sl-arr {
+                width: 32px; height: 44px;
+                font-size: 0.7rem;
+            }
+            .sl-arr-prev { left: 10px; }
+            .sl-arr-next { right: 10px; }
+            .sl-dots { bottom: 14px; gap: 5px; }
+            .sl-dot { height: 3px; width: 16px; }
+            .sl-dot.active { width: 32px; }
+            .sl-body {
+                grid-template-columns: 1fr;
+                padding: 20px 20px 24px;
+                gap: 0;
+            }
+            .sl-divider { display: none; }
+            .sl-left { padding-right: 0; margin-bottom: 20px; align-items: flex-start; }
+            .sl-right {
+                padding-left: 0;
+                padding-top: 16px;
+                border-top: 1px solid rgba(255, 215, 0, 0.1);
+            }
+            .sl-watermark { font-size: 2.4rem; margin-bottom: -14px; }
+            .sl-title-row { gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+            .sl-title { font-size: 1.2rem; letter-spacing: -0.3px; line-height: 1.2; word-wrap: break-word; }
+            .sl-live-badge { font-size: 0.6rem; padding: 3px 8px; letter-spacing: 1px; }
+            .sl-subtitle { font-size: 0.72rem; letter-spacing: 1.5px; margin-bottom: 12px; }
+            .sl-desc { font-size: 0.85rem; line-height: 1.7; max-width: none; margin-bottom: 20px; }
+            .sl-stack-label { font-size: 0.58rem; letter-spacing: 2.5px; margin-bottom: 8px; }
+            .sl-tech-item { padding: 4px 9px; border-radius: 6px; font-size: 0.7rem; gap: 5px; }
+            .sl-tech-item img { width: 13px; height: 13px; }
+            .sl-tech-item i { font-size: 0.8rem; }
+            .sl-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                width: auto;
+                padding: 14px 28px;
+                border-radius: 10px;
+                font-size: 0.78rem;
+                margin-top: 16px;
+                min-height: 48px;
+            }
+            .sl-tags { gap: 6px; margin-bottom: 0; }
+            .sl-tag { padding: 4px 11px; border-radius: 16px; font-size: 0.68rem; }
+            .showcase-wrapper { padding: 6px 0 40px; }
+        }
+
         /* ════════════════════════════════
            WHAT I DO — TILT GLASS CARDS
         ════════════════════════════════ */
@@ -550,6 +614,30 @@
                 grid-template-columns: 1fr;
                 gap: 16px;
             }
+        }
+
+        /* Phone-specific overrides */
+        @media (max-width: 768px) {
+            .wid-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                padding: 20px 0 16px;
+            }
+            .wid-card {
+                padding: 24px 20px 22px;
+                border-radius: 14px;
+            }
+            .wid-card::before { border-radius: 14px; }
+            .wid-top { margin-bottom: 16px; }
+            .wid-num { font-size: 0.65rem; letter-spacing: 2px; }
+            .wid-icon-wrap {
+                width: 42px; height: 42px;
+                border-radius: 10px;
+                font-size: 1rem;
+            }
+            .wid-title { font-size: 0.92rem; margin-bottom: 8px; }
+            .wid-desc { font-size: 0.84rem; line-height: 1.7; }
+            .wid-bar { border-radius: 0 0 14px 14px; }
         }
 
         /* ═══════════════════════════════════════

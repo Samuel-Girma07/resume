@@ -732,16 +732,17 @@ p.intro-text {
 }
 
 /* ============================================
-   MOBILE RESPONSIVE — VERSION C: HUD COMMAND
+   MOBILE RESPONSIVE — REDESIGNED FOR PHONES
    Only affects ≤768px. Desktop untouched.
    ============================================ */
 @media (max-width: 768px) {
   :root {
     --sidebar-width: 0px;
+    --mobile-px: 20px;
+    --mobile-card-radius: 14px;
   }
 
   /* ── HUD PARTICLE FIELD ──────────────────────────── */
-  /* Gold dot at origin + 12 shadow-clones scattered across screen */
   body::before {
     content: '';
     position: fixed;
@@ -777,16 +778,24 @@ p.intro-text {
 
   /* ── HAMBURGER: HUD BUTTON ──────────────────────── */
   .hamburger {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 200;
-    border: 1px solid rgba(255, 215, 0, 0.35) !important;
-    border-radius: 8px !important;
-    padding: 8px 13px !important;
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 215, 0, 0.3) !important;
+    border-radius: 12px !important;
+    padding: 0 !important;
     background: rgba(14, 14, 14, 0.92) !important;
     backdrop-filter: blur(8px);
-    font-size: 1.2rem !important;
-    box-shadow: 0 0 14px rgba(255, 215, 0, 0.08);
+    -webkit-backdrop-filter: blur(8px);
+    font-size: 1.1rem !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 215, 0, 0.06);
     cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   /* ── SIDEBAR: HUD OVERLAY ───────────────────────── */
@@ -813,7 +822,10 @@ p.intro-text {
     border-right: none;
     border-bottom: 1px solid rgba(255, 215, 0, 0.22) !important;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75), 0 1px 0 rgba(255, 215, 0, 0.12);
-    padding-top: 80px;
+    padding: 72px var(--mobile-px) 32px;
+    background: rgba(20, 20, 20, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .sidebar.active {
@@ -823,11 +835,56 @@ p.intro-text {
     pointer-events: auto;
   }
 
+  .sidebar h1 {
+    font-size: 1.3rem;
+  }
+
+  .sidebar .badge {
+    font-size: 0.78rem;
+    padding: 4px 12px;
+  }
+
+  .sidebar .contact-info li {
+    font-size: 0.82rem;
+    margin-bottom: 12px;
+  }
+
+  .sidebar .social-icons {
+    margin-top: 20px;
+    gap: 12px;
+  }
+
+  .sidebar .social-icons a {
+    width: 44px;
+    height: 44px;
+    font-size: 1.1rem;
+  }
+
+  .sidebar .btn-primary {
+    font-size: 0.85rem;
+    padding: 12px 24px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   /* ── RADAR RINGS: replace disabled OGL orb ──────── */
+  .profile-container {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 20px;
+  }
+
+  .profile-img {
+    width: 120px;
+    height: 120px;
+  }
+
   .profile-container::before {
     content: '';
     position: absolute;
-    inset: -22px;
+    inset: -18px;
     border-radius: 50%;
     border: 1px solid rgba(255, 215, 0, 0.16);
     pointer-events: none;
@@ -838,7 +895,7 @@ p.intro-text {
   .profile-container::after {
     content: '';
     position: absolute;
-    inset: -10px;
+    inset: -8px;
     border-radius: 50%;
     border: 1px solid rgba(255, 215, 0, 0.34);
     pointer-events: none;
@@ -851,25 +908,20 @@ p.intro-text {
     50%       { opacity: 1;    transform: scale(1.04); }
   }
 
-  /* Keep actual OGL canvas element hidden */
   .orb-canvas-container { display: none !important; }
 
   /* ── MAIN CONTENT ───────────────────────────────── */
-  /* top: 72px clears fixed hamburger (20px offset + ~42px height + 10px buffer)  */
-  /* right: 58px clears fixed HUD nav dots (10px margin + 34px wide + 14px buffer) */
   .main-content {
     margin-left: 0;
     width: 100%;
-    padding: 72px 58px 40px 20px;
+    padding: 68px var(--mobile-px) 40px var(--mobile-px);
     position: relative;
-    z-index: 2; /* above body::before particles (z:1) */
+    z-index: 2;
   }
 
   /* ── HIDE TOP NAVBAR ────────────────────────────── */
-  /* Navigation replaced by right-edge HUD dots */
   .navbar { display: none !important; }
 
-  /* Keep nav-link elements in DOM for JS state management */
   .nav-links {
     display: flex;
     align-items: center;
@@ -891,21 +943,20 @@ p.intro-text {
   .nav-indicator { display: none; }
 
   /* ── RIGHT-EDGE HUD NAVIGATION ──────────────────── */
-  /* Un-hide scroll-progress; restyle as vertical icon buttons */
   .scroll-progress {
     display: flex !important;
     opacity: 1;
-    right: 10px;
-    gap: 12px;
-    z-index: 149; /* behind open sidebar (150) */
+    right: 6px;
+    gap: 10px;
+    z-index: 149;
   }
 
   .scroll-progress-dot {
-    width: 34px !important;
-    height: 34px !important;
+    width: 28px !important;
+    height: 28px !important;
     border-radius: 50% !important;
-    background: rgba(14, 14, 14, 0.85) !important;
-    border: 1px solid rgba(255, 215, 0, 0.22) !important;
+    background: rgba(14, 14, 14, 0.8) !important;
+    border: 1px solid rgba(255, 215, 0, 0.18) !important;
     transform: none !important;
     box-shadow: none !important;
     animation: none !important;
@@ -913,35 +964,31 @@ p.intro-text {
     transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
   }
 
-  /* inner gold dot — reset all desktop inset/bg then place centered */
   .scroll-progress-dot::before {
     content: '' !important;
     position: absolute !important;
-    /* fully reset the desktop inset: -4px expansion */
     inset: 0 !important;
     top: 50% !important;
     left: 50% !important;
     right: auto !important;
     bottom: auto !important;
-    width: 6px !important;
-    height: 6px !important;
+    width: 5px !important;
+    height: 5px !important;
     border-radius: 50% !important;
-    background: rgba(255, 215, 0, 0.3) !important;
-    /* override desktop: background: rgba(255,215,0,0) */
+    background: rgba(255, 215, 0, 0.25) !important;
     transform: translate(-50%, -50%) !important;
     transition: all 0.3s ease !important;
   }
 
-  /* page label to the left (uses title attribute) */
   .scroll-progress-dot::after {
     content: attr(title);
     position: absolute;
-    right: calc(100% + 10px);
+    right: calc(100% + 8px);
     top: 50%;
     transform: translateY(-50%);
     font-family: 'Orbitron', sans-serif;
-    font-size: 8px;
-    letter-spacing: 2px;
+    font-size: 7px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     color: transparent;
     white-space: nowrap;
@@ -949,69 +996,82 @@ p.intro-text {
     pointer-events: none;
   }
 
-  /* active dot state */
   .scroll-progress-dot.active {
-    border-color: rgba(255, 215, 0, 0.65) !important;
-    background: rgba(255, 215, 0, 0.07) !important;
-    box-shadow: 0 0 14px rgba(255, 215, 0, 0.2) !important;
+    border-color: rgba(255, 215, 0, 0.55) !important;
+    background: rgba(255, 215, 0, 0.06) !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.15) !important;
     transform: none !important;
     animation: hudNavPulse 2.5s ease-in-out infinite !important;
   }
 
   .scroll-progress-dot.active::before {
     background: #FFD700 !important;
-    width: 8px !important;
-    height: 8px !important;
-    box-shadow: 0 0 6px rgba(255, 215, 0, 0.8) !important;
+    width: 7px !important;
+    height: 7px !important;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.7) !important;
   }
 
   .scroll-progress-dot.active::after {
-    color: rgba(255, 215, 0, 0.72);
+    color: rgba(255, 215, 0, 0.45);
+    font-size: 6px;
+    letter-spacing: 1px;
   }
 
   @keyframes hudNavPulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(255,215,0,0.15); }
-    50%       { box-shadow: 0 0 22px rgba(255,215,0,0.38); }
+    0%, 100% { box-shadow: 0 0 8px rgba(255,215,0,0.12); }
+    50%       { box-shadow: 0 0 16px rgba(255,215,0,0.3); }
   }
 
-  /* ── PAGE TITLE: CORNER BRACKETS ────────────────── */
+  /* ── PAGE TITLE ─────────────────────────────────── */
   .page-title {
-    font-size: 1.6rem;
+    font-size: 1.35rem;
     display: block;
-    padding: 8px 10px;
+    padding: 6px 8px;
     position: relative;
+    letter-spacing: 0.5px;
   }
 
-  /* top-left corner */
   .page-title::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-top: 2px solid var(--accent-color);
     border-left: 2px solid var(--accent-color);
     border-radius: 0;
     background: none;
   }
 
-  /* bottom-right corner (overrides desktop gold underline) */
   .page-title::after {
     content: '' !important;
     position: absolute !important;
     left: auto !important;
     right: 0 !important;
     bottom: 0 !important;
-    width: 14px !important;
-    height: 14px !important;
+    width: 12px !important;
+    height: 12px !important;
     background: none !important;
     border-radius: 0 !important;
     border-bottom: 2px solid var(--accent-color) !important;
     border-right: 2px solid var(--accent-color) !important;
   }
 
-  /* ── RE-ENABLE GOLD LINE SWEEP ──────────────────── */
+  /* ── TYPOGRAPHY ─────────────────────────────────── */
+  .section-title {
+    font-size: 1.15rem;
+    margin: 36px 0 20px;
+    letter-spacing: 0.3px;
+  }
+
+  p.intro-text {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    margin-top: 16px;
+  }
+
+  /* ── GOLD LINE SWEEP ────────────────────────────── */
   .page.active::before,
   .page.anim-enter-up::before,
   .page.anim-enter-down::before {
@@ -1019,54 +1079,51 @@ p.intro-text {
     animation: accentLineSweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
   }
 
-  /* ── HUD PAGE TRANSITIONS ───────────────────────── */
+  /* ── PAGE TRANSITIONS — performant mobile versions ─ */
   .page.active {
-    animation: hudEnterUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+    animation: mobileEnterUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
   }
   .page.anim-enter-up {
-    animation: hudEnterUp 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+    animation: mobileEnterUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
   }
   .page.anim-enter-down {
-    animation: hudEnterDown 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+    animation: mobileEnterDown 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
   }
   .page.anim-exit-up {
-    animation: hudExitUp 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards !important;
+    animation: mobileExitUp 0.25s cubic-bezier(0.55, 0, 1, 0.45) forwards !important;
   }
   .page.anim-exit-down {
-    animation: hudExitDown 0.3s cubic-bezier(0.55, 0, 1, 0.45) forwards !important;
+    animation: mobileExitDown 0.25s cubic-bezier(0.55, 0, 1, 0.45) forwards !important;
   }
 
-  @keyframes hudEnterUp {
-    0%   { opacity: 0; transform: translateY(24px) skewY(0.6deg); filter: blur(4px) brightness(0.7); }
-    55%  { filter: blur(0) brightness(1); }
-    100% { opacity: 1; transform: translateY(0) skewY(0); filter: blur(0) brightness(1); }
+  @keyframes mobileEnterUp {
+    0%   { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes hudEnterDown {
-    0%   { opacity: 0; transform: translateY(-24px) skewY(-0.6deg); filter: blur(4px) brightness(0.7); }
-    55%  { filter: blur(0) brightness(1); }
-    100% { opacity: 1; transform: translateY(0) skewY(0); filter: blur(0) brightness(1); }
+  @keyframes mobileEnterDown {
+    0%   { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes hudExitUp {
-    0%   { opacity: 1; transform: translateY(0) skewY(0); filter: blur(0); }
-    100% { opacity: 0; transform: translateY(-18px) skewY(-0.5deg); filter: blur(2px); }
+  @keyframes mobileExitUp {
+    0%   { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-16px); }
   }
 
-  @keyframes hudExitDown {
-    0%   { opacity: 1; transform: translateY(0) skewY(0); filter: blur(0); }
-    100% { opacity: 0; transform: translateY(18px) skewY(0.5deg); filter: blur(2px); }
+  @keyframes mobileExitDown {
+    0%   { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(16px); }
   }
 
-  /* ── RE-ENABLE PAGE TITLE STAGGER ───────────────── */
+  /* ── PAGE TITLE STAGGER ─────────────────────────── */
   .page.active .page-title,
   .page.anim-enter-up .page-title,
   .page.anim-enter-down .page-title {
-    animation: childSlideReveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both !important;
+    animation: childSlideReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both !important;
   }
 
-  /* ── DISABLE REMAINING HEAVY CHILD ANIMATIONS ───── */
-  /* (GPU-intensive stagger chains kept off on mobile) */
+  /* ── DISABLE HEAVY CHILD ANIMATIONS ─────────────── */
   .page.active .intro-text,
   .page.anim-enter-up .intro-text,
   .page.anim-enter-down .intro-text,
@@ -1094,8 +1151,7 @@ p.intro-text {
     filter: none !important;
   }
 
-  /* ── RE-ENABLE MARQUEE ANIMATIONS ───────────────── */
-  /* Slower speeds suit touch browsing */
+  /* ── MARQUEE ANIMATIONS ─────────────────────────── */
   .skills-marquee-content {
     animation: scroll 40s linear infinite !important;
   }
@@ -1104,31 +1160,395 @@ p.intro-text {
     animation: scroll 25s linear infinite !important;
   }
 
-  /* ── RE-ENABLE LIVE DOT PULSE ────────────────────── */
   .sl-live-dot {
     animation: livePulse 1.8s ease-in-out infinite !important;
   }
 
-  /* ── MISC ───────────────────────────────────────── */
-  .timeline { padding-left: 20px; }
+  /* ── WHAT I DO CARDS — mobile polish ────────────── */
+  .wid-card {
+    transform: none !important;
+    padding: 24px 20px 22px;
+    border-radius: var(--mobile-card-radius);
+  }
 
-  /* prevent JS-set 3D inline transforms lingering on mobile */
-  .wid-card { transform: none !important; }
+  .wid-card::before {
+    border-radius: var(--mobile-card-radius);
+  }
+
+  .wid-top {
+    margin-bottom: 16px;
+  }
+
+  .wid-icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    font-size: 1rem;
+  }
+
+  .wid-title {
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+  }
+
+  .wid-desc {
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+
+  /* ── PORTFOLIO CARDS — full mobile redesign ─────── */
+  .showcase-wrapper {
+    padding: 6px 0 40px;
+  }
+
+  .sl-card {
+    border-radius: var(--mobile-card-radius);
+  }
+
+  .sl-slider {
+    height: 200px;
+    border-radius: var(--mobile-card-radius) var(--mobile-card-radius) 0 0;
+  }
+
+  .sl-slider::after {
+    height: 80px;
+  }
+
+  .sl-counter {
+    top: 12px;
+    right: 12px;
+    font-size: 0.68rem;
+    padding: 4px 9px;
+  }
+
+  .sl-arr {
+    width: 32px;
+    height: 44px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+  }
+
+  .sl-arr-prev { left: 10px; }
+  .sl-arr-next { right: 10px; }
+
+  .sl-dots {
+    bottom: 14px;
+    gap: 5px;
+  }
+
+  .sl-dot {
+    height: 3px;
+    width: 16px;
+  }
+
+  .sl-dot.active {
+    width: 32px;
+  }
+
+  .sl-body {
+    grid-template-columns: 1fr;
+    padding: 20px var(--mobile-px) 24px;
+    gap: 0;
+  }
+
+  .sl-divider {
+    display: none;
+  }
+
+  .sl-left {
+    padding-right: 0;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+
+  .sl-right {
+    padding-left: 0;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 215, 0, 0.1);
+  }
+
+  .sl-watermark {
+    font-size: 2.4rem;
+    margin-bottom: -14px;
+  }
+
+  .sl-title-row {
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .sl-title {
+    font-size: 1.2rem;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    word-wrap: break-word;
+  }
+
+  .sl-live-badge {
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    letter-spacing: 1px;
+  }
+
+  .sl-subtitle {
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .sl-desc {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    max-width: none;
+    margin-bottom: 20px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  .sl-stack-label {
+    font-size: 0.58rem;
+    letter-spacing: 2.5px;
+    margin-bottom: 8px;
+  }
+
+  .sl-tech-marquee {
+    margin-bottom: 4px;
+  }
+
+  .sl-tech-item {
+    padding: 4px 9px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    gap: 5px;
+  }
+
+  .sl-tech-item img {
+    width: 13px;
+    height: 13px;
+  }
+
+  .sl-tech-item i {
+    font-size: 0.8rem;
+  }
+
+  .sl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: auto;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    margin-top: 16px;
+    min-height: 48px;
+  }
+
+  .sl-tags {
+    gap: 6px;
+    margin-bottom: 0;
+  }
+
+  .sl-tag {
+    padding: 4px 11px;
+    border-radius: 16px;
+    font-size: 0.68rem;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── TIMELINE — mobile refinement ───────────────── */
+  .timeline {
+    padding-left: 18px;
+    margin-left: 6px;
+  }
+
+  .timeline-item {
+    margin-bottom: 32px;
+  }
+
+  .timeline-item::before {
+    left: -25px;
+    width: 10px;
+    height: 10px;
+  }
+
+  .timeline-date {
+    font-size: 0.72rem;
+    letter-spacing: 0.8px;
+  }
+
+  .timeline-title {
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+  }
+
+  .timeline-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+  }
+
+  .timeline-item p:last-child {
+    font-size: 0.84rem;
+    line-height: 1.65;
+  }
+
+  /* ── SKILLS MARQUEE — mobile sizing ─────────────── */
+  .skills-marquee-container {
+    padding: 14px 0;
+  }
+
+  .skill-item {
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    gap: 8px;
+  }
+
+  .skill-item i {
+    font-size: 1.2rem;
+  }
+
+  /* ── CONTACT FORM — touch-optimized ─────────────── */
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .form-group label {
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+  }
+
+  .form-control {
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    border-radius: 10px;
+    min-height: 48px;
+  }
+
+  textarea.form-control {
+    min-height: 120px;
+  }
+
+  .btn {
+    min-height: 48px;
+    padding: 14px 28px;
+    font-size: 0.88rem;
+    border-radius: 30px;
+  }
+
+  .btn-primary {
+    min-height: 48px;
+  }
+
+  #contact .btn-primary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 28px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
+
+  /* ── MAP — mobile ───────────────────────────────── */
+  .map-container {
+    height: 220px;
+    margin-top: 32px;
+    border-radius: var(--mobile-card-radius);
+  }
+
+  /* ── PAGE CONTAINER SPACING ─────────────────────── */
+  #page-container {
+    margin-top: 4px;
+    padding-top: 4px;
+  }
+
+  /* ── CARDS GRID — mobile (What I Do) ────────────── */
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .card {
+    height: auto;
+    min-height: 200px;
+  }
+
+  .card::before,
+  .card::after {
+    display: none;
+  }
+
+  .card .card-anim {
+    display: none;
+  }
+
+  .card .content {
+    width: 100%;
+    padding: 20px;
+    border-radius: var(--mobile-card-radius);
+  }
+
+  .card .content h3 {
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+  }
+
+  .card .content p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .card .icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .card .content .btn {
+    padding: 10px 20px;
+    font-size: 0.84rem;
+    min-height: 44px;
+  }
 
   /* WebGL fluid canvas — too heavy for mobile GPU */
   #fluid { display: none !important; }
 
-  /* tighten top spacing now that navbar is hidden */
-  #page-container { margin-top: 8px; padding-top: 8px; }
+  /* ── SCROLL REVEAL — faster on mobile ───────────── */
+  .card,
+  .timeline-item {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
 
   /* ── MOBILE FOOTER ──────────────────────────────── */
   .footer {
     margin-left: 0;
     width: 100%;
-    padding: 20px;
+    padding: 24px var(--mobile-px);
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
     text-align: center;
+  }
+
+  .footer p {
+    font-size: 0.8rem;
+  }
+
+  .back-to-top {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* ── TAG STYLING — mobile ───────────────────────── */
+  .tag {
+    padding: 4px 10px;
+    font-size: 0.7rem;
   }
 }
 
