@@ -22,7 +22,8 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* ════════════════════════════════════════
@@ -550,6 +551,9 @@
             .wid-grid {
                 grid-template-columns: 1fr;
                 gap: 16px;
+                /* Rebalance vertical rhythm: tighter top (section title
+                   is already close), breathing room before next section. */
+                padding: 14px 0 16px;
             }
         }
 
@@ -936,11 +940,45 @@
     <div id="cursor-dot"></div>
     <div id="cursor-ring"></div>
 
-    <button class="hamburger" aria-label="Toggle Menu">
+    <!-- Mobile HUD Status Strip: section name + clock only. Hidden on desktop. -->
+    <div class="hud-strip" aria-hidden="true">
+        <div class="hud-strip-cell hud-strip-center">
+            <span class="hud-strip-section" id="hud-section-name">ABOUT</span>
+        </div>
+        <div class="hud-strip-cell hud-strip-right">
+            <span class="hud-strip-label hud-strip-time" id="hud-clock">--:--</span>
+        </div>
+        <div class="hud-strip-progress" id="hud-strip-progress"></div>
+    </div>
+
+    <button class="hamburger" aria-label="Open profile panel" aria-expanded="false" aria-controls="sidebar">
         <i class="fas fa-bars"></i>
     </button>
 
-    <aside class="sidebar">
+    <!-- Mobile Bottom Dock: thumb-reachable primary nav. Icons + labels with a
+         sliding gold indicator. Page navigation on mobile happens here; the
+         hamburger becomes a profile panel trigger. Desktop hides this block. -->
+    <nav class="dock" aria-label="Primary navigation">
+        <div class="dock-indicator" aria-hidden="true"></div>
+        <a href="#about" class="dock-item mobile-nav-link active" data-page="about">
+            <span class="dock-icon" aria-hidden="true"><i class="fas fa-user-astronaut"></i></span>
+            <span class="dock-label">About</span>
+        </a>
+        <a href="#resume" class="dock-item mobile-nav-link" data-page="resume">
+            <span class="dock-icon" aria-hidden="true"><i class="fas fa-terminal"></i></span>
+            <span class="dock-label">Resume</span>
+        </a>
+        <a href="#projects" class="dock-item mobile-nav-link" data-page="projects">
+            <span class="dock-icon" aria-hidden="true"><i class="fas fa-cube"></i></span>
+            <span class="dock-label">Work</span>
+        </a>
+        <a href="#contact" class="dock-item mobile-nav-link" data-page="contact">
+            <span class="dock-icon" aria-hidden="true"><i class="fas fa-satellite-dish"></i></span>
+            <span class="dock-label">Contact</span>
+        </a>
+    </nav>
+
+    <aside class="sidebar" id="sidebar" aria-label="Profile panel">
         <div class="profile-container">
             <div id="profile-orb" class="orb-canvas-container"></div>
             <img src="PHOTO.jpg" alt="Samuel Girma" class="profile-img" loading="lazy">
@@ -996,9 +1034,10 @@
                     about creating beautiful, functional digital experiences. I blend technical skills with creative
                     design to build engaging solutions.
                 </p>
+
                 <h3 class="section-title">What I Do</h3>
                 <div class="wid-grid">
-                    <div class="wid-card" data-index="01">
+                    <div class="wid-card wid-card-featured" data-index="01">
                         <div class="wid-shine"></div>
                         <div class="wid-top">
                             <span class="wid-num">01</span>
@@ -1008,6 +1047,11 @@
                         </div>
                         <h3 class="wid-title">Web Development</h3>
                         <p class="wid-desc">Responsive websites using HTML5, CSS3, & Modern Design principles to create seamless user experiences.</p>
+                        <div class="wid-tags" aria-hidden="true">
+                            <span class="wid-tag">Next.js</span>
+                            <span class="wid-tag">TypeScript</span>
+                            <span class="wid-tag">Tailwind</span>
+                        </div>
                         <div class="wid-bar"></div>
                     </div>
                     <div class="wid-card" data-index="02">
@@ -1020,6 +1064,10 @@
                         </div>
                         <h3 class="wid-title">Data Analysis</h3>
                         <p class="wid-desc">Data scraping & cleaning using Python & Octoparse to turn raw data into actionable insights.</p>
+                        <div class="wid-tags" aria-hidden="true">
+                            <span class="wid-tag">Python</span>
+                            <span class="wid-tag">SQL</span>
+                        </div>
                         <div class="wid-bar"></div>
                     </div>
                     <div class="wid-card" data-index="03">
@@ -1032,6 +1080,10 @@
                         </div>
                         <h3 class="wid-title">Graphic Design</h3>
                         <p class="wid-desc">Visual identities & branding using Figma & Adobe Suite to communicate efficient visual stories.</p>
+                        <div class="wid-tags" aria-hidden="true">
+                            <span class="wid-tag">Figma</span>
+                            <span class="wid-tag">Illustrator</span>
+                        </div>
                         <div class="wid-bar"></div>
                     </div>
                 </div>
@@ -1042,6 +1094,19 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
                     <h2 class="page-title">Resume</h2>
                 </div>
+
+                <!-- Terminal-style CLI readout: compact HUD summary before the timelines. -->
+                <div class="cli-readout" aria-label="Resume summary">
+                    <div class="cli-row">
+                        <span class="cli-key">$ role</span>
+                        <span class="cli-value">CS Student &mdash; Y3</span>
+                    </div>
+                    <div class="cli-row">
+                        <span class="cli-key">$ stack</span>
+                        <span class="cli-value">Next.js / Python / Figma</span>
+                    </div>
+                </div>
+
                 <h3 class="section-title"><i class="fas fa-graduation-cap" style="color:var(--accent-color);margin-right:10px;"></i> Education</h3>
                 <div class="timeline">
                     <div class="timeline-item"><span class="timeline-date">2022 - Present</span><h4 class="timeline-title">BSc Computer Science</h4><p class="timeline-subtitle">American College of Technology</p><p>Focusing on software development, algorithms, and data structures.</p></div>
@@ -1137,9 +1202,13 @@
                                 <div class="sl-watermark">SL</div>
                                 <div class="sl-title-row">
                                     <h3 class="sl-title">StudyLens</h3>
-                                    <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
                                 </div>
                                 <p class="sl-subtitle">AI-Powered Resource Platform</p>
+                                <!-- HUD metrics row: year + tech count. -->
+                                <ul class="sl-metrics" aria-hidden="true">
+                                    <li class="sl-metric"><i class="fas fa-calendar"></i><span>2024</span></li>
+                                    <li class="sl-metric"><i class="fas fa-microchip"></i><span>14 stack</span></li>
+                                </ul>
                                 <p class="sl-desc">
                                     A full-stack study platform where students discover, organize, and retain learning
                                     materials through intelligent AI search, spaced repetition algorithms, and
@@ -1223,9 +1292,12 @@
                                 <div class="sl-watermark">TE</div>
                                 <div class="sl-title-row">
                                     <h3 class="sl-title">TechShop Ethiopia</h3>
-                                    <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
                                 </div>
                                 <p class="sl-subtitle">E-Commerce Platform</p>
+                                <ul class="sl-metrics" aria-hidden="true">
+                                    <li class="sl-metric"><i class="fas fa-calendar"></i><span>2023</span></li>
+                                    <li class="sl-metric"><i class="fas fa-microchip"></i><span>11 stack</span></li>
+                                </ul>
                                 <p class="sl-desc">A full-featured Ethiopian tech e-commerce platform with dynamic product listings, shopping cart, user authentication, order management, and an admin dashboard — all built with native PHP and a fully custom MySQL backend.</p>
                                 <p class="sl-stack-label">Tech Stack</p>
                                 <div class="sl-tech-marquee">
@@ -1291,9 +1363,12 @@
                                 <div class="sl-watermark">PF</div>
                                 <div class="sl-title-row">
                                     <h3 class="sl-title">Personal Portfolio</h3>
-                                    <span class="sl-live-badge"><span class="sl-live-dot"></span>Live</span>
                                 </div>
                                 <p class="sl-subtitle">Interactive Developer Portfolio</p>
+                                <ul class="sl-metrics" aria-hidden="true">
+                                    <li class="sl-metric"><i class="fas fa-calendar"></i><span>2025</span></li>
+                                    <li class="sl-metric"><i class="fas fa-microchip"></i><span>6 stack</span></li>
+                                </ul>
                                 <p class="sl-desc">A dynamic and interactive personal portfolio featuring modern web design, seamless page transitions, an integrated background fluid simulation, custom magnetic cursor effects, and fully responsive project showcases.</p>
                                 <p class="sl-stack-label">Tech Stack</p>
                                 <div class="sl-tech-marquee">
@@ -1332,21 +1407,73 @@
             <section id="contact" class="page">
                 <h2 class="page-title">Contact Me</h2>
                 <br><br>
-                <form action="#" method="POST">
-                    <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" name="name" class="form-control" placeholder="John Doe" autocomplete="name" required></div>
-                    <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" autocomplete="email" required></div>
-                    <div class="form-group"><label for="message">Your Message</label><textarea id="message" name="message" class="form-control" rows="5" placeholder="Let's work together..." required></textarea></div>
-                    <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane" style="margin-left:5px;"></i></button>
+
+                <!-- Tappable method cards: three one-tap paths (email / call / map)
+                     before the visitor commits to the form. -->
+                <ul class="contact-methods" aria-label="Contact methods">
+                    <li>
+                        <a class="method-card" href="mailto:samuelgrma07@gmail.com" aria-label="Email Samuel Girma">
+                            <span class="method-icon"><i class="fas fa-envelope"></i></span>
+                            <span class="method-body">
+                                <span class="method-label">Email</span>
+                                <span class="method-value">samuelgrma07@gmail.com</span>
+                            </span>
+                            <span class="method-chevron" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="method-card" href="tel:+251948998804" aria-label="Call Samuel Girma">
+                            <span class="method-icon"><i class="fas fa-phone"></i></span>
+                            <span class="method-body">
+                                <span class="method-label">Phone</span>
+                                <span class="method-value">+251 948 998 804</span>
+                            </span>
+                            <span class="method-chevron" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="method-card" href="https://www.google.com/maps/place/Addis+Ababa" target="_blank" rel="noopener noreferrer" aria-label="Open Addis Ababa in Maps">
+                            <span class="method-icon"><i class="fas fa-map-marker-alt"></i></span>
+                            <span class="method-body">
+                                <span class="method-label">Location</span>
+                                <span class="method-value">Addis Ababa, Ethiopia</span>
+                            </span>
+                            <span class="method-chevron" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="form-divider" aria-hidden="true"><span>or drop a message</span></div>
+
+                <form class="contact-form" action="#" method="POST">
+                    <div class="form-group float-label"><input type="text" id="name" name="name" class="form-control" placeholder=" " autocomplete="name" required><label for="name">Full Name</label></div>
+                    <div class="form-group float-label"><input type="email" id="email" name="email" class="form-control" placeholder=" " autocomplete="email" required><label for="email">Email Address</label></div>
+                    <div class="form-group float-label"><textarea id="message" name="message" class="form-control" rows="5" placeholder=" " required></textarea><label for="message">Your Message</label></div>
+                    <button type="submit" class="btn btn-primary form-submit">
+                        <span class="form-submit-label">Send Message</span>
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                    </button>
                 </form>
             </section>
 
         </div>
 
         <footer class="footer">
-            <p>&copy; Samuel Girma 2026. All rights reserved.</p>
-            <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-                <i class="fas fa-arrow-up"></i>
-            </button>
+            <div class="footer-main">
+                <p>&copy; Samuel Girma 2026. All rights reserved.</p>
+                <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+            <!-- HUD meta row: system version + keyboard shortcuts hint. Mono font
+                 gives it a cockpit-readout feel without shouting. -->
+            <div class="footer-meta" aria-hidden="true">
+                <span class="footer-kbd"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                <span class="footer-sep">·</span>
+                <span class="footer-kbd"><kbd>Esc</kbd> close</span>
+                <span class="footer-sep">·</span>
+                <span class="footer-version">SYS v2.1</span>
+            </div>
         </footer>
 
         <!-- Scroll Progress Indicator -->
@@ -1394,63 +1521,59 @@
         })();
 
         /* ═══════════════════════════════════════════════════════
-           EXISTING: SPA PROJECTS SLIDER
+           SPA PROJECTS SLIDERS (x3, shared implementation)
+           - Auto-advance pauses when the Projects page isn't active
+             or when the browser tab is hidden (battery savings).
+           - Mobile touch swipe advances slides (≥40px horizontal,
+             dominant axis check avoids hijacking vertical scroll).
         ═══════════════════════════════════════════════════════ */
         (function () {
-            let cur = 0;
-            const total = 3;
-            const track = document.getElementById('slTrackSPA');
-            const numEl  = document.getElementById('slNumSPA');
-            const dots   = document.querySelectorAll('#spaSlDots .sl-dot');
-            function update() {
-                if (!track) return;
-                track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-                numEl.textContent = String(cur + 1).padStart(2, '0');
-                dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
-            }
-            window.spaSlChange = function (dir) { cur = (cur + dir + total) % total; update(); };
-            window.spaSlGo    = function (idx)  { cur = idx; update(); };
-            setInterval(function () { spaSlChange(1); }, 4500);
-        })();
+            function makeSlider(cfg) {
+                let cur = 0;
+                const total = 3;
+                const track = document.getElementById(cfg.trackId);
+                const numEl = document.getElementById(cfg.numId);
+                const dots = document.querySelectorAll(cfg.dotsSel);
+                const slider = track ? track.closest('.sl-slider') : null;
 
-        /* ═══════════════════════════════════════════════════════
-           FEATURE: SPA PROJECTS SLIDER 2 (TechShop Ethiopia)
-        ═══════════════════════════════════════════════════════ */
-        (function () {
-            let cur = 0;
-            const total = 3;
-            const track = document.getElementById('slTrackSPA2');
-            const numEl  = document.getElementById('slNumSPA2');
-            const dots   = document.querySelectorAll('#spaSlDots2 .sl-dot');
-            function update() {
-                if (!track) return;
-                track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-                numEl.textContent = String(cur + 1).padStart(2, '0');
-                dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
-            }
-            window.spaSlChange2 = function (dir) { cur = (cur + dir + total) % total; update(); };
-            window.spaSlGo2    = function (idx)  { cur = idx; update(); };
-            setInterval(function () { spaSlChange2(1); }, 4500);
-        })();
+                function update() {
+                    if (!track) return;
+                    track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+                    if (numEl) numEl.textContent = String(cur + 1).padStart(2, '0');
+                    dots.forEach(function (d, i) { d.classList.toggle('active', i === cur); });
+                }
 
-        /* ═══════════════════════════════════════════════════════
-           FEATURE: SPA PROJECTS SLIDER 3 (Personal Portfolio)
-        ═══════════════════════════════════════════════════════ */
-        (function () {
-            let cur = 0;
-            const total = 3;
-            const track = document.getElementById('slTrackSPA3');
-            const numEl  = document.getElementById('slNumSPA3');
-            const dots   = document.querySelectorAll('#spaSlDots3 .sl-dot');
-            function update() {
-                if (!track) return;
-                track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-                numEl.textContent = String(cur + 1).padStart(2, '0');
-                dots.forEach(function(d, i) { d.classList.toggle('active', i === cur); });
+                window[cfg.changeFn] = function (dir) { cur = (cur + dir + total) % total; update(); };
+                window[cfg.goFn]     = function (idx) { cur = idx; update(); };
+
+                setInterval(function () {
+                    if (document.hidden) return;
+                    if (!document.querySelector('#projects.page.active')) return;
+                    window[cfg.changeFn](1);
+                }, 4500);
+
+                if (slider) {
+                    let sX = 0, sY = 0, sT = 0;
+                    slider.addEventListener('touchstart', function (e) {
+                        sX = e.touches[0].clientX;
+                        sY = e.touches[0].clientY;
+                        sT = Date.now();
+                    }, { passive: true });
+                    slider.addEventListener('touchend', function (e) {
+                        const dx = e.changedTouches[0].clientX - sX;
+                        const dy = e.changedTouches[0].clientY - sY;
+                        const dt = Date.now() - sT;
+                        if (dt > 600) return;                         // too slow to be a swipe
+                        if (Math.abs(dx) < 40) return;                // below swipe threshold
+                        if (Math.abs(dx) < Math.abs(dy) * 1.2) return;// mostly vertical — let page scroll
+                        window[cfg.changeFn](dx < 0 ? 1 : -1);
+                    }, { passive: true });
+                }
             }
-            window.spaSlChange3 = function (dir) { cur = (cur + dir + total) % total; update(); };
-            window.spaSlGo3    = function (idx)  { cur = idx; update(); };
-            setInterval(function () { spaSlChange3(1); }, 4500);
+
+            makeSlider({ trackId: 'slTrackSPA',  numId: 'slNumSPA',  dotsSel: '#spaSlDots .sl-dot',  changeFn: 'spaSlChange',  goFn: 'spaSlGo'  });
+            makeSlider({ trackId: 'slTrackSPA2', numId: 'slNumSPA2', dotsSel: '#spaSlDots2 .sl-dot', changeFn: 'spaSlChange2', goFn: 'spaSlGo2' });
+            makeSlider({ trackId: 'slTrackSPA3', numId: 'slNumSPA3', dotsSel: '#spaSlDots3 .sl-dot', changeFn: 'spaSlChange3', goFn: 'spaSlGo3' });
         })();
 
         /* ═══════════════════════════════════════════════════════
@@ -1676,6 +1799,193 @@
                 requestAnimationFrame(tick);
             }
             tick();
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           MOBILE HUD REDESIGN — clock, section sync, progress bar,
+           dock indicator, stats counter, skill meters, haptics
+           ═══════════════════════════════════════════════════════ */
+
+        /* Reveal HUD strip + dock once assets are in — avoids a flash
+           during the 800ms loader. */
+        window.addEventListener('load', function () {
+            setTimeout(function () { document.body.classList.add('assets-loaded'); }, 850);
+        });
+
+        /* — Live clock (HH:MM) — updates once per minute, edge-synced so the
+           minute ticks over exactly when it changes, not on a drift. */
+        (function initClock() {
+            var el = document.getElementById('hud-clock');
+            if (!el) return;
+            function render() {
+                var d = new Date();
+                var hh = String(d.getHours()).padStart(2, '0');
+                var mm = String(d.getMinutes()).padStart(2, '0');
+                el.textContent = hh + ':' + mm;
+            }
+            render();
+            // Align next tick to the next minute boundary
+            var msUntilNextMin = (60 - new Date().getSeconds()) * 1000 + 50;
+            setTimeout(function loop() {
+                render();
+                setTimeout(loop, 60 * 1000);
+            }, msUntilNextMin);
+        })();
+
+        /* — Sync HUD section name with active page. Observes `.page.active`
+           class changes and updates the strip label accordingly. */
+        (function initSectionSync() {
+            var label = document.getElementById('hud-section-name');
+            if (!label) return;
+            function sync() {
+                var active = document.querySelector('.page.active');
+                if (active) label.textContent = (active.id || '').toUpperCase();
+            }
+            sync();
+            document.querySelectorAll('.page').forEach(function (p) {
+                new MutationObserver(sync).observe(p, { attributes: true, attributeFilter: ['class'] });
+            });
+        })();
+
+        /* — HUD strip scroll-progress sliver. scaleX the pseudo-bar based on
+           .main-content scroll within the active page. rAF throttled. */
+        (function initScrollProgress() {
+            var main = document.querySelector('.main-content');
+            var bar = document.getElementById('hud-strip-progress');
+            if (!main || !bar) return;
+            var ticking = false;
+            function render() {
+                ticking = false;
+                var scrollTop = main.scrollTop;
+                var scrollHeight = main.scrollHeight - main.clientHeight;
+                var ratio = scrollHeight > 0 ? Math.min(1, Math.max(0, scrollTop / scrollHeight)) : 0;
+                bar.style.setProperty('--hud-progress-scale', ratio.toFixed(4));
+            }
+            main.addEventListener('scroll', function () {
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(render);
+                }
+            }, { passive: true });
+            render();
+            // Also re-render on page transitions since content height changes
+            document.querySelectorAll('.page').forEach(function (p) {
+                new MutationObserver(function () {
+                    requestAnimationFrame(render);
+                }).observe(p, { attributes: true, attributeFilter: ['class'] });
+            });
+        })();
+
+        /* — Dock indicator: slide the pill to whichever dock-item is active.
+           Uses a CSS variable so the slide is GPU-composited. */
+        (function initDockIndicator() {
+            var dock = document.querySelector('.dock');
+            if (!dock) return;
+            var items = dock.querySelectorAll('.dock-item');
+
+            function syncIndicator() {
+                var activeIdx = Array.prototype.findIndex.call(items, function (el) {
+                    return el.classList.contains('active');
+                });
+                if (activeIdx < 0) activeIdx = 0;
+                var dockWidth = dock.clientWidth - 12; // minus 6px padding each side
+                var itemWidth = dockWidth / items.length;
+                dock.style.setProperty('--dock-indicator-x', (activeIdx * itemWidth) + 'px');
+            }
+
+            /* Observe the active page and mirror to dock items — simpler than
+               listening to nav events since `.page.active` is the single source
+               of truth in the existing SPA router. */
+            function syncFromPage() {
+                var active = document.querySelector('.page.active');
+                if (!active) return;
+                items.forEach(function (el) {
+                    el.classList.toggle('active', el.dataset.page === active.id);
+                });
+                syncIndicator();
+            }
+            syncFromPage();
+            document.querySelectorAll('.page').forEach(function (p) {
+                new MutationObserver(syncFromPage).observe(p, { attributes: true, attributeFilter: ['class'] });
+            });
+            window.addEventListener('resize', syncIndicator);
+        })();
+
+        /* — Stats counter: animate [data-count] from 0 to target on
+           scroll-into-view. Single-shot per element, skipped entirely
+           for prefers-reduced-motion users. */
+        (function initStatsCounter() {
+            var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var nodes = document.querySelectorAll('[data-count]');
+            if (!nodes.length) return;
+
+            function animate(el) {
+                var target = parseInt(el.dataset.count, 10) || 0;
+                var suffix = el.dataset.suffix || '';
+                if (prefersReduced) { el.textContent = target + suffix; return; }
+                var duration = 1100;
+                var startTime = performance.now();
+                (function step(now) {
+                    var t = Math.min(1, (now - startTime) / duration);
+                    // ease-out quart
+                    var eased = 1 - Math.pow(1 - t, 4);
+                    el.textContent = Math.round(target * eased) + suffix;
+                    if (t < 1) requestAnimationFrame(step);
+                })(startTime);
+            }
+
+            var main = document.querySelector('.main-content');
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && !entry.target.dataset.countDone) {
+                        entry.target.dataset.countDone = '1';
+                        animate(entry.target);
+                    }
+                });
+            }, { root: main || null, threshold: 0.5 });
+
+            nodes.forEach(function (el) { io.observe(el); });
+        })();
+
+        /* — Skill meter fill: kick the width from 0 → [data-skill]% the
+           first time the parent WID card becomes visible. */
+        (function initSkillMeter() {
+            var cards = document.querySelectorAll('.wid-card[data-skill]');
+            if (!cards.length) return;
+            var main = document.querySelector('.main-content');
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    var card = entry.target;
+                    if (card.dataset.skillAnimated) return;
+                    card.dataset.skillAnimated = '1';
+                    var pct = parseInt(card.dataset.skill, 10) || 0;
+                    var fill = card.querySelector('.wid-meter-fill');
+                    if (fill) {
+                        // Delay slightly so it reads as "filling up" after card lands
+                        setTimeout(function () { fill.style.width = pct + '%'; }, 320);
+                    }
+                });
+            }, { root: main || null, threshold: 0.35 });
+            cards.forEach(function (c) { io.observe(c); });
+        })();
+
+        /* — Haptic feedback on mobile tap (opt-in: Android/Chrome supports
+           navigator.vibrate). No-op on iOS and reduced-motion users. */
+        (function initHaptics() {
+            if (!('vibrate' in navigator)) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            var targets = ['.dock-item', '.method-card', '.wid-card', '.sl-arr', '.sl-dot', '.hamburger', '.btn.btn-primary'];
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest) return;
+                for (var i = 0; i < targets.length; i++) {
+                    if (e.target.closest(targets[i])) {
+                        try { navigator.vibrate(8); } catch (_) {}
+                        return;
+                    }
+                }
+            }, { passive: true });
         })();
 
     </script>

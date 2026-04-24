@@ -10,6 +10,17 @@
   --sidebar-width: 25%;
   --border-radius: 20px;
   --transition: all 0.3s ease;
+
+  /* HUD design tokens — keep gold as hero, add sparing secondary accents
+     so status indicators (live/active) read as distinct without stealing
+     attention from the brand colour. */
+  --accent-live: #22C55E;        /* live / online pulse */
+  --accent-info: #38BDF8;        /* informational data / cyan HUD */
+  --accent-warn: #F59E0B;        /* caution / progress */
+  --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --hud-surface: rgba(18, 18, 18, 0.72);
+  --hud-border: rgba(255, 215, 0, 0.18);
+  --hud-border-strong: rgba(255, 215, 0, 0.38);
 }
 
 /* Custom Scrollbar */
@@ -1162,8 +1173,8 @@ p.intro-text {
     width: 46px;
     height: 46px;
     padding: 0 !important;
-    top: 14px;
-    right: 14px;
+    top: max(14px, env(safe-area-inset-top));
+    right: max(14px, env(safe-area-inset-right));
     z-index: 220;
     border: 1px solid rgba(255, 215, 0, 0.24) !important;
     border-radius: 14px !important;
@@ -1174,6 +1185,7 @@ p.intro-text {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+    touch-action: manipulation;
   }
 
   .hamburger:active {
@@ -1185,7 +1197,11 @@ p.intro-text {
     height: auto;
     max-height: min(100dvh, 100vh);
     overflow-y: auto;
-    padding: 78px 18px 24px;
+    padding:
+      calc(78px + env(safe-area-inset-top))
+      max(18px, env(safe-area-inset-right))
+      calc(24px + env(safe-area-inset-bottom))
+      max(18px, env(safe-area-inset-left));
     align-items: stretch;
     justify-content: flex-start;
     text-align: left;
@@ -1288,22 +1304,45 @@ p.intro-text {
   }
 
   .mobile-nav-links a:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
+    border-color: rgba(255, 215, 0, 0.5);
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--accent-color);
   }
 
   .contact-info li {
     align-items: flex-start;
-    margin-bottom: 14px;
+    min-height: 44px;
+    margin-bottom: 10px;
+    padding: 6px 0;
     font-size: 0.88rem;
     line-height: 1.5;
   }
 
   .contact-info a {
     overflow-wrap: anywhere;
+    display: inline-block;
+    padding: 2px 0;
+    min-height: 24px;
+    touch-action: manipulation;
   }
 
   .social-icons {
     margin-top: 20px;
+    gap: 16px;
+  }
+
+  .social-icons a {
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+    touch-action: manipulation;
+  }
+
+  .social-icons a:active {
+    transform: scale(0.92);
+    background: var(--accent-color);
+    color: var(--bg-color);
   }
 
   .sidebar .btn {
@@ -1328,12 +1367,42 @@ p.intro-text {
   .main-content {
     width: 100%;
     min-height: 100dvh;
-    padding: 84px 16px 30px;
+    padding: 84px 16px calc(30px + env(safe-area-inset-bottom));
     overflow-x: hidden;
     overscroll-behavior-y: contain;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     z-index: 1;
+  }
+
+  /* Remove stray page-title spacers (<br>, <br><br>) on mobile — they
+     add unnecessary vertical gaps at the top of About/Projects/Contact. */
+  section.page > br {
+    display: none;
+  }
+
+  /* Resume page wraps its page-title in an inline-styled flex div with
+     margin-bottom:20px. Neutralize that wrapper on mobile so the title
+     uses the same spacing as other pages. */
+  #resume > div[style*="flex"] {
+    display: block !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Global mobile tap responsiveness — eliminates 300ms double-tap delay
+     on interactive elements. Scope to interactive elements only; do not
+     apply to .main-content which needs pan-y for scroll navigation. */
+  a,
+  button,
+  .sl-arr,
+  .sl-dot,
+  .scroll-progress-dot,
+  .mobile-nav-links a,
+  .nav-links a,
+  .back-to-top,
+  .wid-card,
+  .skill-item {
+    touch-action: manipulation;
   }
 
   .navbar {
@@ -1412,7 +1481,7 @@ p.intro-text {
 
   .wid-grid {
     gap: 14px;
-    padding: 18px 0 8px;
+    padding: 14px 0 16px;
     position: relative;
   }
 
@@ -1520,6 +1589,12 @@ p.intro-text {
     margin-bottom: 8px;
   }
 
+  /* Improve timeline body-copy readability on small screens */
+  .timeline-item p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
   .skills-marquee-container {
     mask-image: none;
     -webkit-mask-image: none;
@@ -1604,10 +1679,15 @@ p.intro-text {
     justify-content: center;
     gap: 8px;
     font-size: 0.8rem;
+    transition: transform 0.15s ease, background 0.25s ease, color 0.25s ease;
+  }
+
+  form .btn.btn-primary:active {
+    transform: scale(0.97);
   }
 
   .footer {
-    padding: 22px 16px 26px;
+    padding: 22px 16px calc(26px + env(safe-area-inset-bottom));
     margin-top: 28px;
     gap: 12px;
   }
@@ -1697,24 +1777,22 @@ p.intro-text {
   }
 
   /* ── About page: pulsing gold underline on page-title ── */
+  /* The 48x3px underline bar is set earlier; we only pulse its glow here
+     so the bar stays at a consistent width instead of animating to 0. */
   .page-title {
     position: relative;
   }
   .page-title::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 2px;
-    border-radius: 2px;
-    background: var(--accent-color);
-    animation: titlePulse 3s ease-in-out infinite;
+    animation: titleGlow 3s ease-in-out infinite;
   }
 
-  @keyframes titlePulse {
-    0%, 100% { width: 0; opacity: 0; }
-    50% { width: 50%; opacity: 0.7; }
+  @keyframes titleGlow {
+    0%, 100% { box-shadow: 0 0 0 rgba(255, 215, 0, 0); }
+    50% {
+      box-shadow:
+        0 0 10px rgba(255, 215, 0, 0.45),
+        0 0 20px rgba(255, 215, 0, 0.12);
+    }
   }
 
   /* ── About page: animated grow on wid-card accent bar ── */
@@ -1865,6 +1943,49 @@ p.intro-text {
     0%, 100% { box-shadow: 0 0 4px rgba(255, 215, 0, 0.3); }
     50% { box-shadow: 0 0 12px rgba(255, 215, 0, 0.6), 0 0 24px rgba(255, 215, 0, 0.15); }
   }
+
+  /* ── Project cards: staggered entrance on page activation ──
+     The earlier blanket-kill in the first mobile block disabled all
+     .showcase-wrapper animations. Re-enable a gentler lift here so the
+     Projects page feels alive without being heavy. */
+  .page.active .showcase-wrapper,
+  .page.anim-enter-up .showcase-wrapper,
+  .page.anim-enter-down .showcase-wrapper {
+    animation: mobileCardLift 0.72s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+    opacity: 1 !important;
+  }
+
+  .page.active .showcase-wrapper:nth-child(1),
+  .page.anim-enter-up .showcase-wrapper:nth-child(1),
+  .page.anim-enter-down .showcase-wrapper:nth-child(1) {
+    animation-delay: 0.15s !important;
+  }
+  .page.active .showcase-wrapper:nth-child(2),
+  .page.anim-enter-up .showcase-wrapper:nth-child(2),
+  .page.anim-enter-down .showcase-wrapper:nth-child(2) {
+    animation-delay: 0.28s !important;
+  }
+  .page.active .showcase-wrapper:nth-child(3),
+  .page.anim-enter-up .showcase-wrapper:nth-child(3),
+  .page.anim-enter-down .showcase-wrapper:nth-child(3) {
+    animation-delay: 0.40s !important;
+  }
+
+  /* Project card touch press */
+  .sl-card:active {
+    transform: scale(0.995);
+    transition: transform 0.15s ease;
+  }
+
+  /* ── Footer: gentle fade-up when Contact page is shown ── */
+  .footer.footer-visible {
+    animation: mobileFooterIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
+  }
+
+  @keyframes mobileFooterIn {
+    0% { opacity: 0; transform: translateY(14px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
 }
 
 /* ============================================
@@ -1940,7 +2061,10 @@ p.intro-text {
  p.intro-text::after,
  .wid-icon-wrap,
  .page-title::after,
- .scroll-progress-dot.active::before {
+ .scroll-progress-dot.active::before,
+ .page.active .wid-card .wid-bar,
+ .page.anim-enter-up .wid-card .wid-bar,
+ .page.anim-enter-down .wid-card .wid-bar {
  animation: none !important;
  }
 
@@ -2546,3 +2670,939 @@ p.intro-text {
 .timeline .timeline-item:nth-child(2) { transition-delay: 0.2s; }
 .timeline .timeline-item:nth-child(3) { transition-delay: 0.3s; }
 .timeline .timeline-item:nth-child(4) { transition-delay: 0.4s; }
+
+/* ===========================================================================
+   MOBILE HUD REDESIGN (≤768px only) — cards / buttons / icons / entire page
+   -----------------------------------------------------------------------
+   All new components below are display:none on desktop so the existing
+   desktop layout stays untouched. The mobile media query reveals and styles
+   them as a cohesive HUD/cockpit experience that complements the existing
+   particle field, page transitions and gold accent.
+   =========================================================================== */
+
+/* Default (desktop): hide all mobile-only HUD furniture */
+.hud-strip,
+.dock,
+.hud-stats,
+.wid-tags,
+.wid-meter,
+.cli-readout,
+.tl-badge,
+.sl-metrics,
+.contact-hud,
+.contact-methods,
+.form-divider,
+.footer-meta,
+.availability-pill {
+  display: none;
+}
+
+/* The mobile contact form puts <label> AFTER <input> so we can use the
+   CSS sibling selector for the floating-label trick. On desktop we keep
+   the original "label on top" layout by visually reversing the column. */
+.form-group.float-label {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/* Desktop wrapper for the footer back-to-top placement: .footer-main is
+   only styled by the mobile block. Make it a no-op layout on desktop so
+   the existing .footer flex rules still apply. */
+.footer-main {
+  display: contents;
+}
+
+@media (max-width: 768px) {
+
+  /* ── TOP HUD STATUS STRIP ─────────────────────────────────────────
+     Fixed 34px strip at the very top showing ONLINE • SECTION • TIME.
+     A 2px progress bar on its bottom edge is driven from JS to reflect
+     scroll within the active page. */
+  .hud-strip {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(34px + env(safe-area-inset-top));
+    padding:
+      env(safe-area-inset-top)
+      max(16px, env(safe-area-inset-right))
+      0
+      max(16px, env(safe-area-inset-left));
+    z-index: 215;
+    background:
+      linear-gradient(180deg, rgba(10, 10, 10, 0.92) 0%, rgba(14, 14, 14, 0.72) 100%);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.12);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.45s ease 0.2s, transform 0.45s ease 0.2s;
+  }
+
+  body.assets-loaded .hud-strip {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hud-strip-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono-font);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .hud-strip-center { justify-self: start; }
+  .hud-strip-right { justify-self: end; }
+
+  .hud-strip-section {
+    color: var(--accent-color);
+    font-weight: 700;
+    letter-spacing: 2.4px;
+  }
+
+  .hud-strip-time { color: rgba(255, 255, 255, 0.78); }
+
+  .hud-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-live);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+    animation: hudStatusPulse 2.2s ease-in-out infinite;
+  }
+
+  @keyframes hudStatusPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+    70%       { box-shadow: 0 0 0 7px rgba(34, 197, 94, 0); }
+  }
+
+  /* Scroll progress sliver drawn across the bottom edge of the HUD strip.
+     JS sets --hud-progress-scale (0 → 1) via requestAnimationFrame. */
+  .hud-strip-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0) 0%, var(--accent-color) 45%, #FFF8B0 60%, var(--accent-color) 75%, rgba(255, 215, 0, 0) 100%);
+    transform-origin: left center;
+    transform: scaleX(var(--hud-progress-scale, 0));
+    transition: transform 0.12s linear;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+    will-change: transform;
+  }
+
+  /* ── BOTTOM DOCK NAV ──────────────────────────────────────────────
+     Floating pill, 4 equal dock items, sliding gold indicator pill. */
+  .dock {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    height: 64px;
+    padding: 6px;
+    z-index: 215;
+    background:
+      linear-gradient(180deg, rgba(22, 22, 22, 0.78), rgba(14, 14, 14, 0.88));
+    border: 1px solid rgba(255, 215, 0, 0.14);
+    border-radius: 22px;
+    backdrop-filter: blur(18px) saturate(1.35);
+    -webkit-backdrop-filter: blur(18px) saturate(1.35);
+    box-shadow:
+      0 18px 44px rgba(0, 0, 0, 0.55),
+      0 1px 0 rgba(255, 255, 255, 0.03) inset,
+      0 0 24px rgba(255, 215, 0, 0.05);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease 0.25s, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+  }
+
+  body.assets-loaded .dock { opacity: 1; transform: translateY(0); }
+
+  .dock-indicator {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: calc((100% - 12px) / 4);
+    height: calc(100% - 12px);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.18), rgba(255, 215, 0, 0.08));
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    box-shadow:
+      0 8px 20px rgba(255, 215, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    pointer-events: none;
+    transform: translateX(var(--dock-indicator-x, 0));
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 0;
+  }
+
+  .dock-item {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 44px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.58);
+    transition: color 0.25s ease, transform 0.22s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .dock-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    font-size: 1.05rem;
+    transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .dock-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    transition: color 0.25s ease;
+  }
+
+  .dock-item.active {
+    color: var(--accent-color);
+  }
+
+  .dock-item.active .dock-icon {
+    transform: translateY(-2px) scale(1.08);
+    filter: drop-shadow(0 4px 10px rgba(255, 215, 0, 0.35));
+  }
+
+  .dock-item:active {
+    transform: scale(0.94);
+  }
+
+  /* Hide the existing right-edge HUD scroll-progress dots when the dock
+     is visible — the dock is now the primary nav source of truth. */
+  .scroll-progress {
+    display: none !important;
+  }
+
+  /* ── AVAILABILITY PILL (inside sidebar) ───────────────────────── */
+  .availability-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: center;
+    margin: 0 0 14px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: #4ade80;
+  }
+
+  .avail-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+    animation: livePulse 1.8s ease-in-out infinite;
+  }
+
+  /* ── HUD STATS ROW (About page) ───────────────────────────────── */
+  .hud-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 6px;
+  }
+
+  .hud-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70px;
+    padding: 12px 6px;
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at top, rgba(255, 215, 0, 0.07), transparent 60%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 215, 0, 0.12);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hud-stat::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.35), transparent);
+    opacity: 0.6;
+  }
+
+  .hud-stat-num {
+    font-family: var(--mono-font);
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent-color);
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 14px rgba(255, 215, 0, 0.25);
+  }
+
+  .hud-stat-label {
+    margin-top: 6px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* Staggered entrance when About becomes active */
+  .page.active .hud-stats .hud-stat {
+    animation: hudStatIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .page.active .hud-stats .hud-stat:nth-child(1) { animation-delay: 0.18s; }
+  .page.active .hud-stats .hud-stat:nth-child(2) { animation-delay: 0.28s; }
+  .page.active .hud-stats .hud-stat:nth-child(3) { animation-delay: 0.38s; }
+
+  @keyframes hudStatIn {
+    0%   { opacity: 0; transform: translateY(14px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ── WID CARD ADDITIONS (tags + meter + featured variant) ──── */
+  .wid-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0 14px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .wid-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(255, 215, 0, 0.07);
+    border: 1px solid rgba(255, 215, 0, 0.16);
+    color: var(--accent-color);
+    font-family: var(--mono-font);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+
+  .wid-meter {
+    display: block;
+    margin-top: 4px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .wid-meter-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .wid-meter-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.54rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.48);
+  }
+
+  .wid-meter-value {
+    font-family: var(--mono-font);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wid-meter-track {
+    width: 100%;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .wid-meter-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.55), var(--accent-color) 60%, #FFF2A8);
+    border-radius: 999px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Featured card: subtle gold accent glow + slightly richer bg */
+  .wid-card.wid-card-featured {
+    background:
+      radial-gradient(circle at top right, rgba(255, 215, 0, 0.09), transparent 40%),
+      linear-gradient(180deg, rgba(255, 215, 0, 0.04), rgba(255, 255, 255, 0.02));
+    border-color: rgba(255, 215, 0, 0.28);
+    box-shadow:
+      0 18px 40px rgba(0, 0, 0, 0.22),
+      0 0 24px rgba(255, 215, 0, 0.06);
+  }
+
+  .wid-card.wid-card-featured .wid-icon-wrap {
+    background: rgba(255, 215, 0, 0.12);
+    border-color: rgba(255, 215, 0, 0.3);
+    color: var(--accent-color);
+  }
+
+  /* Un-inset the asymmetric side-offsets from the earlier mobile block —
+     the new tags/meter content needs the full width to breathe. */
+  .wid-card:nth-child(2),
+  .wid-card:nth-child(3) {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* ── CLI READOUT (Resume page) ───────────────────────────────── */
+  .cli-readout {
+    display: block;
+    margin: 18px 0 26px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, rgba(8, 8, 8, 0.82), rgba(14, 14, 14, 0.72));
+    border: 1px solid rgba(255, 215, 0, 0.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 10px 30px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cli-readout::before {
+    /* Window-chrome traffic-light dots, top-right */
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    width: 30px;
+    height: 8px;
+    background-image:
+      radial-gradient(circle 4px at 4px 4px, rgba(255, 95, 87, 0.55) 0 4px, transparent 5px),
+      radial-gradient(circle 4px at 15px 4px, rgba(254, 188, 46, 0.55) 0 4px, transparent 5px),
+      radial-gradient(circle 4px at 26px 4px, rgba(39, 201, 63, 0.55) 0 4px, transparent 5px);
+    opacity: 0.7;
+  }
+
+  .cli-row {
+    display: grid;
+    grid-template-columns: 76px 1fr;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono-font);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .cli-row + .cli-row { margin-top: 4px; }
+
+  .cli-key {
+    color: rgba(255, 255, 255, 0.42);
+    letter-spacing: 0.2px;
+  }
+
+  .cli-value {
+    color: rgba(255, 255, 255, 0.92);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cli-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-live);
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.55);
+    animation: livePulse 1.8s ease-in-out infinite;
+  }
+
+  /* ── TIMELINE "CURRENT" BADGE ────────────────────────────────── */
+  .tl-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.32);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.54rem;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: #4ade80;
+    vertical-align: middle;
+  }
+
+  .tl-badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #4ade80;
+    animation: livePulse 1.8s ease-in-out infinite;
+  }
+
+  /* Elevate the dot on "current" timeline items so it stands out */
+  .timeline-item.is-current::before {
+    background: var(--accent-live) !important;
+    box-shadow:
+      0 0 0 3px rgba(34, 197, 94, 0.18),
+      0 0 12px rgba(34, 197, 94, 0.45) !important;
+  }
+
+  /* ── PROJECT METRICS ROW ─────────────────────────────────────── */
+  .sl-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 12px;
+  }
+
+  .sl-metric {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    font-family: var(--mono-font);
+    font-size: 0.66rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.72);
+    letter-spacing: 0.2px;
+  }
+
+  .sl-metric i {
+    font-size: 0.72rem;
+    color: var(--accent-color);
+    opacity: 0.85;
+  }
+
+  .sl-metric.sl-metric-live {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: rgba(34, 197, 94, 0.28);
+    color: #86efac;
+  }
+
+  .sl-metric-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.65);
+    animation: livePulse 1.8s ease-in-out infinite;
+  }
+
+  /* ── CONTACT HUD + METHOD CARDS ──────────────────────────────── */
+  .contact-hud {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0 18px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.24);
+    font-family: var(--mono-font);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.82);
+    letter-spacing: 0.2px;
+  }
+
+  .contact-hud-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.7);
+    animation: livePulse 1.8s ease-in-out infinite;
+  }
+
+  .contact-hud-label {
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 500;
+  }
+
+  .contact-hud-value {
+    color: #86efac;
+    font-weight: 700;
+  }
+
+  .contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 22px;
+  }
+
+  .method-card {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 14px;
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 215, 0, 0.14);
+    text-decoration: none;
+    color: inherit;
+    min-height: 64px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .method-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0), var(--accent-color), rgba(255, 215, 0, 0));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .method-card:active {
+    transform: scale(0.985);
+    border-color: rgba(255, 215, 0, 0.38);
+    background:
+      linear-gradient(180deg, rgba(255, 215, 0, 0.06), rgba(255, 215, 0, 0.02));
+  }
+
+  .method-card:active::before { opacity: 1; }
+
+  .method-icon {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255, 215, 0, 0.07);
+    border: 1px solid rgba(255, 215, 0, 0.18);
+    color: var(--accent-color);
+    font-size: 1.05rem;
+  }
+
+  .method-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .method-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.54rem;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .method-value {
+    font-family: var(--mono-font);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-white);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .method-chevron {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.72rem;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+
+  .method-card:active .method-chevron {
+    color: var(--accent-color);
+    background: rgba(255, 215, 0, 0.1);
+  }
+
+  /* ── FORM DIVIDER + FLOATING LABELS ──────────────────────────── */
+  .form-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 6px 0 18px;
+    color: rgba(255, 255, 255, 0.36);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .form-divider::before,
+  .form-divider::after {
+    content: '';
+    flex: 1 1 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.18), transparent);
+  }
+
+  .form-divider span {
+    white-space: nowrap;
+  }
+
+  /* Floating labels: label sits inside the field, lifts on focus/fill */
+  .form-group.float-label {
+    position: relative;
+  }
+
+  .form-group.float-label .form-control {
+    padding-top: 22px;
+    padding-bottom: 10px;
+  }
+
+  .form-group.float-label label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    margin: 0;
+    padding: 0 4px;
+    font-family: var(--mono-font);
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    transition: transform 0.22s ease, color 0.22s ease, font-size 0.22s ease, background 0.22s ease;
+    transform-origin: left center;
+    background: transparent;
+  }
+
+  .form-group.float-label .form-control::placeholder {
+    color: transparent;
+  }
+
+  .form-group.float-label .form-control:focus + label,
+  .form-group.float-label .form-control:not(:placeholder-shown) + label {
+    transform: translate(-4px, -14px) scale(0.82);
+    color: var(--accent-color);
+    background: var(--bg-color);
+  }
+
+  .form-group.float-label textarea.form-control + label {
+    top: 18px;
+  }
+
+  /* Form submit button: extend base with a subtle gold-to-white gradient
+     and an inner paper-plane push on :active. */
+  .form-submit {
+    background: linear-gradient(135deg, var(--accent-color), #FFE566 120%);
+    color: #121212;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border: none;
+    box-shadow:
+      0 10px 24px rgba(255, 215, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-submit i {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .form-submit:active i {
+    transform: translateX(6px) translateY(-2px) rotate(-8deg);
+  }
+
+  /* ── FOOTER META ROW ─────────────────────────────────────────── */
+  .footer-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .footer-main p {
+    margin: 0;
+    text-align: left;
+    font-size: 0.78rem;
+  }
+
+  .footer-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 215, 0, 0.1);
+    font-family: var(--mono-font);
+    font-size: 0.66rem;
+    color: rgba(255, 255, 255, 0.42);
+    letter-spacing: 0.2px;
+  }
+
+  .footer-kbd {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .footer-kbd kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    background: rgba(255, 215, 0, 0.05);
+    color: rgba(255, 215, 0, 0.75);
+    font-family: var(--mono-font);
+    font-size: 0.6rem;
+    font-weight: 600;
+    line-height: 1;
+    box-shadow: inset 0 -1px 0 rgba(255, 215, 0, 0.12);
+  }
+
+  .footer-sep {
+    color: rgba(255, 255, 255, 0.2);
+  }
+
+  .footer-version {
+    color: rgba(255, 215, 0, 0.55);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  /* ── MAIN CONTENT SPACING ADJUSTMENT ─────────────────────────
+     Now that HUD strip and dock occupy top & bottom chrome, bump
+     content padding so page content never hides behind them. */
+  .main-content {
+    padding-top: calc(72px + env(safe-area-inset-top));
+    padding-bottom: calc(110px + env(safe-area-inset-bottom));
+  }
+
+  /* Footer lives inside main-content — pull it up since dock covers bottom */
+  .footer {
+    margin-bottom: 70px;
+  }
+
+  /* Hide the old mobile-nav 2x2 grid inside the sidebar — the dock now
+     owns page navigation. Keeps sidebar focused on identity + CV. */
+  .sidebar .mobile-nav {
+    display: none;
+  }
+
+  /* Tighten the hamburger position so it doesn't collide with HUD strip.
+     Push it below the strip height with a small breathing offset. */
+  .hamburger {
+    top: calc(42px + env(safe-area-inset-top)) !important;
+  }
+
+  /* Sidebar should also sit below the HUD strip on mobile */
+  .sidebar {
+    padding-top: calc(86px + env(safe-area-inset-top)) !important;
+  }
+
+  /* ── ICON MICRO-INTERACTIONS ─────────────────────────────────
+     Each WID icon reacts to card press with a cheeky spring bump. */
+  .wid-card:active .wid-icon-wrap {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 10px 24px rgba(255, 215, 0, 0.25);
+  }
+}
+
+/* Reduced motion: kill all the new animations + don't float/bounce */
+@media (prefers-reduced-motion: reduce) {
+  .hud-status-dot,
+  .avail-dot,
+  .cli-dot,
+  .tl-badge-dot,
+  .sl-metric-dot,
+  .contact-hud-dot {
+    animation: none !important;
+  }
+  .hud-strip-progress { transition: none !important; }
+  .dock-indicator { transition: none !important; }
+  .page.active .hud-stats .hud-stat {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .wid-meter-fill { transition: none !important; }
+}

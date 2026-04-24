@@ -68,7 +68,16 @@ function setupSPANavigation() {
     const hamburger = document.querySelector('.hamburger');
 
     const PAGE_ORDER = ['about', 'resume', 'projects', 'contact'];
-    let currentIndex = 0;
+    // Derive currentIndex from the URL hash (or active page in DOM) so a hard
+    // reload onto e.g. #contact doesn't leave the SPA cursor stuck on About.
+    const initialHash = (window.location.hash.slice(1) || '').toLowerCase();
+    const initialFromHash = PAGE_ORDER.indexOf(initialHash);
+    const initialFromDom = PAGE_ORDER.findIndex(id => {
+        const el = document.getElementById(id);
+        return el && el.classList.contains('active');
+    });
+    let currentIndex = initialFromHash >= 0 ? initialFromHash :
+                       initialFromDom >= 0 ? initialFromDom : 0;
     let isTransitioning = false;
     const TRANSITION_DURATION = 720; // ms, matches CSS animation
     const SCROLL_COOLDOWN = 900; // ms between scroll events
@@ -148,11 +157,19 @@ function setupSPANavigation() {
 
     function closeMobileMenu() {
         if (!sidebar || !hamburger || window.innerWidth > 768) return;
+        if (!sidebar.classList.contains('active')) return;
         sidebar.classList.remove('active');
         const icon = hamburger.querySelector('i');
         if (icon) {
             icon.classList.remove('fa-times');
             icon.classList.add('fa-bars');
+        }
+        hamburger.setAttribute('aria-expanded', 'false');
+        // Restore body scroll that setupMobileMenu locked on open.
+        const prev = document.body.dataset.prevOverflow;
+        if (prev !== undefined) {
+            document.body.style.overflow = prev || '';
+            delete document.body.dataset.prevOverflow;
         }
     }
 
@@ -404,17 +421,11 @@ function setupSPANavigation() {
             const targetIndex = PAGE_ORDER.indexOf(targetPage);
             if (targetIndex === -1) return;
             if (targetIndex === currentIndex) {
+                // Tapping the current page on mobile should still dismiss
+                // the sidebar — route through closeMobileMenu so body scroll
+                // and aria state are restored consistently.
                 if (window.innerWidth <= 768 && link.classList.contains('mobile-nav-link')) {
-                    const sidebar = document.querySelector('.sidebar');
-                    const hamburger = document.querySelector('.hamburger');
-                    if (sidebar) sidebar.classList.remove('active');
-                    if (hamburger) {
-                        const icon = hamburger.querySelector('i');
-                        if (icon) {
-                            icon.classList.remove('fa-times');
-                            icon.classList.add('fa-bars');
-                        }
-                    }
+                    closeMobileMenu();
                 }
                 return;
             }
@@ -525,15 +536,58 @@ function setupMobileMenu() {
         const newHamburger = hamburger.cloneNode(true);
         hamburger.parentNode.replaceChild(newHamburger, hamburger);
 
-        newHamburger.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
+        // Helpers: single source of truth for open/close logic so every
+        // trigger (hamburger, outside click, Escape, resize) stays in sync.
+        function setHamburgerIcon(open) {
             const icon = newHamburger.querySelector('i');
-            if (sidebar.classList.contains('active')) {
+            if (!icon) return;
+            if (open) {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
             } else {
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
+            }
+        }
+
+        function openSidebar() {
+            sidebar.classList.add('active');
+            setHamburgerIcon(true);
+            newHamburger.setAttribute('aria-expanded', 'true');
+            // Lock background scroll while the overlay is open. Preserve
+            // the existing overflow value so we can restore it on close.
+            if (document.body.dataset.prevOverflow === undefined) {
+                document.body.dataset.prevOverflow = document.body.style.overflow || '';
+            }
+            document.body.style.overflow = 'hidden';
+            // Move focus into the sidebar for keyboard/screen-reader users.
+            // Defer slightly so the slide-in transition doesn't fight focus.
+            setTimeout(() => {
+                const firstLink = sidebar.querySelector('.mobile-nav-links a');
+                if (firstLink) firstLink.focus();
+            }, 120);
+        }
+
+        function closeSidebar({ returnFocus = false } = {}) {
+            if (!sidebar.classList.contains('active')) return;
+            sidebar.classList.remove('active');
+            setHamburgerIcon(false);
+            newHamburger.setAttribute('aria-expanded', 'false');
+            // Restore body scroll to whatever it was before we locked it.
+            const prev = document.body.dataset.prevOverflow;
+            document.body.style.overflow = prev || '';
+            delete document.body.dataset.prevOverflow;
+            if (returnFocus) newHamburger.focus();
+        }
+
+        newHamburger.setAttribute('aria-expanded', 'false');
+        newHamburger.setAttribute('aria-controls', 'sidebar');
+
+        newHamburger.addEventListener('click', () => {
+            if (sidebar.classList.contains('active')) {
+                closeSidebar({ returnFocus: true });
+            } else {
+                openSidebar();
             }
         });
 
@@ -543,19 +597,22 @@ function setupMobileMenu() {
                 !sidebar.contains(e.target) &&
                 !newHamburger.contains(e.target) &&
                 sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-                const icon = newHamburger.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+                closeSidebar();
+            }
+        });
+
+        // Escape key closes the mobile sidebar and returns focus to hamburger
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' &&
+                window.innerWidth <= 768 &&
+                sidebar.classList.contains('active')) {
+                closeSidebar({ returnFocus: true });
             }
         });
 
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
-                sidebar.classList.remove('active');
-                const icon = newHamburger.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+                closeSidebar();
             }
         });
     }
