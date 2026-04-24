@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial Setup
     setupMobileMenu();
     setupSPANavigation();
+    setupMobileProjectCards();
     handleInitialHash();
     setupScrollReveal();
     setupBackToTop();
@@ -56,13 +57,15 @@ function setupBackToTop() {
 
 // SPA Navigation - Scroll-based page switching with animated transitions
 function setupSPANavigation() {
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
     const pages = document.querySelectorAll('.page');
     const indicator = document.querySelector('.nav-indicator');
     const navContainer = document.querySelector('.nav-links');
     const mainContent = document.querySelector('.main-content');
     const footer = document.querySelector('.footer');
     const scrollDots = document.querySelectorAll('.scroll-progress-dot');
+    const sidebar = document.querySelector('.sidebar');
+    const hamburger = document.querySelector('.hamburger');
 
     const PAGE_ORDER = ['about', 'resume', 'projects', 'contact'];
     let currentIndex = 0;
@@ -70,6 +73,42 @@ function setupSPANavigation() {
     const TRANSITION_DURATION = 720; // ms, matches CSS animation
     const SCROLL_COOLDOWN = 900; // ms between scroll events
     let lastScrollTime = 0;
+
+    function getScrollState() {
+        const scrollTop = mainContent.scrollTop;
+        const scrollHeight = mainContent.scrollHeight;
+        const clientHeight = mainContent.clientHeight;
+        const isScrollable = scrollHeight > clientHeight + 10;
+        const atBottom = scrollTop + clientHeight >= scrollHeight - EDGE_TOLERANCE;
+        const atTop = scrollTop <= EDGE_TOLERANCE;
+        return { scrollTop, scrollHeight, clientHeight, isScrollable, atBottom, atTop };
+    }
+
+    function tryEdgeTransition(deltaY, source = 'scroll') {
+        if (isTransitioning || deltaY === 0) return false;
+
+        const now = Date.now();
+        if (source !== 'touch' && now - lastScrollTime < SCROLL_COOLDOWN * 0.55) {
+            return false;
+        }
+
+        const { isScrollable, atBottom, atTop } = getScrollState();
+        if (isScrollable) {
+            if (deltaY > 0 && !atBottom) return false;
+            if (deltaY < 0 && !atTop) return false;
+        }
+
+        lastScrollTime = now;
+        if (deltaY > 0 && currentIndex < PAGE_ORDER.length - 1) {
+            transitionToPage(currentIndex + 1, 'down');
+            return true;
+        }
+        if (deltaY < 0 && currentIndex > 0) {
+            transitionToPage(currentIndex - 1, 'up');
+            return true;
+        }
+        return false;
+    }
 
     // Add page-loaded class immediately for smooth initial display
     const transitionTargets = document.querySelectorAll('.main-content, .sidebar, .hamburger');
@@ -79,7 +118,7 @@ function setupSPANavigation() {
 
     // Helper to move nav indicator
     function moveIndicator(targetLink) {
-        if (!targetLink || !indicator) return;
+        if (!targetLink || !indicator || !navContainer || !targetLink.classList.contains('nav-link')) return;
 
         const linkRect = targetLink.getBoundingClientRect();
         const containerRect = navContainer.getBoundingClientRect();
@@ -105,6 +144,16 @@ function setupSPANavigation() {
         scrollDots.forEach(dot => {
             dot.classList.toggle('active', dot.dataset.page === pageId);
         });
+    }
+
+    function closeMobileMenu() {
+        if (!sidebar || !hamburger || window.innerWidth > 768) return;
+        sidebar.classList.remove('active');
+        const icon = hamburger.querySelector('i');
+        if (icon) {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
     }
 
     // Core animated transition function
@@ -156,6 +205,10 @@ function setupSPANavigation() {
                 moveIndicator(activeLink);
             }
 
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('data-page') === targetPageId);
+            });
+
             // Update URL hash
             history.pushState(null, '', `#${targetPageId}`);
 
@@ -167,6 +220,7 @@ function setupSPANavigation() {
             mainContent.scrollTop = 0;
 
             currentIndex = targetIndex;
+            closeMobileMenu();
 
             // Clean up animation classes after animation completes
             setTimeout(() => {
@@ -192,15 +246,9 @@ function setupSPANavigation() {
         }
 
         // Check if the active page content is scrollable
-        const scrollTop = mainContent.scrollTop;
-        const scrollHeight = mainContent.scrollHeight;
-        const clientHeight = mainContent.clientHeight;
-        const isScrollable = scrollHeight > clientHeight + 10;
+        const { isScrollable, atBottom, atTop } = getScrollState();
 
         if (isScrollable) {
-            const atBottom = scrollTop + clientHeight >= scrollHeight - EDGE_TOLERANCE;
-            const atTop = scrollTop <= EDGE_TOLERANCE;
-
             if (e.deltaY > 0 && !atBottom) {
                 // Still has room to scroll down naturally
                 scrollAccumulator = 0;
@@ -226,16 +274,10 @@ function setupSPANavigation() {
         // Only trigger when enough scroll momentum has built up
         if (scrollAccumulator > SCROLL_TRIGGER_THRESHOLD) {
             scrollAccumulator = 0;
-            lastScrollTime = now;
-            if (currentIndex < PAGE_ORDER.length - 1) {
-                transitionToPage(currentIndex + 1, 'down');
-            }
+            tryEdgeTransition(1, 'wheel');
         } else if (scrollAccumulator < -SCROLL_TRIGGER_THRESHOLD) {
             scrollAccumulator = 0;
-            lastScrollTime = now;
-            if (currentIndex > 0) {
-                transitionToPage(currentIndex - 1, 'up');
-            }
+            tryEdgeTransition(-1, 'wheel');
         }
     }
 
@@ -266,10 +308,7 @@ function setupSPANavigation() {
  const direction = deltaY > 0 ? 'down' : 'up';
 
  // Check scrollability
- const scrollTop = mainContent.scrollTop;
- const scrollHeight = mainContent.scrollHeight;
- const clientHeight = mainContent.clientHeight;
- const isScrollable = scrollHeight > clientHeight + 10;
+ const { isScrollable, atBottom, atTop } = getScrollState();
 
  if (!isScrollable) {
  // Non-scrollable page: track gesture commitment
@@ -284,6 +323,14 @@ function setupSPANavigation() {
  if (decisionBuffer > COMMIT_THRESHOLD) {
  gestureCommitted = true;
  }
+ } else {
+ // Scrollable page: show hint when at boundary
+ mainContent.classList.remove('edge-hint-up', 'edge-hint-down');
+ if (atBottom && deltaY > 0) {
+ mainContent.classList.add('edge-hint-down');
+ } else if (atTop && deltaY < 0) {
+ mainContent.classList.add('edge-hint-up');
+ }
  }
  }, { passive: true });
 
@@ -296,55 +343,41 @@ function setupSPANavigation() {
  const elapsed = Date.now() - touchStartTime;
  const velocity = Math.abs(deltaY) / elapsed; // px per ms
 
- // Basic timing checks
- if (elapsed > 600) return;
  if (isTransitioning) return;
 
  // Check scrollability and edge position
- const scrollTop = mainContent.scrollTop;
- const scrollHeight = mainContent.scrollHeight;
- const clientHeight = mainContent.clientHeight;
- const isScrollable = scrollHeight > clientHeight + 10;
+ const { isScrollable, atBottom, atTop } = getScrollState();
 
  // Dynamic threshold based on context
  let threshold;
 
  if (isScrollable) {
- // Scrollable pages: check if at edge first
- const atBottom = scrollTop + clientHeight >= scrollHeight - EDGE_TOLERANCE;
- const atTop = scrollTop <= EDGE_TOLERANCE;
-
+ // Scrollable pages: user may scroll for a while before hitting edge
+ if (elapsed > 1500) return;
  if (deltaY > 0 && !atBottom) return;
  if (deltaY < 0 && !atTop) return;
 
- threshold = 60; // Standard threshold for scrollable pages
+ threshold = 52;
  } else {
- // Non-scrollable pages: require gesture commitment
+ // Non-scrollable: short gesture window
+ if (elapsed > 600) return;
+
  if (!gestureCommitted) {
- // Never passed commit zone - treat as accidental
  return;
  }
 
- // Velocity-adjusted threshold
- // Fast swipe = intentional, lower threshold
- // Slow swipe = possibly accidental, higher threshold
  if (velocity > 0.35) {
- threshold = 70; // Fast intentional swipe
+ threshold = 60;
  } else if (velocity > 0.2) {
- threshold = 90; // Medium speed
+ threshold = 82;
  } else {
- threshold = 120; // Slow, require more distance
+ threshold = 104;
  }
  }
 
  if (Math.abs(deltaY) < threshold) return;
 
- // Execute transition
- if (deltaY > 0 && currentIndex < PAGE_ORDER.length - 1) {
- transitionToPage(currentIndex + 1, 'down');
- } else if (deltaY < 0 && currentIndex > 0) {
- transitionToPage(currentIndex - 1, 'up');
- }
+ tryEdgeTransition(deltaY, 'touch');
  }, { passive: true });
 
     // ── Keyboard Navigation ──
@@ -369,14 +402,31 @@ function setupSPANavigation() {
             e.preventDefault();
             const targetPage = link.getAttribute('data-page');
             const targetIndex = PAGE_ORDER.indexOf(targetPage);
-            if (targetIndex === -1 || targetIndex === currentIndex) return;
+            if (targetIndex === -1) return;
+            if (targetIndex === currentIndex) {
+                if (window.innerWidth <= 768 && link.classList.contains('mobile-nav-link')) {
+                    const sidebar = document.querySelector('.sidebar');
+                    const hamburger = document.querySelector('.hamburger');
+                    if (sidebar) sidebar.classList.remove('active');
+                    if (hamburger) {
+                        const icon = hamburger.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    }
+                }
+                return;
+            }
 
             transitionToPage(targetIndex);
         });
 
         // Hover Effect
         link.addEventListener('mouseenter', () => {
-            moveIndicator(link);
+            if (link.classList.contains('nav-link')) {
+                moveIndicator(link);
+            }
         });
     });
 
@@ -396,7 +446,7 @@ function setupSPANavigation() {
             const activeLink = document.querySelector('.nav-link.active');
             if (activeLink) {
                 moveIndicator(activeLink);
-            } else {
+            } else if (indicator) {
                 indicator.style.opacity = '0';
             }
         });
@@ -406,6 +456,7 @@ function setupSPANavigation() {
     window.addEventListener('resize', () => {
         const activeLink = document.querySelector('.nav-link.active');
         if (activeLink) moveIndicator(activeLink);
+        closeMobileMenu();
     });
 
     // Initialize indicator position on load
@@ -429,7 +480,7 @@ function setupSPANavigation() {
 // Handle initial page load based on URL hash
 function handleInitialHash() {
     const hash = window.location.hash.slice(1) || 'about';
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
     const pages = document.querySelectorAll('.page');
     const footer = document.querySelector('.footer');
     const scrollDots = document.querySelectorAll('.scroll-progress-dot');
@@ -498,7 +549,48 @@ function setupMobileMenu() {
                 icon.classList.add('fa-bars');
             }
         });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+                const icon = newHamburger.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
     }
+}
+
+function setupMobileProjectCards() {
+    const tracks = document.querySelectorAll('.sl-tech-track');
+    const skills = document.querySelectorAll('.skills-marquee-content .skill-item');
+
+    tracks.forEach(track => {
+        const seen = new Set();
+        track.querySelectorAll('.sl-tech-item').forEach(item => {
+            const label = item.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
+            if (seen.has(label)) {
+                item.classList.add('mobile-tech-duplicate');
+            } else {
+                seen.add(label);
+            }
+        });
+    });
+
+    const seenSkills = new Set();
+    skills.forEach((item, index) => {
+        const label = item.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
+        if (seenSkills.has(label)) {
+            item.classList.add('mobile-tech-duplicate');
+            return;
+        }
+
+        seenSkills.add(label);
+        item.style.setProperty('--skill-order', index + 1);
+        if (label.includes('javascript') || label.includes('typescript') || label.includes('tailwind')) {
+            item.classList.add('skill-item-accent');
+        }
+    });
 }
 
 

@@ -11,6 +11,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#121212">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Samuel Girma - Portfolio">
@@ -667,7 +668,260 @@
             transition: box-shadow 0.3s ease;
             will-change: transform;
         }
-    </style>
+    
+        /* ── MOBILE: Responsive sl-card fixes (≤768px) ────────────────
+           Tighter font sizes, no hard max-widths, description
+           constrained to 3 visible lines with vertical scroll animation.
+           Desktop (.sl-card styles above) completely untouched.
+        ─────────────────────────────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .sl-slider        { height: 200px; }
+            .sl-body          { padding: 18px 16px 22px; }
+            .sl-watermark     { font-size: 2.2rem; margin-bottom: -12px; }
+            .sl-title         { font-size: 1.3rem !important; letter-spacing: -0.5px; }
+            .sl-subtitle      { font-size: 0.7rem; letter-spacing: 1.5px; margin-bottom: 10px; }
+            .sl-desc {
+                font-size: 0.82rem;
+                line-height: 1.65;
+                max-width: none;        /* remove hard 380px cap */
+                margin-bottom: 14px;
+                overflow: hidden;       /* clips text to JS-set max-height */
+                position: relative;
+            }
+            /* Inner span injected by JS for measurement and animation */
+            .sl-desc .desc-inner { display: block; }
+            .sl-desc.desc-scrolling .desc-inner {
+                animation: mobileDescScroll 6s ease-in-out infinite;
+                animation-delay: 1.5s;
+                will-change: transform;
+            }
+            @keyframes mobileDescScroll {
+                0%,  20% { transform: translateY(0); }
+                60%, 80% { transform: translateY(var(--desc-overflow-px, 0px)); }
+                100%     { transform: translateY(0); }
+            }
+            .sl-left          { margin-bottom: 18px; }
+            .sl-btn           { font-size: 0.66rem; padding: 10px 18px; margin-top: 14px; }
+            .sl-tech-item     { font-size: 0.68rem; padding: 4px 8px; }
+            .sl-tag           { font-size: 0.65rem; padding: 3px 10px; }
+        }
+
+        @media (max-width: 768px) {
+            .showcase-wrapper {
+                width: 100%;
+                max-width: 100%;
+                padding: 0 0 28px;
+                overflow: hidden;
+            }
+
+            .sl-card {
+                width: 100%;
+                max-width: 100%;
+                border-radius: 20px;
+                overflow: hidden;
+            }
+
+            .sl-slider {
+                height: 190px !important;
+                border-radius: 20px 20px 0 0;
+            }
+
+            .sl-slider::after {
+                height: 84px;
+            }
+
+            .sl-counter {
+                top: 12px;
+                right: 12px;
+                padding: 6px 10px;
+                font-size: 0.68rem;
+                letter-spacing: 0.8px;
+            }
+
+            .sl-arr {
+                top: auto;
+                bottom: 12px;
+                transform: none;
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                font-size: 0.82rem;
+            }
+
+            .sl-arr-prev { left: 12px; }
+            .sl-arr-next { left: 62px; right: auto; }
+
+            .sl-dots {
+                left: auto;
+                right: 12px;
+                bottom: 18px;
+                transform: none;
+                justify-content: flex-end;
+                gap: 4px;
+                max-width: calc(100% - 132px);
+            }
+
+            .sl-dot {
+                width: 14px;
+                height: 4px;
+                padding: 10px 0;
+                background-clip: content-box;
+            }
+
+            .sl-dot.active {
+                width: 28px;
+            }
+
+            .sl-body {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                padding: 18px 16px 18px !important;
+            }
+
+            .sl-divider {
+                display: none !important;
+            }
+
+            .sl-left,
+            .sl-right {
+                width: 100%;
+                min-width: 0;
+                padding: 0;
+                margin: 0;
+            }
+
+            .sl-left {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sl-watermark {
+                order: 1;
+                font-size: 2rem;
+                margin: 0 0 8px;
+                letter-spacing: -1px;
+                color: rgba(255, 215, 0, 0.14);
+            }
+
+            .sl-title-row {
+                order: 2;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 10px 8px;
+                margin-bottom: 8px;
+                min-width: 0;
+            }
+
+            .sl-title {
+                flex: 1 1 180px;
+                min-width: 0;
+                font-size: 1.34rem !important;
+                line-height: 1.05;
+                letter-spacing: -0.6px;
+                overflow-wrap: anywhere;
+                text-wrap: balance;
+            }
+
+            .sl-live-badge {
+                flex: 0 0 auto;
+                max-width: 100%;
+                padding: 4px 9px;
+                font-size: 0.58rem;
+                letter-spacing: 1.2px;
+            }
+
+            .sl-subtitle {
+                order: 3;
+                font-size: 0.68rem;
+                letter-spacing: 1.4px;
+                margin-bottom: 8px;
+            }
+
+            .sl-desc {
+                order: 4;
+                max-width: none !important;
+                margin-bottom: 14px;
+                font-size: 0.88rem;
+                line-height: 1.68;
+                overflow: visible;
+                overflow-wrap: anywhere;
+                text-wrap: pretty;
+            }
+
+            .sl-btn {
+                order: 5;
+                width: 100%;
+                min-height: 48px;
+                justify-content: center;
+                text-align: center;
+                margin: 0 0 14px;
+                padding: 12px 14px;
+                font-size: 0.72rem;
+            }
+
+            .sl-right {
+                order: 8;
+            }
+
+            .sl-tags {
+                margin: 12px 0 0;
+                gap: 8px;
+            }
+
+            .sl-tag {
+                max-width: 100%;
+                padding: 6px 10px;
+                font-size: 0.68rem;
+                overflow-wrap: anywhere;
+            }
+
+            .sl-stack-label {
+                order: 6;
+                margin: 0 0 10px;
+                font-size: 0.62rem;
+                letter-spacing: 2.2px;
+            }
+
+            .sl-tech-marquee {
+                order: 7;
+                overflow: visible;
+                mask-image: none;
+                -webkit-mask-image: none;
+                padding: 0;
+            }
+
+            .sl-tech-track {
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                gap: 8px;
+                animation: none !important;
+            }
+
+            .sl-tech-item {
+                min-height: 34px;
+                max-width: 100%;
+                flex: 0 1 auto;
+                white-space: normal;
+                font-size: 0.7rem;
+                line-height: 1.2;
+                padding: 7px 10px;
+                border-radius: 10px;
+                overflow-wrap: anywhere;
+            }
+
+            .sl-tech-item img,
+            .sl-tech-item i {
+                flex-shrink: 0;
+            }
+
+            .mobile-tech-duplicate {
+                display: none !important;
+            }
+        }
+</style>
 </head>
 
 <body>
@@ -695,6 +949,15 @@
         <div class="badge">Computer Science Student</div>
         <p id="typewriter-subtitle"></p>
 
+        <nav class="mobile-nav" aria-label="Mobile section navigation">
+            <ul class="mobile-nav-links">
+                <li><a href="#about" class="mobile-nav-link active" data-page="about">About</a></li>
+                <li><a href="#resume" class="mobile-nav-link" data-page="resume">Resume</a></li>
+                <li><a href="#projects" class="mobile-nav-link" data-page="projects">Projects</a></li>
+                <li><a href="#contact" class="mobile-nav-link" data-page="contact">Contact</a></li>
+            </ul>
+        </nav>
+
         <ul class="contact-info">
             <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fb959a949f8f88908e82949692bb9c969a9297d5989496">[email&#160;protected]</a></li>
             <li><i class="fas fa-phone"></i> +251 948 998 804</li>
@@ -702,11 +965,11 @@
         </ul>
 
         <div class="social-icons">
-            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://github.com/Samuel-Girma07" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://github.com/Samuel-Girma07" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
         </div>
 
-        <a href="cv.pdf" target="_blank" class="btn btn-primary" style="margin-top:20px;font-size:0.9rem;">
+        <a href="cv.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
             <i class="fas fa-download"></i> Download CV
         </a>
     </aside>
@@ -863,9 +1126,9 @@
                             </button>
 
                             <div class="sl-dots" id="spaSlDots">
-                                <button class="sl-dot active" onclick="spaSlGo(0)"></button>
-                                <button class="sl-dot" onclick="spaSlGo(1)"></button>
-                                <button class="sl-dot" onclick="spaSlGo(2)"></button>
+                                <button class="sl-dot active" onclick="spaSlGo(0)" aria-label="Slide 1"></button>
+                                <button class="sl-dot" onclick="spaSlGo(1)" aria-label="Slide 2"></button>
+                                <button class="sl-dot" onclick="spaSlGo(2)" aria-label="Slide 3"></button>
                             </div>
                         </div>
 
@@ -918,7 +1181,7 @@
                                     </div>
                                 </div>
 
-                                <a href="https://study-lens-blue.vercel.app" target="_blank" class="sl-btn">
+                                <a href="https://study-lens-blue.vercel.app" target="_blank" rel="noopener noreferrer" class="sl-btn">
                                     Preview Project <i class="fas fa-arrow-up-right-from-square"></i>
                                 </a>
                             </div>
@@ -950,9 +1213,9 @@
                             <button class="sl-arr sl-arr-prev" onclick="spaSlChange2(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
                             <button class="sl-arr sl-arr-next" onclick="spaSlChange2(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
                             <div class="sl-dots" id="spaSlDots2">
-                                <button class="sl-dot active" onclick="spaSlGo2(0)"></button>
-                                <button class="sl-dot" onclick="spaSlGo2(1)"></button>
-                                <button class="sl-dot" onclick="spaSlGo2(2)"></button>
+                                <button class="sl-dot active" onclick="spaSlGo2(0)" aria-label="Slide 1"></button>
+                                <button class="sl-dot" onclick="spaSlGo2(1)" aria-label="Slide 2"></button>
+                                <button class="sl-dot" onclick="spaSlGo2(2)" aria-label="Slide 3"></button>
                             </div>
                         </div>
                         <div class="sl-body">
@@ -991,7 +1254,7 @@
                                         <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#f97316"></i> Prepared Stmts</div>
                                     </div>
                                 </div>
-                                <a href="https://techshopethiopia.page.gd" target="_blank" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
+                                <a href="https://techshopethiopia.page.gd" target="_blank" rel="noopener noreferrer" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
                             </div>
                             <div class="sl-divider"></div>
                             <div class="sl-right">
@@ -1018,9 +1281,9 @@
                             <button class="sl-arr sl-arr-prev" onclick="spaSlChange3(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
                             <button class="sl-arr sl-arr-next" onclick="spaSlChange3(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
                             <div class="sl-dots" id="spaSlDots3">
-                                <button class="sl-dot active" onclick="spaSlGo3(0)"></button>
-                                <button class="sl-dot" onclick="spaSlGo3(1)"></button>
-                                <button class="sl-dot" onclick="spaSlGo3(2)"></button>
+                                <button class="sl-dot active" onclick="spaSlGo3(0)" aria-label="Slide 1"></button>
+                                <button class="sl-dot" onclick="spaSlGo3(1)" aria-label="Slide 2"></button>
+                                <button class="sl-dot" onclick="spaSlGo3(2)" aria-label="Slide 3"></button>
                             </div>
                         </div>
                         <div class="sl-body">
@@ -1049,7 +1312,7 @@
                                         <div class="sl-tech-item"><i class="fab fa-google" style="color:#4285F4"></i> Google Fonts</div>
                                     </div>
                                 </div>
-                                <a href="index.html" target="_blank" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
+                                <a href="index.html" target="_blank" rel="noopener noreferrer" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
                             </div>
                             <div class="sl-divider"></div>
                             <div class="sl-right">
@@ -1070,8 +1333,8 @@
                 <h2 class="page-title">Contact Me</h2>
                 <br><br>
                 <form action="#" method="POST">
-                    <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required></div>
-                    <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required></div>
+                    <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" name="name" class="form-control" placeholder="John Doe" autocomplete="name" required></div>
+                    <div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" autocomplete="email" required></div>
                     <div class="form-group"><label for="message">Your Message</label><textarea id="message" name="message" class="form-control" rows="5" placeholder="Let's work together..." required></textarea></div>
                     <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane" style="margin-left:5px;"></i></button>
                 </form>
@@ -1088,10 +1351,10 @@
 
         <!-- Scroll Progress Indicator -->
         <div class="scroll-progress visible" id="scroll-progress">
-            <div class="scroll-progress-dot active" data-page="about" title="About"></div>
-            <div class="scroll-progress-dot" data-page="resume" title="Resume"></div>
-            <div class="scroll-progress-dot" data-page="projects" title="Projects"></div>
-            <div class="scroll-progress-dot" data-page="contact" title="Contact"></div>
+            <div class="scroll-progress-dot active" data-page="about" title="About" role="button" tabindex="0" aria-label="Go to About"></div>
+            <div class="scroll-progress-dot" data-page="resume" title="Resume" role="button" tabindex="0" aria-label="Go to Resume"></div>
+            <div class="scroll-progress-dot" data-page="projects" title="Projects" role="button" tabindex="0" aria-label="Go to Projects"></div>
+            <div class="scroll-progress-dot" data-page="contact" title="Contact" role="button" tabindex="0" aria-label="Go to Contact"></div>
         </div>
     </main>
 

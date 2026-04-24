@@ -124,7 +124,44 @@
             .sl-watermark { font-size: 3.5rem; }
             .sl-title { font-size: 1.7rem; }
         }
-    </style>
+    
+        /* ── MOBILE: Responsive sl-card fixes (≤768px) ────────────────
+           Tighter font sizes, no hard max-widths, description
+           constrained to 3 visible lines with vertical scroll animation.
+           Desktop (.sl-card styles above) completely untouched.
+        ─────────────────────────────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .sl-slider        { height: 200px; }
+            .sl-body          { padding: 18px 16px 22px; }
+            .sl-watermark     { font-size: 2.2rem; margin-bottom: -12px; }
+            .sl-title         { font-size: 1.3rem !important; letter-spacing: -0.5px; }
+            .sl-subtitle      { font-size: 0.7rem; letter-spacing: 1.5px; margin-bottom: 10px; }
+            .sl-desc {
+                font-size: 0.82rem;
+                line-height: 1.65;
+                max-width: none;        /* remove hard 380px cap */
+                margin-bottom: 14px;
+                overflow: hidden;       /* clips text to JS-set max-height */
+                position: relative;
+            }
+            /* Inner span injected by JS for measurement and animation */
+            .sl-desc .desc-inner { display: block; }
+            .sl-desc.desc-scrolling .desc-inner {
+                animation: mobileDescScroll 6s ease-in-out infinite;
+                animation-delay: 1.5s;
+                will-change: transform;
+            }
+            @keyframes mobileDescScroll {
+                0%,  20% { transform: translateY(0); }
+                60%, 80% { transform: translateY(var(--desc-overflow-px, 0px)); }
+                100%     { transform: translateY(0); }
+            }
+            .sl-left          { margin-bottom: 18px; }
+            .sl-btn           { font-size: 0.66rem; padding: 10px 18px; margin-top: 14px; }
+            .sl-tech-item     { font-size: 0.68rem; padding: 4px 8px; }
+            .sl-tag           { font-size: 0.65rem; padding: 3px 10px; }
+        }
+</style>
 </head>
 
 <body>
