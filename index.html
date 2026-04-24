@@ -667,6 +667,163 @@
             transition: box-shadow 0.3s ease;
             will-change: transform;
         }
+
+        /* ════════════════════════════════════════════════
+           MOBILE REDESIGN v2 — PROJECT CARDS (≤768px only)
+           Phone-native polish: contained layout, wrapped
+           tech chips, full-width CTA, tighter rhythm.
+           Desktop styles above remain untouched.
+        ════════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .showcase-wrapper { padding: 6px 0 26px !important; }
+
+            .sl-card {
+                border-radius: 20px;
+                overflow: hidden;
+            }
+
+            .sl-slider {
+                height: 200px;
+                border-radius: 20px 20px 0 0;
+            }
+            .sl-slider::after { height: 80px; }
+
+            .sl-counter {
+                top: 12px; right: 12px;
+                font-size: 0.66rem;
+                padding: 4px 9px;
+                letter-spacing: 0.8px;
+            }
+
+            .sl-arr {
+                width: 32px;
+                height: 46px;
+                font-size: 0.72rem;
+                background: rgba(10, 10, 10, 0.55);
+                border-color: rgba(255, 215, 0, 0.22);
+            }
+            .sl-arr-prev { left: 10px; }
+            .sl-arr-next { right: 10px; }
+
+            .sl-dots {
+                bottom: 12px;
+                gap: 5px;
+            }
+            .sl-dot { height: 3px; width: 14px; }
+            .sl-dot.active { width: 26px; box-shadow: 0 0 6px var(--accent-color); }
+
+            .sl-body {
+                display: flex !important;
+                flex-direction: column;
+                grid-template-columns: none !important;
+                padding: 20px 18px 22px !important;
+                gap: 12px;
+                min-width: 0;
+            }
+
+            .sl-left, .sl-right {
+                padding: 0 !important;
+                margin: 0 !important;
+                min-width: 0;
+                width: 100%;
+            }
+
+            .sl-divider { display: none !important; }
+            .sl-watermark { display: none !important; }
+
+            .sl-title-row {
+                flex-wrap: wrap;
+                row-gap: 6px;
+                column-gap: 10px;
+                margin-bottom: 2px;
+                min-width: 0;
+            }
+
+            .sl-title {
+                font-size: 1.45rem !important;
+                letter-spacing: -0.5px !important;
+                line-height: 1.12;
+                min-width: 0;
+                word-break: break-word;
+            }
+
+            .sl-live-badge {
+                font-size: 0.58rem;
+                padding: 3px 8px;
+                letter-spacing: 1.2px;
+            }
+
+            .sl-subtitle {
+                font-size: 0.68rem;
+                letter-spacing: 1.6px;
+                margin-bottom: 2px;
+                opacity: 0.85;
+            }
+
+            .sl-desc {
+                font-size: 0.92rem;
+                line-height: 1.65;
+                max-width: 100%;
+                margin-bottom: 2px;
+            }
+
+            .sl-stack-label {
+                font-size: 0.6rem;
+                letter-spacing: 2.2px;
+                margin-bottom: 8px;
+            }
+
+            /* Replace horizontal marquee with a static, wrapped chip grid.
+               On touch, scanning beats animation — users see all tech at once. */
+            .sl-tech-marquee {
+                overflow: visible !important;
+                mask-image: none !important;
+                -webkit-mask-image: none !important;
+                padding: 0 !important;
+            }
+            .sl-tech-track {
+                animation: none !important;
+                flex-wrap: wrap;
+                width: 100%;
+                gap: 6px;
+            }
+            /* Duplicate items (cloned for the infinite-scroll effect) get hidden
+               at runtime on mobile so the static chip grid shows each tech once. */
+            .sl-tech-track .sl-tech-item[data-sl-dup="1"] { display: none !important; }
+
+            .sl-tech-item {
+                padding: 5px 10px;
+                font-size: 0.72rem;
+                border-radius: 8px;
+                gap: 5px;
+            }
+            .sl-tech-item img { width: 13px; height: 13px; }
+            .sl-tech-item i { font-size: 0.82rem; }
+
+            .sl-tags {
+                gap: 6px;
+                margin-bottom: 2px;
+            }
+            .sl-tag {
+                padding: 4px 11px;
+                font-size: 0.68rem;
+                letter-spacing: 0.3px;
+            }
+
+            .sl-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 18px;
+                border-radius: 12px;
+                margin-top: 6px;
+                font-size: 0.82rem;
+                letter-spacing: 0.8px;
+            }
+            .sl-btn:active {
+                transform: translateY(1px);
+                box-shadow: 0 4px 12px rgba(255, 215, 0, 0.18);
+            }
+        }
     </style>
 </head>
 
@@ -1413,6 +1570,26 @@
                 requestAnimationFrame(tick);
             }
             tick();
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           MOBILE REDESIGN v2: dedupe tech-stack chips
+           Desktop's marquee duplicates each tech item to create an
+           infinite-scroll loop. On mobile we render the list as a
+           static wrapped chip grid, so mark the second half of each
+           track as duplicates and CSS hides them on ≤768px only.
+        ═══════════════════════════════════════════════════════ */
+        (function markTechStackDuplicates() {
+            var tracks = document.querySelectorAll('.sl-tech-track');
+            tracks.forEach(function (track) {
+                var items = track.querySelectorAll(':scope > .sl-tech-item');
+                if (items.length < 4) return;
+                var half = Math.floor(items.length / 2);
+                if (items.length % 2 !== 0) return; // only mark when exactly doubled
+                for (var i = half; i < items.length; i++) {
+                    items[i].setAttribute('data-sl-dup', '1');
+                }
+            });
         })();
 
     </script>

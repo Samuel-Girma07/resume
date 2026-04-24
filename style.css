@@ -1783,3 +1783,301 @@ p.intro-text {
 .timeline .timeline-item:nth-child(2) { transition-delay: 0.2s; }
 .timeline .timeline-item:nth-child(3) { transition-delay: 0.3s; }
 .timeline .timeline-item:nth-child(4) { transition-delay: 0.4s; }
+
+/* =============================================================
+   MOBILE REDESIGN v2 — PHONE-NATIVE POLISH
+   Layered on top of the "HUD COMMAND" block above.
+   Scoped strictly to ≤768px. Desktop untouched.
+   ============================================================= */
+@media (max-width: 768px) {
+  /* ---------- RECLAIM RIGHT-EDGE SPACE ------------------------ */
+  .main-content {
+    padding: 60px 18px 108px 18px;
+  }
+  #page-container { margin-top: 2px; padding-top: 4px; }
+
+  /* Prevent flex/grid children from forcing wider-than-viewport rows */
+  .page *  { min-width: 0; }
+  .page img { max-width: 100%; height: auto; }
+
+  /* ---------- HAMBURGER -------------------------------------- */
+  .hamburger {
+    top: 16px !important;
+    right: 16px !important;
+    padding: 9px 13px !important;
+    font-size: 1.05rem !important;
+    border-radius: 10px !important;
+  }
+
+  /* ---------- BOTTOM-CENTER HUD NAV PILL --------------------- */
+  .scroll-progress {
+    display: flex !important;
+    flex-direction: row !important;
+    top: auto !important;
+    bottom: 18px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    gap: 2px !important;
+    padding: 8px 10px !important;
+    background: rgba(12, 12, 12, 0.985) !important;
+    border: 1px solid rgba(255, 215, 0, 0.28) !important;
+    border-radius: 999px !important;
+    box-shadow:
+      0 14px 40px rgba(0,0,0,0.85),
+      0 0 0 1px rgba(255,255,255,0.03),
+      0 0 20px rgba(255,215,0,0.07);
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    z-index: 145;
+  }
+
+  /* A short bottom-fade keeps content from visually colliding with the pill
+     as it scrolls up. Sits behind the pill; no pointer events. */
+  body::after {
+    content: '';
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 72px;
+    background: linear-gradient(
+      to top,
+      rgba(10, 10, 10, 0.95) 0%,
+      rgba(10, 10, 10, 0.6) 45%,
+      rgba(10, 10, 10, 0) 100%
+    );
+    pointer-events: none;
+    z-index: 138;
+  }
+
+  .scroll-progress-dot {
+    width: 38px !important;
+    height: 28px !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    animation: none !important;
+    position: relative;
+    transition: background 0.28s ease;
+  }
+
+  .scroll-progress-dot::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important; left: 50% !important;
+    right: auto !important; bottom: auto !important;
+    inset: auto !important;
+    width: 6px !important; height: 6px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 215, 0, 0.38) !important;
+    transform: translate(-50%, -50%) !important;
+    transition: width 0.28s ease, height 0.28s ease, background 0.28s ease;
+    box-shadow: none !important;
+  }
+
+  /* Drop the text label overlay that used to bleed onto body copy */
+  .scroll-progress-dot::after { content: none !important; }
+
+  .scroll-progress-dot.active {
+    background: rgba(255, 215, 0, 0.12) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    animation: none !important;
+  }
+
+  .scroll-progress-dot.active::before {
+    width: 22px !important;
+    height: 6px !important;
+    border-radius: 999px !important;
+    background: #FFD700 !important;
+    box-shadow: 0 0 8px rgba(255,215,0,0.65) !important;
+  }
+
+  /* ---------- PAGE TITLE ------------------------------------- */
+  .page-title {
+    font-size: 1.72rem;
+    padding: 6px 10px 6px 8px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---------- INTRO TEXT ------------------------------------- */
+  p.intro-text {
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-top: 4px;
+    max-width: 100%;
+    color: rgba(210, 210, 210, 0.88);
+  }
+
+  /* ---------- SECTION TITLE ---------------------------------- */
+  .section-title {
+    font-size: 1.12rem;
+    margin: 32px 0 14px;
+    letter-spacing: 0.4px;
+  }
+
+  /* ---------- WHAT I DO CARDS -------------------------------- */
+  .wid-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px 0 4px;
+    perspective: none;
+  }
+  .wid-card {
+    padding: 20px 20px 20px !important;
+    border-radius: 18px;
+    transform: none !important;
+    will-change: auto;
+  }
+  .wid-top { margin-bottom: 14px; }
+  .wid-icon-wrap {
+    width: 42px; height: 42px;
+    font-size: 1rem;
+    border-radius: 11px;
+  }
+  .wid-num { font-size: 0.64rem; letter-spacing: 2px; }
+  .wid-title { font-size: 1.02rem; margin-bottom: 6px; }
+  .wid-desc { font-size: 0.89rem; line-height: 1.65; }
+  .wid-card:active {
+    transform: scale(0.994) !important;
+    transition: transform 0.12s ease;
+  }
+  /* Never keep the conic border trace running on touch */
+  .wid-card::before,
+  .wid-card .wid-shine { display: none !important; }
+
+  /* ---------- TIMELINE --------------------------------------- */
+  .timeline {
+    padding-left: 22px !important;
+    margin-left: 4px;
+    border-left-color: rgba(255, 255, 255, 0.08);
+  }
+  .timeline-item { margin-bottom: 22px; }
+  .timeline-item::before {
+    left: -28px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+  }
+  .timeline-date {
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 3px;
+  }
+  .timeline-title { font-size: 0.98rem; margin-bottom: 3px; }
+  .timeline-subtitle { font-size: 0.86rem; margin-bottom: 6px; }
+  .timeline-item p { font-size: 0.9rem; line-height: 1.6; }
+
+  /* ---------- SKILLS MARQUEE CHIPS --------------------------- */
+  .skills-marquee-container { padding: 14px 0; }
+  .skills-marquee-content { gap: 14px; }
+  .skill-item {
+    padding: 11px 16px;
+    font-size: 0.82rem;
+    border-radius: 12px;
+    gap: 8px;
+  }
+  .skill-item i { font-size: 1.2rem; }
+
+  /* ---------- CONTACT FORM ----------------------------------- */
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    font-size: 0.78rem;
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
+  }
+  .form-control {
+    padding: 13px 14px;
+    font-size: 0.95rem;
+    border-radius: 12px;
+  }
+  .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.12);
+    border-color: var(--accent-color);
+  }
+  #contact form > .btn.btn-primary,
+  #contact form button[type="submit"].btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  /* ---------- SIDEBAR OVERLAY REFINEMENTS -------------------- */
+  .sidebar {
+    padding: 28px 22px 36px !important;
+    padding-top: 84px !important;
+  }
+  .profile-container {
+    width: 140px;
+    height: 140px;
+    margin-bottom: 18px;
+  }
+  .profile-img {
+    width: 118px;
+    height: 118px;
+  }
+  .sidebar h1 { font-size: 1.35rem; margin-bottom: 8px; }
+  .sidebar .badge {
+    font-size: 0.78rem;
+    padding: 4px 12px;
+    margin-bottom: 4px !important;
+  }
+  #typewriter-subtitle {
+    font-size: 0.7rem;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+  }
+  .contact-info { max-width: 280px; margin: 0 auto; }
+  .contact-info li {
+    font-size: 0.88rem;
+    margin-bottom: 12px;
+  }
+  .social-icons { gap: 14px; }
+
+  /* ---------- FOOTER + BACK TO TOP --------------------------- */
+  .footer {
+    padding: 16px 20px 88px !important; /* clear bottom nav pill */
+  }
+  .back-to-top {
+    bottom: 88px !important;
+    right: 16px !important;
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  /* ---------- SUBTLE STAGGERED ENTRY MOTION ------------------ */
+  .page.active > * {
+    animation: mobileFadeRise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    opacity: 1;
+  }
+  .page.active > *:nth-child(1) { animation-delay: 0.05s; }
+  .page.active > *:nth-child(2) { animation-delay: 0.10s; }
+  .page.active > *:nth-child(3) { animation-delay: 0.16s; }
+  .page.active > *:nth-child(4) { animation-delay: 0.22s; }
+  .page.active > *:nth-child(5) { animation-delay: 0.28s; }
+  .page.active > *:nth-child(6) { animation-delay: 0.34s; }
+  .page.active > *:nth-child(7) { animation-delay: 0.40s; }
+  .page.active > *:nth-child(8) { animation-delay: 0.46s; }
+
+  @keyframes mobileFadeRise {
+    0%   { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Honor reduced-motion for mobile v2 entry motion too */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .page.active > * {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
