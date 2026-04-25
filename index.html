@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,30..100,0..1;1,9..144,300..700,30..100,0..1&display=swap" rel="stylesheet">
 
     <style>
         /* ════════════════════════════════════════
@@ -952,7 +952,13 @@
     </div>
 
     <button class="hamburger" aria-label="Open profile panel" aria-expanded="false" aria-controls="sidebar">
-        <i class="fas fa-bars"></i>
+        <span class="ham-bg" aria-hidden="true"></span>
+        <span class="ham-glyph" aria-hidden="true">
+            <span class="ham-bar ham-bar-1"></span>
+            <span class="ham-bar ham-bar-2"></span>
+            <span class="ham-bar ham-bar-3"></span>
+        </span>
+        <span class="ham-pip" aria-hidden="true"></span>
     </button>
 
     <!-- Mobile Bottom Dock: thumb-reachable primary nav. Icons + labels with a
@@ -970,7 +976,7 @@
         </a>
         <a href="#projects" class="dock-item mobile-nav-link" data-page="projects">
             <span class="dock-icon" aria-hidden="true"><i class="fas fa-cube"></i></span>
-            <span class="dock-label">Work</span>
+            <span class="dock-label">Projects</span>
         </a>
         <a href="#contact" class="dock-item mobile-nav-link" data-page="contact">
             <span class="dock-icon" aria-hidden="true"><i class="fas fa-satellite-dish"></i></span>
@@ -997,7 +1003,7 @@
         </nav>
 
         <ul class="contact-info">
-            <li><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fb959a949f8f88908e82949692bb9c969a9297d5989496">[email&#160;protected]</a></li>
+            <li><i class="fas fa-envelope"></i> <a href="mailto:samuelgrma07@gmail.com">samuelgrma07@gmail.com</a></li>
             <li><i class="fas fa-phone"></i> +251 948 998 804</li>
             <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
         </ul>
@@ -1027,12 +1033,145 @@
 
             <!-- About -->
             <section id="about" class="page active">
+                <!-- ════════════════════════════════════════
+                     MOBILE HERO — editorial layered intro.
+                     Hidden on desktop (>768px) by media query.
+                     ════════════════════════════════════════ -->
+                <header class="mhero" aria-label="Introduction" data-mhero>
+                    <div class="mhero-frame">
+                        <span class="mhero-corner mhero-corner-tl" aria-hidden="true"></span>
+                        <span class="mhero-corner mhero-corner-tr" aria-hidden="true"></span>
+                        <span class="mhero-corner mhero-corner-bl" aria-hidden="true"></span>
+                        <span class="mhero-corner mhero-corner-br" aria-hidden="true"></span>
+                    </div>
+
+                    <div class="mhero-stamp" aria-hidden="true">
+                        <span class="mhero-stamp-tag">VOL&nbsp;01 · ISSUE 03</span>
+                        <span class="mhero-stamp-rule"></span>
+                        <span class="mhero-stamp-status">
+                            <span class="mhero-stamp-mark" aria-hidden="true">
+                                <svg viewBox="0 0 12 12" fill="none">
+                                    <path d="M6 0 7.4 4.6 12 6 7.4 7.4 6 12 4.6 7.4 0 6 4.6 4.6Z" fill="currentColor"/>
+                                </svg>
+                            </span>
+                            <span class="mhero-stamp-text">AVAILABLE · Q3</span>
+                        </span>
+                    </div>
+
+                    <p class="mhero-eyebrow"><span aria-hidden="true">/</span> Hello — I'm</p>
+
+                    <div class="mhero-headline">
+                        <h1 class="mhero-name">
+                            <span class="mhero-name-first">Samuel</span>
+                            <span class="mhero-name-last">
+                                <span class="mhero-name-amp" aria-hidden="true">G.</span>
+                                <span class="mhero-name-portrait" aria-hidden="true">
+                                    <img src="PHOTO.jpg" alt="" loading="lazy">
+                                    <span class="mhero-name-portrait-ring"></span>
+                                </span>
+                            </span>
+                        </h1>
+                        <p class="mhero-lede">
+                            A Third-Year CS student crafting
+                            <em>beautiful</em>, functional digital
+                            experiences with <em>creative design</em>.
+                        </p>
+                    </div>
+
+                    <ul class="mhero-meta" aria-label="Quick facts">
+                        <li class="mhero-meta-cell">
+                            <span class="mhero-meta-label">LOCATION</span>
+                            <span class="mhero-meta-value">Addis Ababa</span>
+                        </li>
+                        <li class="mhero-meta-cell">
+                            <span class="mhero-meta-label">LOCAL · GMT+3</span>
+                            <span class="mhero-meta-value" id="mhero-local-time" aria-live="off">--:--</span>
+                        </li>
+                        <li class="mhero-meta-cell">
+                            <span class="mhero-meta-label">FOCUS</span>
+                            <span class="mhero-meta-value">BSc · Yr 3</span>
+                        </li>
+                    </ul>
+
+                    <!-- Currently-shipping editorial chip — researched
+                         signal of active work, not a generic pulse. -->
+                    <div class="mhero-now" role="note" aria-label="Currently working on">
+                        <span class="mhero-now-cap" aria-hidden="true">CURRENTLY</span>
+                        <span class="mhero-now-body">
+                            Building <em>StudyLens</em> &amp; refining
+                            <em>Mock-It</em> for ACT seniors.
+                        </span>
+                        <span class="mhero-now-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    <div class="mhero-ctas">
+                        <a href="#projects" class="mhero-cta mhero-cta-primary mobile-nav-link" data-page="projects">
+                            <span class="mhero-cta-label">View Projects</span>
+                            <span class="mhero-cta-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14M13 6l6 6-6 6"/>
+                                </svg>
+                            </span>
+                            <span class="mhero-cta-shine" aria-hidden="true"></span>
+                        </a>
+                        <a href="#contact" class="mhero-cta mhero-cta-ghost mobile-nav-link" data-page="contact">
+                            <span class="mhero-cta-label">Get in touch</span>
+                            <span class="mhero-cta-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 7l9 6 9-6M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7a2 2 0 012-2h14a2 2 0 012 2"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="mhero-marquee" aria-hidden="true">
+                        <div class="mhero-marquee-track">
+                            <span>NEXT.JS</span><span class="mhero-marquee-dot"></span>
+                            <span>TYPESCRIPT</span><span class="mhero-marquee-dot"></span>
+                            <span>PYTHON</span><span class="mhero-marquee-dot"></span>
+                            <span>FIGMA</span><span class="mhero-marquee-dot"></span>
+                            <span>TAILWIND</span><span class="mhero-marquee-dot"></span>
+                            <span>SQL</span><span class="mhero-marquee-dot"></span>
+                            <span>REACT</span><span class="mhero-marquee-dot"></span>
+                            <span>NEXT.JS</span><span class="mhero-marquee-dot"></span>
+                            <span>TYPESCRIPT</span><span class="mhero-marquee-dot"></span>
+                            <span>PYTHON</span><span class="mhero-marquee-dot"></span>
+                            <span>FIGMA</span><span class="mhero-marquee-dot"></span>
+                            <span>TAILWIND</span><span class="mhero-marquee-dot"></span>
+                            <span>SQL</span><span class="mhero-marquee-dot"></span>
+                            <span>REACT</span><span class="mhero-marquee-dot"></span>
+                        </div>
+                    </div>
+
+                    <div class="mhero-scroll-hint" aria-hidden="true">
+                        <span class="mhero-scroll-arrow">
+                            <svg viewBox="0 0 12 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 1v15M1.5 11.5L6 16l4.5-4.5"/>
+                            </svg>
+                        </span>
+                        <span class="mhero-scroll-text">SCROLL FOR MORE</span>
+                    </div>
+                </header>
+
+                <!-- Mobile-only editorial section break: thin chapter rule
+                     + chapter caption (§ 02 — discipline) → sets up the
+                     "What I Do" grid as a chapter in the hero's narrative. -->
+                <div class="m-section-break" data-mobile-only aria-hidden="true">
+                    <span class="m-section-break-rule"></span>
+                    <span class="m-section-break-caption">
+                        <span class="m-section-break-num">§&nbsp;02</span>
+                        <span class="m-section-break-sep">—</span>
+                        <span class="m-section-break-name">Discipline</span>
+                    </span>
+                    <span class="m-section-break-rule"></span>
+                </div>
+
                 <h2 class="page-title">About Me</h2>
                 <br>
                 <p class="intro-text">
-                    I am a dynamic Third-Year Computer Science student at American College of Technology, passionate
-                    about creating beautiful, functional digital experiences. I blend technical skills with creative
-                    design to build engaging solutions.
+                    I am a <em>dynamic</em> Third-Year Computer Science student at <span class="intro-uni">American College of Technology</span>,
+                    passionate about creating <em>beautiful, functional</em> digital experiences. I blend technical skills with
+                    <em>creative design</em> to build engaging solutions.
                 </p>
 
                 <h3 class="section-title">What I Do</h3>
@@ -1460,19 +1599,59 @@
 
         <footer class="footer">
             <div class="footer-main">
-                <p>&copy; Samuel Girma 2026. All rights reserved.</p>
+                <!-- Brand block: monogram, identity line, sign-off statement -->
+                <div class="footer-brand">
+                    <div class="footer-brand-row">
+                        <span class="footer-monogram" aria-hidden="true">SG</span>
+                        <span class="footer-brand-name">
+                            <strong>Samuel Girma</strong>
+                            <span>CS · Web Developer · Designer</span>
+                        </span>
+                    </div>
+                    <p class="footer-brand-statement">
+                        Crafting <em>thoughtful</em> digital experiences from
+                        <em>Addis Ababa</em>, with a love for typography and
+                        a respect for the system.
+                    </p>
+                </div>
+
+                <!-- Sitemap -->
+                <nav class="footer-col" aria-label="Sitemap">
+                    <h3 class="footer-col-title">Sitemap</h3>
+                    <ul>
+                        <li><a href="#about" class="mobile-nav-link" data-page="about">About</a></li>
+                        <li><a href="#resume" class="mobile-nav-link" data-page="resume">Resume</a></li>
+                        <li><a href="#projects" class="mobile-nav-link" data-page="projects">Projects</a></li>
+                        <li><a href="#contact" class="mobile-nav-link" data-page="contact">Contact</a></li>
+                        <li><a href="cv.pdf" target="_blank" rel="noopener noreferrer">Download CV <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
+                    </ul>
+                </nav>
+
+                <!-- Elsewhere: real email + socials -->
+                <nav class="footer-col" aria-label="Elsewhere">
+                    <h3 class="footer-col-title">Elsewhere</h3>
+                    <ul>
+                        <li><a href="mailto:samuelgrma07@gmail.com">samuelgrma07@gmail.com <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
+                        <li><a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank" rel="noopener noreferrer">LinkedIn <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
+                        <li><a href="https://github.com/Samuel-Girma07" target="_blank" rel="noopener noreferrer">GitHub <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
+                        <li><a href="tel:+251948998804">+251 948 998 804</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Bottom bar: copyright + crafted line + back-to-top + system meta -->
+            <div class="footer-bottom">
+                <div class="footer-copy">
+                    <p>&copy; <span id="footer-year">2026</span> Samuel Girma. All rights reserved.</p>
+                    <span class="footer-craft">Crafted by hand in Addis Ababa.</span>
+                </div>
                 <button id="back-to-top" class="back-to-top" aria-label="Back to top">
                     <i class="fas fa-arrow-up"></i>
                 </button>
-            </div>
-            <!-- HUD meta row: system version + keyboard shortcuts hint. Mono font
-                 gives it a cockpit-readout feel without shouting. -->
-            <div class="footer-meta" aria-hidden="true">
-                <span class="footer-kbd"><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-                <span class="footer-sep">·</span>
-                <span class="footer-kbd"><kbd>Esc</kbd> close</span>
-                <span class="footer-sep">·</span>
-                <span class="footer-version">SYS v2.1</span>
+                <div class="footer-system" aria-hidden="true">
+                    <span class="footer-system-dot"></span>
+                    <span>SYS v2.1 · ALL SYSTEMS NOMINAL</span>
+                </div>
             </div>
         </footer>
 
@@ -1707,6 +1886,31 @@
                     if (t) scramble(t);
                 }, 950);
             }
+        })();
+
+        /* ═══════════════════════════════════════════════════════
+           MOBILE HERO: LIVE LOCAL TIME (Addis Ababa, GMT+3)
+           Researched detail — shows the visitor that the page is
+           anchored to a real human in a real timezone. Updates each
+           minute, ticks immediately on load.
+        ═══════════════════════════════════════════════════════ */
+        (function initHeroLocalTime() {
+            var el = document.getElementById('mhero-local-time');
+            if (!el) return;
+
+            function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+            function render() {
+                // Compute Africa/Addis_Ababa wall-clock by shifting UTC by +3h.
+                // Avoids relying on Intl.DateTimeFormat timeZone support.
+                var now = new Date();
+                var utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+                var addis = new Date(utcMs + 3 * 3600 * 1000);
+                el.textContent = pad(addis.getHours()) + ':' + pad(addis.getMinutes());
+            }
+
+            render();
+            setInterval(render, 30000);
         })();
 
         /* ═══════════════════════════════════════════════════════
