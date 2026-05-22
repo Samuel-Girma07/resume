@@ -1,6 +1,3 @@
-# Archive folder (development files)
-_archive/
-
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -22,3 +19,10 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Local/generated artifacts
+_archive/
+.playwright-cli/
+*.bak
+*.zip
+*.skill

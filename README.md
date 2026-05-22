@@ -21,16 +21,14 @@ A modern, responsive portfolio website showcasing my work as a Computer Science 
 ## 📂 Project Structure
 
 ```
-├── index.html          # Main page (About section)
-├── resume.html         # Resume/Experience page
-├── projects.html       # Projects showcase page
-├── contact.html        # Contact form page
+├── index.html          # Main single-page portfolio
 ├── style.css           # Main stylesheet
-├── script.js           # Core JavaScript functionality
-├── orb_effect.js       # Profile orb animation
-├── interactive_dots.js # Interactive background effects
+├── script.js           # Navigation, sliders, and interactions
+├── orb_effect.js       # Lazy-loaded profile orb animation
+├── *.webp              # Optimized portfolio images
 ├── cv.pdf              # Downloadable resume
-└── assets/             # Images and icons
+├── favicon*            # Browser icons
+└── vercel.json         # Vercel cache settings
 ```
 
 ## 🚀 Getting Started

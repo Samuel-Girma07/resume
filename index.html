@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -20,10 +20,15 @@
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="PHOTO.webp" as="image" type="image/webp">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,30..100,0..1;1,9..144,300..700,30..100,0..1&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Yantramanav:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
     <style>
         /* ════════════════════════════════════════
@@ -987,7 +992,7 @@
     <aside class="sidebar" id="sidebar" aria-label="Profile panel">
         <div class="profile-container">
             <div id="profile-orb" class="orb-canvas-container"></div>
-            <img src="PHOTO.jpg" alt="Samuel Girma" class="profile-img" loading="lazy">
+            <img src="PHOTO.webp" alt="Samuel Girma" class="profile-img" width="663" height="799" decoding="async" fetchpriority="high">
         </div>
         <h1>Samuel Girma</h1>
         <div class="badge">Computer Science Student</div>
@@ -1003,18 +1008,35 @@
         </nav>
 
         <ul class="contact-info">
-            <li><i class="fas fa-envelope"></i> <a href="mailto:samuelgrma07@gmail.com">samuelgrma07@gmail.com</a></li>
+            <li><i class="fas fa-envelope"></i> <a href="mailto:naodtskuyomi@gmail.com">naodtskuyomi@gmail.com</a></li>
             <li><i class="fas fa-phone"></i> +251 948 998 804</li>
             <li><i class="fas fa-map-marker-alt"></i> Addis Ababa, Ethiopia</li>
         </ul>
 
         <div class="social-icons">
-            <a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://github.com/Samuel-Girma07" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a class="social-orbit linkedin-orbit" href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+                <span class="social-svg-container" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" height="22" width="22" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+                    </svg>
+                </span>
+                <span class="social-bg" aria-hidden="true"></span>
+            </a>
+            <a class="social-orbit github-orbit" href="https://github.com/Samuel-Girma07" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                <span class="social-svg-container" aria-hidden="true">
+                    <svg viewBox="0 0 496 512" height="22" width="22" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"></path>
+                    </svg>
+                </span>
+                <span class="social-bg" aria-hidden="true"></span>
+            </a>
         </div>
 
-        <a href="cv.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-            <i class="fas fa-download"></i> Download CV
+        <a href="cv.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-primary download-orbit" aria-label="Download CV">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="download-orbit-icon" aria-hidden="true">
+                <path d="M6 21H18M12 3V17M12 17L17 12M12 17L7 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="download-orbit-text">Download CV</span>
         </a>
     </aside>
 
@@ -1045,19 +1067,6 @@
                         <span class="mhero-corner mhero-corner-br" aria-hidden="true"></span>
                     </div>
 
-                    <div class="mhero-stamp" aria-hidden="true">
-                        <span class="mhero-stamp-tag">VOL&nbsp;01 · ISSUE 03</span>
-                        <span class="mhero-stamp-rule"></span>
-                        <span class="mhero-stamp-status">
-                            <span class="mhero-stamp-mark" aria-hidden="true">
-                                <svg viewBox="0 0 12 12" fill="none">
-                                    <path d="M6 0 7.4 4.6 12 6 7.4 7.4 6 12 4.6 7.4 0 6 4.6 4.6Z" fill="currentColor"/>
-                                </svg>
-                            </span>
-                            <span class="mhero-stamp-text">AVAILABLE · Q3</span>
-                        </span>
-                    </div>
-
                     <p class="mhero-eyebrow"><span aria-hidden="true">/</span> Hello — I'm</p>
 
                     <div class="mhero-headline">
@@ -1066,7 +1075,7 @@
                             <span class="mhero-name-last">
                                 <span class="mhero-name-amp" aria-hidden="true">G.</span>
                                 <span class="mhero-name-portrait" aria-hidden="true">
-                                    <img src="PHOTO.jpg" alt="" loading="lazy">
+                                    <img src="PHOTO.webp" alt="" width="663" height="799" loading="lazy" decoding="async">
                                     <span class="mhero-name-portrait-ring"></span>
                                 </span>
                             </span>
@@ -1076,32 +1085,6 @@
                             <em>beautiful</em>, functional digital
                             experiences with <em>creative design</em>.
                         </p>
-                    </div>
-
-                    <ul class="mhero-meta" aria-label="Quick facts">
-                        <li class="mhero-meta-cell">
-                            <span class="mhero-meta-label">LOCATION</span>
-                            <span class="mhero-meta-value">Addis Ababa</span>
-                        </li>
-                        <li class="mhero-meta-cell">
-                            <span class="mhero-meta-label">LOCAL · GMT+3</span>
-                            <span class="mhero-meta-value" id="mhero-local-time" aria-live="off">--:--</span>
-                        </li>
-                        <li class="mhero-meta-cell">
-                            <span class="mhero-meta-label">FOCUS</span>
-                            <span class="mhero-meta-value">BSc · Yr 3</span>
-                        </li>
-                    </ul>
-
-                    <!-- Currently-shipping editorial chip — researched
-                         signal of active work, not a generic pulse. -->
-                    <div class="mhero-now" role="note" aria-label="Currently working on">
-                        <span class="mhero-now-cap" aria-hidden="true">CURRENTLY</span>
-                        <span class="mhero-now-body">
-                            Building <em>StudyLens</em> &amp; refining
-                            <em>Mock-It</em> for ACT seniors.
-                        </span>
-                        <span class="mhero-now-arrow" aria-hidden="true">→</span>
                     </div>
 
                     <div class="mhero-ctas">
@@ -1141,15 +1124,6 @@
                             <span>SQL</span><span class="mhero-marquee-dot"></span>
                             <span>REACT</span><span class="mhero-marquee-dot"></span>
                         </div>
-                    </div>
-
-                    <div class="mhero-scroll-hint" aria-hidden="true">
-                        <span class="mhero-scroll-arrow">
-                            <svg viewBox="0 0 12 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M6 1v15M1.5 11.5L6 16l4.5-4.5"/>
-                            </svg>
-                        </span>
-                        <span class="mhero-scroll-text">SCROLL FOR MORE</span>
                     </div>
                 </header>
 
@@ -1307,15 +1281,15 @@
                             <div class="sl-track" id="slTrackSPA">
 
                                 <div class="sl-slide">
-                                    <img src="slide1.jpg" alt="StudyLens screenshot 1">
+                                    <img src="slide1.webp" alt="StudyLens screenshot 1" width="1818" height="1020" loading="lazy" decoding="async">
                                 </div>
 
                                 <div class="sl-slide">
-                                    <img src="slide2.jpg" alt="StudyLens screenshot 2">
+                                    <img src="slide2.webp" alt="StudyLens screenshot 2" width="1818" height="1020" loading="lazy" decoding="async">
                                 </div>
 
                                 <div class="sl-slide">
-                                    <img src="slide3.jpg" alt="StudyLens screenshot 3">
+                                    <img src="slide3.webp" alt="StudyLens screenshot 3" width="1818" height="1020" loading="lazy" decoding="async">
                                 </div>
 
                             </div>
@@ -1358,13 +1332,13 @@
 
                                 <div class="sl-tech-marquee">
                                     <div class="sl-tech-track">
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
                                         <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
                                         <div class="sl-tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
                                         <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
                                         <div class="sl-tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
@@ -1372,13 +1346,13 @@
                                         <div class="sl-tech-item"><i class="fas fa-sync-alt" style="color:#FF4154"></i> TanStack Query</div>
                                         <div class="sl-tech-item"><i class="fas fa-chart-bar" style="color:#38bdf8"></i> Recharts</div>
                                         <div class="sl-tech-item"><i class="fas fa-file-code" style="color:#34d399"></i> MDXEditor</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:brightness(0) invert(1)"> Next.js 15</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bun/bun-original.svg" alt="Bun"> Bun</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"> PostgreSQL</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg" alt="Prisma" style="filter:brightness(0) invert(1)"> Prisma</div>
                                         <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> NextAuth.js</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind"> Tailwind CSS 4</div>
                                         <div class="sl-tech-item"><i class="fas fa-layer-group" style="color:#e2e8f0"></i> shadcn/ui</div>
                                         <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
                                         <div class="sl-tech-item"><i class="fas fa-brain" style="color:#a78bfa"></i> ts-fsrs</div>
@@ -1413,9 +1387,9 @@
                     <div class="sl-card">
                         <div class="sl-slider">
                             <div class="sl-track" id="slTrackSPA2">
-                                <div class="sl-slide"><img src="ts-slide1.jpg" alt="TechShop Ethiopia screenshot 1"></div>
-                                <div class="sl-slide"><img src="ts-slide2.jpg" alt="TechShop Ethiopia screenshot 2"></div>
-                                <div class="sl-slide"><img src="ts-slide3.jpg" alt="TechShop Ethiopia screenshot 3"></div>
+                                <div class="sl-slide"><img src="ts-slide1.webp" alt="TechShop Ethiopia screenshot 1" width="1818" height="1020" loading="lazy" decoding="async"></div>
+                                <div class="sl-slide"><img src="ts-slide2.webp" alt="TechShop Ethiopia screenshot 2" width="1818" height="1020" loading="lazy" decoding="async"></div>
+                                <div class="sl-slide"><img src="ts-slide3.webp" alt="TechShop Ethiopia screenshot 3" width="1818" height="1020" loading="lazy" decoding="async"></div>
                             </div>
                             <div class="sl-counter"><span id="slNumSPA2">01</span> / 03</div>
                             <button class="sl-arr sl-arr-prev" onclick="spaSlChange2(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
@@ -1443,8 +1417,8 @@
                                     <div class="sl-tech-track">
                                         <div class="sl-tech-item"><i class="fab fa-php" style="color:#8892BF"></i> PHP 7.4+</div>
                                         <div class="sl-tech-item"><i class="fas fa-database" style="color:#4479A1"></i> MySQL / MySQLi</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap 4.6</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery"> jQuery 3.7</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap 4.6</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery"> jQuery 3.7</div>
                                         <div class="sl-tech-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
                                         <div class="sl-tech-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
                                         <div class="sl-tech-item"><i class="fab fa-font-awesome" style="color:#528DD7"></i> Font Awesome 5</div>
@@ -1454,8 +1428,8 @@
                                         <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#f97316"></i> Prepared Stmts</div>
                                         <div class="sl-tech-item"><i class="fab fa-php" style="color:#8892BF"></i> PHP 7.4+</div>
                                         <div class="sl-tech-item"><i class="fas fa-database" style="color:#4479A1"></i> MySQL / MySQLi</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap 4.6</div>
-                                        <div class="sl-tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery"> jQuery 3.7</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap"> Bootstrap 4.6</div>
+                                        <div class="sl-tech-item"><img loading="lazy" decoding="async" width="15" height="15" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery"> jQuery 3.7</div>
                                         <div class="sl-tech-item"><i class="fab fa-html5" style="color:#E34F26"></i> HTML5</div>
                                         <div class="sl-tech-item"><i class="fab fa-css3-alt" style="color:#1572B6"></i> CSS3</div>
                                         <div class="sl-tech-item"><i class="fab fa-font-awesome" style="color:#528DD7"></i> Font Awesome 5</div>
@@ -1484,9 +1458,9 @@
                     <div class="sl-card">
                         <div class="sl-slider">
                             <div class="sl-track" id="slTrackSPA3">
-                                <div class="sl-slide"><img src="pf-slide1.jpg" alt="Personal Portfolio screenshot 1"></div>
-                                <div class="sl-slide"><img src="pf-slide2.jpg" alt="Personal Portfolio screenshot 2"></div>
-                                <div class="sl-slide"><img src="pf-slide3.jpg" alt="Personal Portfolio screenshot 3"></div>
+                                <div class="sl-slide"><img src="pf-slide1.webp" alt="Personal Portfolio screenshot 1" width="1843" height="1020" loading="lazy" decoding="async"></div>
+                                <div class="sl-slide"><img src="pf-slide2.webp" alt="Personal Portfolio screenshot 2" width="1843" height="1020" loading="lazy" decoding="async"></div>
+                                <div class="sl-slide"><img src="pf-slide3.webp" alt="Personal Portfolio screenshot 3" width="1843" height="1020" loading="lazy" decoding="async"></div>
                             </div>
                             <div class="sl-counter"><span id="slNumSPA3">01</span> / 03</div>
                             <button class="sl-arr sl-arr-prev" onclick="spaSlChange3(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
@@ -1551,11 +1525,11 @@
                      before the visitor commits to the form. -->
                 <ul class="contact-methods" aria-label="Contact methods">
                     <li>
-                        <a class="method-card" href="mailto:samuelgrma07@gmail.com" aria-label="Email Samuel Girma">
+                        <a class="method-card" href="mailto:naodtskuyomi@gmail.com" aria-label="Email Samuel Girma">
                             <span class="method-icon"><i class="fas fa-envelope"></i></span>
                             <span class="method-body">
                                 <span class="method-label">Email</span>
-                                <span class="method-value">samuelgrma07@gmail.com</span>
+                                <span class="method-value">naodtskuyomi@gmail.com</span>
                             </span>
                             <span class="method-chevron" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
                         </a>
@@ -1631,7 +1605,7 @@
                 <nav class="footer-col" aria-label="Elsewhere">
                     <h3 class="footer-col-title">Elsewhere</h3>
                     <ul>
-                        <li><a href="mailto:samuelgrma07@gmail.com">samuelgrma07@gmail.com <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
+                        <li><a href="mailto:naodtskuyomi@gmail.com">naodtskuyomi@gmail.com <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
                         <li><a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank" rel="noopener noreferrer">LinkedIn <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
                         <li><a href="https://github.com/Samuel-Girma07" target="_blank" rel="noopener noreferrer">GitHub <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
                         <li><a href="tel:+251948998804">+251 948 998 804</a></li>
@@ -1664,9 +1638,7 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js"></script>
-    <script src="orb_effect.js"></script>
+    <script src="script.js" defer></script>
     <script>
         /* ═══════════════════════════════════════════════════════
            EXISTING: TILT + SHINE  (about page cards)
@@ -1886,31 +1858,6 @@
                     if (t) scramble(t);
                 }, 950);
             }
-        })();
-
-        /* ═══════════════════════════════════════════════════════
-           MOBILE HERO: LIVE LOCAL TIME (Addis Ababa, GMT+3)
-           Researched detail — shows the visitor that the page is
-           anchored to a real human in a real timezone. Updates each
-           minute, ticks immediately on load.
-        ═══════════════════════════════════════════════════════ */
-        (function initHeroLocalTime() {
-            var el = document.getElementById('mhero-local-time');
-            if (!el) return;
-
-            function pad(n) { return n < 10 ? '0' + n : '' + n; }
-
-            function render() {
-                // Compute Africa/Addis_Ababa wall-clock by shifting UTC by +3h.
-                // Avoids relying on Intl.DateTimeFormat timeZone support.
-                var now = new Date();
-                var utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-                var addis = new Date(utcMs + 3 * 3600 * 1000);
-                el.textContent = pad(addis.getHours()) + ':' + pad(addis.getMinutes());
-            }
-
-            render();
-            setInterval(render, 30000);
         })();
 
         /* ═══════════════════════════════════════════════════════
@@ -2195,3 +2142,4 @@
     </script>
 </body>
 </html>
+

@@ -1,5 +1,56 @@
 
 // Navigation & Mobile Sidebar Logic
+function scheduleIdleTask(callback, timeout = 1200) {
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(callback, { timeout });
+    } else {
+        window.setTimeout(callback, Math.min(timeout, 600));
+    }
+}
+
+function shouldSkipHeavyEffects() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const hasNoHover = window.matchMedia('(hover: none)').matches;
+    const isSmallScreen = window.innerWidth <= 768;
+    const saveData = navigator.connection && navigator.connection.saveData;
+    return prefersReducedMotion || saveData || (hasCoarsePointer && (hasNoHover || isSmallScreen));
+}
+
+function loadScriptOnce(src) {
+    return new Promise((resolve, reject) => {
+        const existing = document.querySelector(`script[src="${src}"]`);
+        if (existing) {
+            existing.addEventListener('load', resolve, { once: true });
+            existing.addEventListener('error', reject, { once: true });
+            if (existing.dataset.loaded === 'true') resolve();
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        script.onload = () => {
+            script.dataset.loaded = 'true';
+            resolve();
+        };
+        script.onerror = reject;
+        document.body.appendChild(script);
+    });
+}
+
+function loadProfileOrbWhenUseful() {
+    if (shouldSkipHeavyEffects() || !document.getElementById('profile-orb')) return;
+    scheduleIdleTask(() => {
+        loadScriptOnce('https://cdn.jsdelivr.net/npm/ogl/dist/ogl.umd.js')
+            .then(() => loadScriptOnce('orb_effect.js'))
+            .catch(() => {
+                const orb = document.getElementById('profile-orb');
+                if (orb) orb.style.display = 'none';
+            });
+    }, 1800);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initial Setup
     setupMobileMenu();
@@ -8,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     handleInitialHash();
     setupScrollReveal();
     setupBackToTop();
+    loadProfileOrbWhenUseful();
 });
 
 // Hide loading screen after page loads
@@ -16,7 +68,7 @@ window.addEventListener('load', () => {
     if (loadingScreen) {
         setTimeout(() => {
             loadingScreen.classList.add('hidden');
-        }, 800); // Show loader for at least 800ms
+        }, 250);
     }
 });
 
@@ -675,21 +727,22 @@ window.addEventListener('load', function () {
  return false;
  };
 
- if (shouldDisableHeavyEffects()) {
- // Canvas already hidden via CSS. WebGL initialization skipped entirely.
- // No WebGL context created, no shaders compiled, no animation loop started.
- return;
- }
+  if (shouldDisableHeavyEffects()) {
+  // Canvas already hidden via CSS. WebGL initialization skipped entirely.
+  // No WebGL context created, no shaders compiled, no animation loop started.
+  return;
+  }
+    scheduleIdleTask(() => {
     resizeCanvas();
 
     let config = {
-        SIM_RESOLUTION: 128,
-        DYE_RESOLUTION: 1440,
+        SIM_RESOLUTION: 96,
+        DYE_RESOLUTION: 768,
         CAPTURE_RESOLUTION: 512,
         DENSITY_DISSIPATION: 3.5,
         VELOCITY_DISSIPATION: 2,
         PRESSURE: 0.1,
-        PRESSURE_ITERATIONS: 20,
+        PRESSURE_ITERATIONS: 12,
         CURL: 3,
         SPLAT_RADIUS: 0.2,
         SPLAT_FORCE: 6000,
@@ -1451,6 +1504,7 @@ window.addEventListener('load', function () {
     let colorUpdateTimer = 0.0;
 
     function update() {
+        if (document.hidden) return;
         const dt = calcDeltaTime();
         if (resizeCanvas()) initFramebuffers();
         updateColors(dt);
@@ -1459,6 +1513,13 @@ window.addEventListener('load', function () {
         render(null);
         requestAnimationFrame(update);
     }
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            lastUpdateTime = Date.now();
+            requestAnimationFrame(update);
+        }
+    });
 
     function calcDeltaTime() {
         let now = Date.now();
@@ -1807,4 +1868,5 @@ window.addEventListener('load', function () {
     }
 
     update();
+    }, 1600);
 });

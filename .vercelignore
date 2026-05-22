@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+.playwright-cli/
+_archive/
+*.log
+*.zip
+*.bak
+*.skill
