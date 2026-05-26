@@ -614,9 +614,6 @@ p.intro-text .intro-uni {
 .sl-card,
 .timeline-item,
 .method-card,
-.footer {
-  contain: layout paint;
-}
 
 .showcase-wrapper,
 .timeline,
@@ -1319,14 +1316,6 @@ p.intro-text .intro-uni {
   #page-container { margin-top: 8px; padding-top: 8px; }
 
   /* ── MOBILE FOOTER ──────────────────────────────── */
-  .footer {
-    margin-left: 0;
-    width: 100%;
-    padding: 20px;
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
-  }
 }
 
 @media (max-width: 768px) {
@@ -1989,11 +1978,6 @@ p.intro-text .intro-uni {
     transform: scale(0.97);
   }
 
-  .footer {
-    padding: 22px 16px calc(26px + env(safe-area-inset-bottom));
-    margin-top: 28px;
-    gap: 12px;
-  }
 
   .footer p {
     font-size: 0.78rem;
@@ -2281,9 +2265,6 @@ p.intro-text .intro-uni {
   }
 
   /* ── Footer: gentle fade-up when Contact page is shown ── */
-  .footer.footer-visible {
-    animation: mobileFooterIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
-  }
 
   @keyframes mobileFooterIn {
     0% { opacity: 0; transform: translateY(14px); }
@@ -2387,9 +2368,6 @@ p.intro-text .intro-uni {
  transform: none !important;
  }
 
- .footer.footer-visible {
- animation: none !important;
- }
 
  /* Hide fluid canvas and orb container */
  #fluid,
@@ -2896,26 +2874,7 @@ p.intro-text .intro-uni {
 }
 
 /* Footer — only visible on Contact page */
-.footer {
-  width: 100%;
-  padding: 30px 80px;
-  margin-top: 60px;
-  display: none;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(18, 18, 18, 0.5);
-  backdrop-filter: blur(10px);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
-}
 
-.footer.footer-visible {
-  display: flex;
-  opacity: 1;
-  transform: translateY(0);
-}
 
 .footer p {
   color: var(--text-grey);
@@ -3774,55 +3733,10 @@ p.intro-text .intro-uni {
     font-size: 0.78rem;
   }
 
-  .footer-meta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed rgba(255, 215, 0, 0.1);
-    font-family: var(--mono-font);
-    font-size: 0.66rem;
-    color: rgba(255, 255, 255, 0.42);
-    letter-spacing: 0.2px;
-  }
 
-  .footer-kbd {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
 
-  .footer-kbd kbd {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 5px;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    background: rgba(255, 215, 0, 0.05);
-    color: rgba(255, 215, 0, 0.75);
-    font-family: var(--mono-font);
-    font-size: 0.6rem;
-    font-weight: 600;
-    line-height: 1;
-    box-shadow: inset 0 -1px 0 rgba(255, 215, 0, 0.12);
-  }
 
-  .footer-sep {
-    color: rgba(255, 255, 255, 0.2);
-  }
 
-  .footer-version {
-    color: rgba(255, 215, 0, 0.55);
-    font-weight: 600;
-    letter-spacing: 1px;
-  }
 
   /* ── MAIN CONTENT SPACING ADJUSTMENT ─────────────────────────
      Now that HUD strip and dock occupy top & bottom chrome, bump
@@ -3833,9 +3747,6 @@ p.intro-text .intro-uni {
   }
 
   /* Footer lives inside main-content — pull it up since dock covers bottom */
-  .footer {
-    margin-bottom: 70px;
-  }
 
   /* Hide the old mobile-nav 2x2 grid inside the sidebar — the dock now
      owns page navigation. Keeps sidebar focused on identity + CV. */
@@ -4636,53 +4547,9 @@ p.intro-text .intro-uni {
 
 /* Reset the original .footer behaviour so we can rebuild it. The footer
    keeps its internal grid, but only appears when the Contact page is active. */
-.footer {
-  display: none !important;
-  width: 100%;
-  margin-top: 80px;
-  padding: 56px 80px 30px;
-  background: linear-gradient(180deg, transparent 0%, rgba(255, 215, 0, 0.012) 60%, rgba(255, 215, 0, 0.022) 100%);
-  border-top: 1px solid rgba(255, 215, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  flex-direction: initial !important;
-  justify-content: initial !important;
-  align-items: initial !important;
-  opacity: 0 !important;
-  transform: translateY(18px) !important;
-  pointer-events: none;
-  transition: opacity 0.45s ease, transform 0.45s ease !important;
-}
 
-.footer.footer-visible {
-  display: block !important;
-  opacity: 1 !important;
-  transform: none !important;
-  pointer-events: auto;
-}
 
-.footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent,
-    rgba(255, 215, 0, 0.32) 30%,
-    rgba(255, 215, 0, 0.55) 50%,
-    rgba(255, 215, 0, 0.32) 70%,
-    transparent);
-  pointer-events: none;
-}
 
-.footer-main {
-  display: grid !important;
-  grid-template-columns: minmax(240px, 1.1fr) 0.9fr 1fr;
-  gap: 60px;
-  align-items: start;
-}
 
 /* ── Brand block ────────────────────────────────────────────── */
 
@@ -4712,10 +4579,6 @@ p.intro-text .intro-uni {
 
 
 
-@keyframes footerSystemPulse {
-  0%, 100% { opacity: 0.55; transform: scale(0.85); }
-  50%      { opacity: 1; transform: scale(1.05); }
-}
 
 .back-to-top {
   position: relative;
@@ -4767,26 +4630,10 @@ p.intro-text .intro-uni {
 }
 
 /* ── Hide the legacy footer-meta keyboard-shortcut row (replaced) ── */
-.footer-meta {
-  display: none !important;
-}
 
 /* ── Mobile footer ───────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .footer {
-    margin-top: 40px;
-    margin-bottom: 0 !important;
-    padding: 36px 18px calc(110px + env(safe-area-inset-bottom)) !important;
-    border-top: 1px solid rgba(255, 215, 0, 0.12);
-    background:
-      radial-gradient(800px 400px at 50% 0%, rgba(255, 215, 0, 0.04), transparent 60%),
-      linear-gradient(180deg, transparent 0%, rgba(255, 215, 0, 0.02) 100%);
-  }
 
-  .footer-main {
-    grid-template-columns: 1fr 1fr !important;
-    gap: 28px !important;
-  }
 
 
 
