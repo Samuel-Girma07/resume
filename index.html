@@ -31,6 +31,115 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Yantramanav:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 
     <style>
+        /* ═══════════════════════════════════════════════════════════
+           SEND MESSAGE BUTTON  (inline = no cache issues)
+           ═══════════════════════════════════════════════════════════ */
+        .cta.form-submit {
+            position: relative;
+            margin: 20px 0 0 0;
+            padding: 12px 18px;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+            cursor: pointer;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            overflow: visible;
+        }
+        .cta.form-submit:before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            display: block;
+            border-radius: 50px;
+            background: #FFD700;
+            width: 45px;
+            height: 45px;
+            transition: all 0.3s ease;
+            z-index: 0;
+        }
+        .cta.form-submit .form-submit-label {
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #121212;
+            z-index: 1;
+            margin-left: 8px;
+            transition: color 0.3s ease;
+        }
+        .cta.form-submit .form-submit-icon {
+            position: relative;
+            top: 0;
+            margin-left: 10px;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke: #121212;
+            stroke-width: 2;
+            transform: translateX(-5px);
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        .cta.form-submit:hover:before {
+            width: 100%;
+            background: #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 0 0 50px rgba(255, 215, 0, 0.2);
+        }
+        .cta.form-submit:hover .form-submit-icon {
+            transform: translateX(0);
+        }
+        .cta.form-submit:active {
+            transform: scale(0.95);
+        }
+        /* SENDING */
+        .cta.form-submit.is-sending:before {
+            width: 100%;
+            background: #e6c200;
+            animation: btnPulseSend 1s infinite alternate;
+        }
+        .cta.form-submit.is-sending { pointer-events: none; }
+        .cta.form-submit.is-sending .form-submit-icon {
+            animation: iconMoveSend 1s infinite alternate ease-in-out;
+        }
+        @keyframes btnPulseSend {
+            from { opacity: 0.8; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+            to   { opacity: 1;   box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+        }
+        @keyframes iconMoveSend {
+            from { transform: translateX(0px); }
+            to   { transform: translateX(6px); }
+        }
+        /* SUCCESS */
+        .cta.form-submit.is-success:before {
+            width: 100%;
+            background: #22C55E;
+        }
+        .cta.form-submit.is-success .form-submit-label { color: #fff; }
+        .cta.form-submit.is-success .form-submit-icon { stroke: #fff; }
+        .cta.form-submit.is-success .icon-path,
+        .cta.form-submit.is-success .icon-poly { display: none; }
+        .cta.form-submit.is-success .icon-check { display: block !important; }
+        /* ERROR */
+        .cta.form-submit.is-error:before {
+            width: 100%;
+            background: #dc3545;
+        }
+        .cta.form-submit.is-error .form-submit-label { color: #fff; }
+        .cta.form-submit.is-error .form-submit-icon { stroke: #fff; }
+        .cta.form-submit.is-error {
+            animation: btnShakeSend 0.5s ease;
+        }
+        @keyframes btnShakeSend {
+            0%, 100% { transform: translateX(0); }
+            20%      { transform: translateX(-5px); }
+            40%      { transform: translateX(5px); }
+            60%      { transform: translateX(-5px); }
+            80%      { transform: translateX(5px); }
+        }
+
         /* ----------------------------------------
            STUDYLENS CARD � EDITORIAL DARK GLASS
         ---------------------------------------- */
