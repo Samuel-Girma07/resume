@@ -91,7 +91,7 @@ export default async function handler(request) {
           model: model.id,
           messages,
           max_tokens: 1024,
-          temperature: 0.7,
+          temperature: 0.4,
           top_p: 0.9
         }),
         signal: controller.signal

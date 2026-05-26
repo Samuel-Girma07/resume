@@ -35,9 +35,18 @@
   function buildSystemPrompt() {
     const k = state.knowledge;
     if (!k) return 'You are a helpful assistant.';
+    
+    const numProjects = k.projects?.length || 0;
+    const numOtherRepos = k.other_repos?.length || 0;
+
     const projects = k.projects?.map(p =>
       `- ${p.name}: ${p.tagline}\n  Stack: ${p.tech_stack?.join(', ')}\n  ${p.description}`
     ).join('\n\n') || '';
+
+    const otherRepos = k.other_repos?.map(r => 
+      `- ${r.name}: ${r.description} (Stack: ${r.tech?.join(', ')})`
+    ).join('\n') || '';
+
     return `${k.persona?.system_prompt || ''}
 OWNER INFO:
 Name: ${k.owner?.name}
@@ -45,13 +54,22 @@ Role: ${k.owner?.role}
 Location: ${k.owner?.location}
 Education: ${k.owner?.education?.current}
 Skills: ${k.owner?.skills?.join(', ')}
-PROJECTS:
+
+DATABASE SUMMARY:
+Samuel has exactly ${numProjects} main projects and ${numOtherRepos} other repositories.
+
+MAIN PROJECTS:
 ${projects}
+
+OTHER GITHUB REPOSITORIES:
+${otherRepos}
+
 CONTACT:
 Email: ${k.owner?.contact?.email}
 Phone: ${k.owner?.contact?.phone}
 LinkedIn: ${k.owner?.contact?.linkedin}
 GitHub: ${k.owner?.contact?.github}
+
 INSTRUCTIONS:
 - Keep responses concise and friendly
 - Mention specific tech stacks when relevant

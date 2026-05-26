@@ -4,7 +4,7 @@
     "title": "Samuel's Portfolio Assistant",
     "emoji": "✦",
     "vibe": "Warm, knowledgeable, slightly witty. Speaks with confidence about Samuel's work.",
-    "system_prompt": "You are Sage, the AI assistant for Samuel Girma's portfolio website. You help visitors learn about Samuel's projects, skills, and background.\n\nCRITICAL RULES:\n1. ONLY discuss Samuel's actual projects and skills listed in the knowledge base.\n2. If asked about something not in the knowledge base, say you don't have that information.\n3. Be enthusiastic but accurate — never make up technologies or project details.\n4. Speak in a warm, professional tone. Use occasional tech enthusiasm.\n5. When discussing projects, mention the tech stack and key features.\n6. If someone wants to hire Samuel, direct them to the contact form or email.\n7. Keep responses concise (2-4 sentences) unless asked for detail.\n8. Use markdown formatting for readability."
+    "system_prompt": "You are Sage, the AI assistant for Samuel Girma's portfolio website. You help visitors learn about Samuel's projects, skills, and background.\n\nCRITICAL RULES:\n1. ONLY discuss Samuel's actual projects and skills listed in the knowledge base.\n2. STRICT ANTI-HALLUCINATION: If the user asks for a specific number of projects (e.g., 'top 5 projects') that exceeds the actual number of main projects provided, proactively correct them (e.g., 'Samuel has exactly 4 main projects. Here they are:'). NEVER invent, duplicate, or combine projects to reach a requested count.\n3. Each item in your response lists must be completely unique.\n4. If asked about something not in the knowledge base, say you don't have that information.\n5. Be enthusiastic but accurate — never make up technologies or project details.\n6. Speak in a warm, professional tone. Use occasional tech enthusiasm.\n7. Keep responses concise unless asked for detail.\n8. Use markdown formatting for readability."
   },
   "owner": {
     "name": "Samuel Girma",
@@ -27,10 +27,24 @@
       }
     ],
     "skills": [
-      "Next.js", "TypeScript", "Tailwind CSS", "React", "Python",
-      "PostgreSQL", "Prisma", "HTML5", "CSS3", "JavaScript",
-      "Java", "C++", "Kotlin", "SQL", "Figma",
-      "Photoshop", "Illustrator", "Prompt Engineering"
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "React",
+      "Python",
+      "PostgreSQL",
+      "Prisma",
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Java",
+      "C++",
+      "Kotlin",
+      "SQL",
+      "Figma",
+      "Photoshop",
+      "Illustrator",
+      "Prompt Engineering"
     ],
     "specialties": [
       "Web Development - Responsive websites with modern design principles",
@@ -51,8 +65,22 @@
       "year": 2025,
       "live_url": "https://hukm-et.vercel.app/",
       "description": "A RAG-powered legal-analysis tool for Ethiopian criminal law. Users describe scenarios in plain language; HUKM retrieves relevant articles from the Criminal Code Proclamation 414/2004 using vector embeddings, runs structured 7-step analysis through an NVIDIA-hosted LLM, and returns confidence-rated, source-cited results with multi-turn chat.",
-      "tech_stack": ["Next.js 14", "TypeScript", "Tailwind CSS 3", "PostgreSQL", "pgvector", "Supabase", "NVIDIA AI", "Redis", "Rate Limiting"],
-      "tags": ["AI Powered", "Legal Tech", "Full Stack"],
+      "tech_stack": [
+        "Next.js 14",
+        "TypeScript",
+        "Tailwind CSS 3",
+        "PostgreSQL",
+        "pgvector",
+        "Supabase",
+        "NVIDIA AI",
+        "Redis",
+        "Rate Limiting"
+      ],
+      "tags": [
+        "AI Powered",
+        "Legal Tech",
+        "Full Stack"
+      ],
       "key_features": [
         "Vector embedding-based legal document retrieval",
         "7-step structured analysis pipeline",
@@ -67,8 +95,27 @@
       "year": 2024,
       "live_url": "https://study-lens-blue.vercel.app",
       "description": "A full-stack study platform where students discover, organize, and retain learning materials through intelligent AI search, spaced repetition algorithms, and personalized analytics dashboards.",
-      "tech_stack": ["Next.js 15", "Bun", "TypeScript", "PostgreSQL", "Prisma", "NextAuth.js", "Tailwind CSS 4", "shadcn/ui", "NVIDIA AI", "ts-fsrs", "Zustand", "TanStack Query", "Recharts", "MDXEditor"],
-      "tags": ["AI Powered", "Full Stack", "Web App"],
+      "tech_stack": [
+        "Next.js 15",
+        "Bun",
+        "TypeScript",
+        "PostgreSQL",
+        "Prisma",
+        "NextAuth.js",
+        "Tailwind CSS 4",
+        "shadcn/ui",
+        "NVIDIA AI",
+        "ts-fsrs",
+        "Zustand",
+        "TanStack Query",
+        "Recharts",
+        "MDXEditor"
+      ],
+      "tags": [
+        "AI Powered",
+        "Full Stack",
+        "Web App"
+      ],
       "key_features": [
         "Intelligent AI-powered search",
         "Spaced repetition algorithms (ts-fsrs)",
@@ -83,8 +130,24 @@
       "year": 2023,
       "live_url": "https://techshopethiopia.page.gd",
       "description": "A full-featured Ethiopian tech e-commerce platform with dynamic product listings, shopping cart, user authentication, order management, and an admin dashboard — all built with native PHP and a fully custom MySQL backend.",
-      "tech_stack": ["PHP 7.4+", "MySQL/MySQLi", "Bootstrap 4.6", "jQuery 3.7", "HTML5", "CSS3", "Font Awesome 5", "Slick Carousel", "Google Fonts", "Native Sessions", "Prepared Statements"],
-      "tags": ["E-Commerce", "Full Stack", "Web App"],
+      "tech_stack": [
+        "PHP 7.4+",
+        "MySQL/MySQLi",
+        "Bootstrap 4.6",
+        "jQuery 3.7",
+        "HTML5",
+        "CSS3",
+        "Font Awesome 5",
+        "Slick Carousel",
+        "Google Fonts",
+        "Native Sessions",
+        "Prepared Statements"
+      ],
+      "tags": [
+        "E-Commerce",
+        "Full Stack",
+        "Web App"
+      ],
       "key_features": [
         "Dynamic product listings",
         "Shopping cart functionality",
@@ -100,8 +163,19 @@
       "year": 2025,
       "live_url": "https://resume-samuel-girma.vercel.app",
       "description": "A dynamic and interactive personal portfolio featuring modern web design, seamless page transitions, an integrated background fluid simulation, custom magnetic cursor effects, and fully responsive project showcases.",
-      "tech_stack": ["HTML5", "CSS3", "Vanilla JS", "WebGL/OGL", "Font Awesome 6", "Google Fonts"],
-      "tags": ["Frontend", "UI/UX", "Web App"],
+      "tech_stack": [
+        "HTML5",
+        "CSS3",
+        "Vanilla JS",
+        "WebGL/OGL",
+        "Font Awesome 6",
+        "Google Fonts"
+      ],
+      "tags": [
+        "Frontend",
+        "UI/UX",
+        "Web App"
+      ],
       "key_features": [
         "Fluid simulation background (WebGL/OGL)",
         "Custom magnetic cursor effects",
@@ -113,34 +187,120 @@
   ],
   "other_repos": [
     {
-      "name": "LingoFlow",
+      "name": "act-gpa-calculator",
+      "description": "GitHub repository without a description.",
+      "tech": [
+        "Kotlin"
+      ],
+      "url": "https://github.com/Samuel-Girma07/act-gpa-calculator"
+    },
+    {
+      "name": "smart-cv-app",
+      "description": "GitHub repository without a description.",
+      "tech": [
+        "JavaScript"
+      ],
+      "url": "https://github.com/Samuel-Girma07/smart-cv-app"
+    },
+    {
+      "name": "cv-builder",
+      "description": "GitHub repository without a description.",
+      "tech": [],
+      "url": "https://github.com/Samuel-Girma07/cv-builder"
+    },
+    {
+      "name": "web-assignment-1",
+      "description": "Movie Review API",
+      "tech": [
+        "JavaScript"
+      ],
+      "url": "https://github.com/Samuel-Girma07/web-assignment-1"
+    },
+    {
+      "name": "lingoflow-translation-tool",
       "description": "AI-Powered Language Translation Tool — Built with Next.js, TypeScript, Tailwind CSS, shadcn/ui & Microsoft Azure Translator. CodeAlpha AI Internship Project.",
-      "tech": ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Azure Translator"]
+      "tech": [
+        "TypeScript"
+      ],
+      "url": "https://github.com/Samuel-Girma07/lingoflow-translation-tool"
     },
     {
-      "name": "ACT Admissions Assistant",
-      "description": "AI-powered admissions assistant for American College of Technology",
-      "tech": ["Python"]
+      "name": "school-game",
+      "description": "GitHub repository without a description.",
+      "tech": [
+        "HTML"
+      ],
+      "url": "https://github.com/Samuel-Girma07/school-game"
     },
     {
-      "name": "Movie Review API",
-      "description": "RESTful API for movie reviews",
-      "tech": ["JavaScript"]
+      "name": "schoolgame",
+      "description": "GitHub repository without a description.",
+      "tech": [],
+      "url": "https://github.com/Samuel-Girma07/schoolgame"
     },
     {
-      "name": "Smart CV App",
-      "description": "AI-powered CV builder application",
-      "tech": ["JavaScript"]
+      "name": "Recommendation",
+      "description": "GitHub repository without a description.",
+      "tech": [],
+      "url": "https://github.com/Samuel-Girma07/Recommendation"
     },
     {
-      "name": "PDF Parser Service",
-      "description": "Service for parsing and extracting data from PDF documents",
-      "tech": ["Python"]
+      "name": "pdf-parser-service",
+      "description": "GitHub repository without a description.",
+      "tech": [
+        "Python"
+      ],
+      "url": "https://github.com/Samuel-Girma07/pdf-parser-service"
     },
     {
-      "name": "Telegram Bot",
-      "description": "Automation bot for Telegram",
-      "tech": ["Python"]
+      "name": "Samuel-Girma07",
+      "description": "GitHub repository without a description.",
+      "tech": [],
+      "url": "https://github.com/Samuel-Girma07/Samuel-Girma07"
+    },
+    {
+      "name": "track",
+      "description": "GitHub repository without a description.",
+      "tech": [
+        "Python"
+      ],
+      "url": "https://github.com/Samuel-Girma07/track"
+    },
+    {
+      "name": "telegrambot",
+      "description": "GitHub repository without a description.",
+      "tech": [
+        "Python"
+      ],
+      "url": "https://github.com/Samuel-Girma07/telegrambot"
+    },
+    {
+      "name": "telegram",
+      "description": "GitHub repository without a description.",
+      "tech": [
+        "Python"
+      ],
+      "url": "https://github.com/Samuel-Girma07/telegram"
+    },
+    {
+      "name": "factsapp",
+      "description": "fact app",
+      "tech": [
+        "TypeScript"
+      ],
+      "url": "https://github.com/Samuel-Girma07/factsapp"
+    },
+    {
+      "name": "website",
+      "description": "GitHub repository without a description.",
+      "tech": [],
+      "url": "https://github.com/Samuel-Girma07/website"
+    },
+    {
+      "name": "Samuel-Girma07.github.io",
+      "description": "GitHub repository without a description.",
+      "tech": [],
+      "url": "https://github.com/Samuel-Girma07/Samuel-Girma07.github.io"
     }
   ]
 }
