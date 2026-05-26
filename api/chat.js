@@ -1,16 +1,19 @@
 /**
  * Vercel Edge Function - AI Chat Proxy
  * Proxies requests to NVIDIA NIM API with secure key storage
+ * Implements Dynamic Routing (Fast vs Capable models)
  */
 
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
 const NVIDIA_BASE_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 
-// Model fallback chain
-const MODELS = [
-  { id: 'meta/llama-3.3-70b-instruct', name: 'LLaMA 3.3', timeout: 20000 },
-  { id: 'nvidia/llama-3.3-nemotron-super-49b-v1.5', name: 'Nemotron', timeout: 20000 },
-  { id: 'deepseek-ai/deepseek-v4-pro', name: 'DeepSeek V4', timeout: 25000 }
+const FAST_MODELS = [
+  { id: 'meta/llama-3.1-8b-instruct', name: 'LLaMA 3.1 8B', timeout: 15000 }
+];
+
+const CAPABLE_MODELS = [
+  { id: 'meta/llama-3.3-70b-instruct', name: 'LLaMA 3.3 70B', timeout: 25000 },
+  { id: 'nvidia/llama-3.3-nemotron-super-49b-v1.5', name: 'Nemotron', timeout: 25000 }
 ];
 
 export const config = {
@@ -38,7 +41,7 @@ export default async function handler(request) {
   }
 
   if (!NVIDIA_API_KEY) {
-    return new Response(JSON.stringify({ error: 'NVIDIA_API_KEY not configured' }), {
+    return new Response(JSON.stringify({ error: 'NVIDIA_API_KEY not configured in Vercel Environment Variables.' }), {
       status: 500,
       headers: corsHeaders
     });
@@ -62,8 +65,18 @@ export default async function handler(request) {
     });
   }
 
+  // --- DYNAMIC ROUTING ---
+  const lastUserMessage = messages.filter(m => m.role === 'user').pop();
+  const queryText = lastUserMessage ? lastUserMessage.content : '';
+  
+  // Complexity heuristic: long queries or queries containing coding/analytical keywords
+  const isComplex = queryText.length > 50 || /code|how|why|explain|debug|build|create/i.test(queryText);
+  
+  // If complex, try capable models. If simple, try fast models, but fallback to capable models if fast fails.
+  const modelsToTry = isComplex ? CAPABLE_MODELS : [...FAST_MODELS, ...CAPABLE_MODELS];
+
   // Try each model in fallback chain
-  for (const model of MODELS) {
+  for (const model of modelsToTry) {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), model.timeout);
@@ -99,7 +112,8 @@ export default async function handler(request) {
         return new Response(JSON.stringify({
           content,
           model: model.name,
-          modelId: model.id
+          modelId: model.id,
+          routing: isComplex ? 'capable' : 'fast'
         }), { status: 200, headers: corsHeaders });
       }
 
@@ -109,6 +123,6 @@ export default async function handler(request) {
   }
 
   return new Response(JSON.stringify({
-    error: 'All models failed. Please try again later.'
+    error: 'All NVIDIA models failed to respond. Please try again later.'
   }), { status: 503, headers: corsHeaders });
 }

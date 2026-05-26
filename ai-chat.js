@@ -78,7 +78,7 @@ INSTRUCTIONS:
       const data = await response.json();
       return { content: data.content, model: data.model };
     } catch (err) {
-      throw new Error('Unable to reach AI service. Please try again later.');
+      throw err;
     }
   }
 
