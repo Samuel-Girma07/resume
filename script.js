@@ -1918,6 +1918,21 @@ window.handleContactForm = async function(e) {
         source: window.location.href
     };
 
+    // ---- Manual Validation (fixes iOS native popup bugs) ----
+    if (!payload.name || !payload.email || !payload.message) {
+        if (submitBtn) {
+            submitBtn.classList.remove('is-sending');
+            submitBtn.classList.add('is-error');
+            if (submitLabel) submitLabel.textContent = 'Fill all fields!';
+            setTimeout(() => {
+                submitBtn.classList.remove('is-error');
+                submitBtn.disabled = false;
+                if (submitLabel) submitLabel.textContent = originalText;
+            }, 3000);
+        }
+        return;
+    }
+
     // ---- Helper: success UI ----
     function showSuccess() {
         if (submitBtn) {
@@ -1958,39 +1973,19 @@ window.handleContactForm = async function(e) {
         }, 5000);
     }
 
-    // ---- Attempt 1: Google Apps Script (form-urlencoded works best) ----
+    // ---- Google Apps Script Submit (Plain text JSON bypasses CORS preflight) ----
     try {
-        const formBody = new URLSearchParams(payload).toString();
-
         const response = await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: formBody,
-            // GAS doesn't do CORS preflight nicely; use no-cors as fallback
-            mode: 'no-cors'
+            body: JSON.stringify(payload) 
         });
 
-        // With no-cors we can't read response.ok, so assume success if no exception
-        showSuccess();
-        return;
+        if (response.ok) {
+            showSuccess();
+        } else {
+            throw new Error('Network response was not ok.');
+        }
     } catch (err) {
-        console.warn('GAS submit failed, trying JSON fallback...', err);
+        showError(err.message);
     }
-
-    // ---- Attempt 2: JSON payload (some GAS deployments expect this) ----
-    try {
-        await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            mode: 'no-cors'
-        });
-        showSuccess();
-        return;
-    } catch (err2) {
-        console.warn('JSON fallback also failed.', err2);
-    }
-
-    // ---- Attempt 3: mailto fallback (guaranteed to work) ----
-    showError('All endpoints unreachable');
 };
