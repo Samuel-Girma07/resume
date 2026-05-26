@@ -3763,245 +3763,154 @@ p.intro-text .intro-uni {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     PRO MAX DYNAMIC SUBMIT BUTTON — UI/UX Pro Max Inspired
-     Multi-state animated button with shine, particles & glow
+     CTA HOVER BUTTON (Provided Design)
      ═══════════════════════════════════════════════════════════ */
-  .form-submit {
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
-    background-size: 200% 200%;
-    animation: btnGradientShift 4s ease infinite;
-    color: #0a0a0a;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+  .cta.form-submit {
+    position: relative;
+    margin: 20px 0 0 0;
+    padding: 12px 18px;
+    transition: all 0.2s ease;
     border: none;
-    border-radius: 50px;
-    padding: 16px 36px;
-    position: relative;
-    overflow: hidden;
+    background: none;
     cursor: pointer;
-    isolation: isolate;
-    box-shadow:
-      0 0 20px rgba(255, 215, 0, 0.25),
-      0 8px 32px rgba(255, 165, 0, 0.20),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
-    transition:
-      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-      box-shadow 0.35s ease,
-      background 0.5s ease,
-      filter 0.3s ease;
+    width: auto;
+    display: inline-flex;
+    align-items: center;
   }
 
-  @keyframes btnGradientShift {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  .form-submit:hover {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow:
-      0 0 30px rgba(255, 215, 0, 0.45),
-      0 14px 40px rgba(255, 165, 0, 0.30),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    filter: brightness(1.08);
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
-    color: #0a0a0a;
-  }
-
-  .form-submit:active {
-    transform: translateY(1px) scale(0.97);
-    box-shadow:
-      0 0 12px rgba(255, 215, 0, 0.3),
-      0 4px 16px rgba(255, 165, 0, 0.15);
-    transition-duration: 0.08s;
-  }
-
-  .form-submit:focus-visible {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 4px;
-  }
-
-  /* Shine sweep overlay */
-  .form-submit-shine {
+  .cta.form-submit:before {
+    content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      105deg,
-      transparent 30%,
-      rgba(255, 255, 255, 0.45) 45%,
-      rgba(255, 255, 255, 0.15) 55%,
-      transparent 70%
-    );
-    transform: translateX(-120%);
-    transition: none;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50px;
+    background: var(--accent-color);
+    width: 45px;
+    height: 45px;
+    transition: all 0.3s ease;
+    z-index: 0;
+  }
+
+  .cta.form-submit .form-submit-label {
+    position: relative;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #121212;
     z-index: 1;
-    pointer-events: none;
+    margin-left: 8px;
+    transition: color 0.3s ease;
   }
 
-  .form-submit:hover .form-submit-shine {
-    animation: btnShine 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  @keyframes btnShine {
-    0%   { transform: translateX(-120%) skewX(-15deg); }
-    100% { transform: translateX(120%) skewX(-15deg); }
-  }
-
-  /* Particle burst container */
-  .form-submit-particles {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  .form-submit-particles .particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #FFD700;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* Label styling */
-  .form-submit .form-submit-label {
+  .cta.form-submit .form-submit-icon {
     position: relative;
-    z-index: 3;
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    top: 0;
+    margin-left: 10px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #121212;
+    stroke-width: 2;
+    transform: translateX(-5px);
+    transition: all 0.3s ease;
+    z-index: 1;
   }
 
-  /* SVG icon styling */
-  .form-submit-icon {
-    position: relative;
-    z-index: 3;
-    flex-shrink: 0;
-    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Adjust default icon rendering */
+  .cta.form-submit-icon .icon-path, 
+  .cta.form-submit-icon .icon-poly {
+    transition: stroke-dashoffset 0.3s ease;
   }
 
-  .form-submit:hover .form-submit-icon {
-    transform: translateX(4px) translateY(-2px) rotate(-12deg);
+  /* Hover state */
+  .cta.form-submit:hover:before {
+    width: 100%;
+    background: var(--accent-color);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
   }
 
-  .form-submit:active .form-submit-icon {
-    transform: translateX(8px) translateY(-4px) rotate(-18deg);
-    transition-duration: 0.1s;
+  .cta.form-submit:hover .form-submit-icon {
+    transform: translateX(0);
   }
 
-  .form-submit-icon .icon-plane {
-    transition: opacity 0.3s ease;
-  }
-
-  .form-submit-icon .icon-check {
-    transition: opacity 0.3s ease 0.1s;
-    stroke-dasharray: 30;
-    stroke-dashoffset: 30;
-  }
-
-  .form-submit-icon .icon-error {
-    transition: opacity 0.3s ease 0.1s;
+  .cta.form-submit:active {
+    transform: scale(0.95);
   }
 
   /* ── State: SENDING ── */
-  .form-submit.is-sending {
-    background: linear-gradient(135deg, #FFD700 0%, #e6c200 100%);
-    animation: btnPulse 1.2s ease-in-out infinite;
+  .cta.form-submit.is-sending:before {
+    width: 100%;
+    background: #e6c200;
+    animation: btnPulse 1s infinite alternate;
+  }
+
+  .cta.form-submit.is-sending {
     pointer-events: none;
+  }
+  
+  .cta.form-submit.is-sending .form-submit-icon {
+    animation: iconMove 1s infinite alternate ease-in-out;
   }
 
   @keyframes btnPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.25), 0 8px 32px rgba(255, 165, 0, 0.2); }
-    50%      { box-shadow: 0 0 35px rgba(255, 215, 0, 0.5),  0 8px 32px rgba(255, 165, 0, 0.35); }
+    from { opacity: 0.8; }
+    to { opacity: 1; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
   }
 
-  .form-submit.is-sending .form-submit-icon {
-    animation: iconSpin 1s linear infinite;
-  }
-
-  @keyframes iconSpin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+  @keyframes iconMove {
+    from { transform: translateX(0px); }
+    to { transform: translateX(5px); }
   }
 
   /* ── State: SUCCESS ── */
-  .form-submit.is-success {
-    background: linear-gradient(135deg, #28c76f 0%, #48da89 100%) !important;
-    animation: btnSuccessPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    box-shadow:
-      0 0 30px rgba(40, 199, 111, 0.4),
-      0 8px 32px rgba(40, 199, 111, 0.25);
-    pointer-events: none;
+  .cta.form-submit.is-success:before {
+    width: 100%;
+    background: #28a745;
   }
 
-  .form-submit.is-success .icon-plane  { opacity: 0 !important; }
-  .form-submit.is-success .icon-check  { opacity: 1 !important; stroke-dashoffset: 0; transition: stroke-dashoffset 0.5s ease 0.15s, opacity 0.2s ease; }
-  .form-submit.is-success .icon-error  { opacity: 0 !important; }
-
-  .form-submit.is-success .form-submit-icon {
-    animation: none;
-    transform: none;
+  .cta.form-submit.is-success .form-submit-label {
+    color: #fff;
   }
 
-  @keyframes btnSuccessPop {
-    0%   { transform: scale(1); }
-    40%  { transform: scale(1.08); }
-    100% { transform: scale(1); }
+  .cta.form-submit.is-success .form-submit-icon {
+    stroke: #fff;
+  }
+
+  .cta.form-submit.is-success .icon-path,
+  .cta.form-submit.is-success .icon-poly {
+    display: none;
+  }
+
+  .cta.form-submit.is-success .icon-check {
+    display: block !important;
   }
 
   /* ── State: ERROR ── */
-  .form-submit.is-error {
-    background: linear-gradient(135deg, #ea5455 0%, #ff6b6b 100%) !important;
-    animation: btnShake 0.5s ease;
-    box-shadow:
-      0 0 25px rgba(234, 84, 85, 0.35),
-      0 8px 32px rgba(234, 84, 85, 0.2);
-    pointer-events: none;
+  .cta.form-submit.is-error:before {
+    width: 100%;
+    background: #dc3545;
   }
 
-  .form-submit.is-error .icon-plane  { opacity: 0 !important; }
-  .form-submit.is-error .icon-check  { opacity: 0 !important; }
-  .form-submit.is-error .icon-error  { opacity: 1 !important; }
+  .cta.form-submit.is-error .form-submit-label {
+    color: #fff;
+  }
 
-  .form-submit.is-error .form-submit-icon {
-    animation: none;
-    transform: none;
+  .cta.form-submit.is-error .form-submit-icon {
+    stroke: #fff;
+  }
+
+  .cta.form-submit.is-error {
+    animation: btnShake 0.5s ease;
   }
 
   @keyframes btnShake {
     0%, 100% { transform: translateX(0); }
-    15%      { transform: translateX(-6px); }
-    30%      { transform: translateX(6px); }
-    45%      { transform: translateX(-4px); }
-    60%      { transform: translateX(4px); }
-    75%      { transform: translateX(-2px); }
-    90%      { transform: translateX(2px); }
-  }
-
-  /* ── State: DISABLED (while submitting) ── */
-  .form-submit:disabled {
-    cursor: not-allowed;
-    opacity: 0.85;
-  }
-
-  /* ── Reduced motion ── */
-  @media (prefers-reduced-motion: reduce) {
-    .form-submit,
-    .form-submit:hover,
-    .form-submit.is-sending,
-    .form-submit.is-success,
-    .form-submit.is-error {
-      animation: none !important;
-      transition-duration: 0.01s !important;
-    }
-    .form-submit:hover .form-submit-shine {
-      animation: none !important;
-    }
-    .form-submit.is-sending .form-submit-icon {
-      animation: none !important;
-    }
+    20%      { transform: translateX(-5px); }
+    40%      { transform: translateX(5px); }
+    60%      { transform: translateX(-5px); }
+    80%      { transform: translateX(5px); }
   }
 
   /* ── FOOTER META ROW ─────────────────────────────────────────── */
