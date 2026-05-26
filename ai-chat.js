@@ -396,26 +396,75 @@ INSTRUCTIONS:
       #sage-typing {
         display: none;
         align-self: flex-start;
-        padding: 14px 18px;
-        background: var(--sg-surface);
-        border: 1px solid rgba(255,255,255,0.04);
-        border-radius: 20px;
-        border-bottom-left-radius: 6px;
+        padding: 8px 14px;
+        background: transparent;
         margin-left: 24px;
         margin-bottom: 8px;
       }
-      #sage-typing.active { display: flex; gap: 6px; }
-      .sage-dot {
-        width: 5px; height: 5px;
-        background: rgba(255,215,0,0.6);
-        border-radius: 50%;
-        animation: typingDot 1.4s infinite ease-in-out;
+      #sage-typing.active { display: flex; align-items: center; justify-content: center; }
+
+      .pl { width: 2.5em; height: 2.5em; }
+      .pl__ring { animation: ringA 2s linear infinite; }
+      .pl__ring--a { stroke: var(--sg-accent); }
+      .pl__ring--b { animation-name: ringB; stroke: rgba(255,255,255,0.8); }
+      .pl__ring--c { animation-name: ringC; stroke: var(--sg-accent-mid); }
+      .pl__ring--d { animation-name: ringD; stroke: rgba(255,255,255,0.4); }
+
+      @keyframes ringA {
+        from, 4% { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -330; }
+        12% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -335; }
+        32% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -595; }
+        40%, 54% { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -660; }
+        62% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -665; }
+        82% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -925; }
+        90%, to { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -990; }
       }
-      .sage-dot:nth-child(2) { animation-delay: 0.2s; }
-      .sage-dot:nth-child(3) { animation-delay: 0.4s; }
-      @keyframes typingDot {
-        0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-        40% { transform: translateY(-4px); opacity: 1; }
+      @keyframes ringB {
+        from, 12% { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -110; }
+        20% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -115; }
+        40% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -195; }
+        48%, 62% { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -220; }
+        70% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -225; }
+        90% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -305; }
+        98%, to { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -330; }
+      }
+      @keyframes ringC {
+        from { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: 0; }
+        8% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -5; }
+        28% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -175; }
+        36%, 58% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -220; }
+        66% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -225; }
+        86% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -395; }
+        94%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
+      }
+      @keyframes ringD {
+        from, 8% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: 0; }
+        16% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -5; }
+        36% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -175; }
+        44%, 50% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -220; }
+        58% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -225; }
+        78% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -395; }
+        86%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
+      }
+
+      .sage-bg-loader {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        width: 100%; height: 100%; z-index: -1; pointer-events: none;
+      }
+      .sage-circle {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        width: 0px; height: 0px; border-radius: 100%; opacity: 0;
+        animation: pulse_4923 4s infinite linear;
+        border: 0.5px solid var(--sg-accent); box-shadow: 0px 0px 5px var(--sg-accent-mid);
+      }
+      .sage-circle:nth-child(1) { animation-delay: .2s; }
+      .sage-circle:nth-child(2) { animation-delay: .4s; }
+      .sage-circle:nth-child(3) { animation-delay: .8s; }
+      .sage-circle:nth-child(4) { animation-delay: 1s; }
+      @keyframes pulse_4923 {
+        0% { opacity: 0.0; width: 0px; height: 0px; transform: translate(-50%, -50%) scale(1); }
+        10% { opacity: 0.5; transform: translate(-50%, -50%) scale(2); }
+        100% { opacity: 0.0; width: 120px; height: 120px; transform: translate(-50%, -50%) scale(1); }
       }
 
       /* ─── INPUT ─── */
@@ -610,6 +659,10 @@ INSTRUCTIONS:
     root.id = 'sage-root';
     root.innerHTML = `
       <div id="sage-bubble" class="robot-idle" role="button" aria-label="Open AI Assistant">
+        <div class="sage-bg-loader">
+          <div class="sage-circle"></div><div class="sage-circle"></div>
+          <div class="sage-circle"></div><div class="sage-circle"></div>
+        </div>
         ${getRobotSVG()}
         <div id="sage-notify"></div>
       </div>
@@ -631,9 +684,12 @@ INSTRUCTIONS:
           </div>
         </div>
         <div id="sage-typing">
-          <div class="sage-dot"></div>
-          <div class="sage-dot"></div>
-          <div class="sage-dot"></div>
+          <svg class="pl" width="240" height="240" viewBox="0 0 240 240">
+            <circle class="pl__ring pl__ring--a" cx="120" cy="120" r="105" fill="none" stroke-width="20" stroke-dasharray="0 660" stroke-dashoffset="-330" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--b" cx="120" cy="120" r="35" fill="none" stroke-width="20" stroke-dasharray="0 220" stroke-dashoffset="-110" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--c" cx="85" cy="120" r="70" fill="none" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+            <circle class="pl__ring pl__ring--d" cx="155" cy="120" r="70" fill="none" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"></circle>
+          </svg>
         </div>
         <div id="sage-input-area">
           <input id="sage-input" type="text" placeholder="Initialize query..." autocomplete="off">
