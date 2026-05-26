@@ -47,13 +47,11 @@
       `- ${r.name}: ${r.description} (Stack: ${r.tech?.join(', ')})`
     ).join('\n') || '';
 
+    const ownerInfo = JSON.stringify(k.owner || {}, null, 2);
+
     return `${k.persona?.system_prompt || ''}
 OWNER INFO:
-Name: ${k.owner?.name}
-Role: ${k.owner?.role}
-Location: ${k.owner?.location}
-Education: ${k.owner?.education?.current}
-Skills: ${k.owner?.skills?.join(', ')}
+${ownerInfo}
 
 DATABASE SUMMARY:
 Samuel has exactly ${numProjects} main projects and ${numOtherRepos} other repositories.
