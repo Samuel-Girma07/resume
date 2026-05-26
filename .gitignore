@@ -26,3 +26,7 @@ _archive/
 *.bak
 *.zip
 *.skill
+
+# Environment Variables
+.env
+.env.local
