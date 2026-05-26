@@ -1,0 +1,98 @@
+name: Sync Knowledge Base
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+
+jobs:
+  sync-kb:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Sync knowledge base from GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+
+          // Read existing knowledge base
+          let kb;
+          try {
+            kb = JSON.parse(fs.readFileSync('ai-knowledge.json', 'utf8'));
+          } catch {
+            kb = { persona: {}, owner: {}, projects: [], other_repos: [] };
+          }
+
+          // Fetch repo list from GitHub API
+          async function fetchRepos() {
+            const res = await fetch('https://api.github.com/users/Samuel-Girma07/repos?per_page=100&sort=updated');
+            if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+            return res.json();
+          }
+
+          async function fetchRepoDetails(fullName) {
+            const res = await fetch(`https://api.github.com/repos/${fullName}`);
+            if (!res.ok) return null;
+            return res.json();
+          }
+
+          async function main() {
+            try {
+              const repos = await fetchRepos();
+              console.log(`Found ${repos.length} repos`);
+
+              // Update other_repos section
+              const otherRepos = repos
+                .filter(r => !kb.projects?.some(p => p.name.toLowerCase() === r.name.toLowerCase()))
+                .map(r => ({
+                  name: r.name,
+                  description: r.description || '',
+                  tech: [r.language].filter(Boolean),
+                  updated: r.updated_at
+                }));
+
+              kb.other_repos = otherRepos;
+
+              // Update timestamps
+              kb._meta = {
+                last_sync: new Date().toISOString(),
+                repo_count: repos.length
+              };
+
+              fs.writeFileSync('ai-knowledge.json', JSON.stringify(kb, null, 2));
+              console.log('Knowledge base updated');
+
+            } catch (err) {
+              console.error('Sync failed:', err.message);
+              process.exit(1);
+            }
+          }
+
+          main();
+          EOF
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add ai-knowledge.json
+            git commit -m "chore: sync knowledge base [skip ci]"
+            git push
+          else
+            echo "No changes to commit"
+          fi

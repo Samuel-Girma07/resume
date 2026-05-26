@@ -1,0 +1,146 @@
+{
+  "persona": {
+    "name": "Sage",
+    "title": "Samuel's Portfolio Assistant",
+    "emoji": "✦",
+    "vibe": "Warm, knowledgeable, slightly witty. Speaks with confidence about Samuel's work.",
+    "system_prompt": "You are Sage, the AI assistant for Samuel Girma's portfolio website. You help visitors learn about Samuel's projects, skills, and background.\n\nCRITICAL RULES:\n1. ONLY discuss Samuel's actual projects and skills listed in the knowledge base.\n2. If asked about something not in the knowledge base, say you don't have that information.\n3. Be enthusiastic but accurate — never make up technologies or project details.\n4. Speak in a warm, professional tone. Use occasional tech enthusiasm.\n5. When discussing projects, mention the tech stack and key features.\n6. If someone wants to hire Samuel, direct them to the contact form or email.\n7. Keep responses concise (2-4 sentences) unless asked for detail.\n8. Use markdown formatting for readability."
+  },
+  "owner": {
+    "name": "Samuel Girma",
+    "role": "Computer Science Student & Web Developer",
+    "location": "Addis Ababa, Ethiopia",
+    "education": {
+      "current": "BSc Computer Science, American College of Technology (2022-Present)",
+      "previous": "High School Diploma, Falcon Academy (2019-2022)"
+    },
+    "experience": [
+      {
+        "role": "Freelance Web Developer",
+        "period": "2023-Present",
+        "description": "Building responsive websites and landing pages for local businesses"
+      },
+      {
+        "role": "Graphic Designer",
+        "period": "2024",
+        "description": "Designed visual assets, posters, and social media content for major college events"
+      }
+    ],
+    "skills": [
+      "Next.js", "TypeScript", "Tailwind CSS", "React", "Python",
+      "PostgreSQL", "Prisma", "HTML5", "CSS3", "JavaScript",
+      "Java", "C++", "Kotlin", "SQL", "Figma",
+      "Photoshop", "Illustrator", "Prompt Engineering"
+    ],
+    "specialties": [
+      "Web Development - Responsive websites with modern design principles",
+      "Data Analysis - Data scraping & cleaning with Python & Octoparse",
+      "Graphic Design - Visual identities & branding with Figma & Adobe Suite"
+    ],
+    "contact": {
+      "email": "naodtskuyomi@gmail.com",
+      "phone": "+251 948 998 804",
+      "linkedin": "https://www.linkedin.com/in/samuel-girma-04a18b398",
+      "github": "https://github.com/Samuel-Girma07"
+    }
+  },
+  "projects": [
+    {
+      "name": "HUKM",
+      "tagline": "RAG-Powered Legal Analysis",
+      "year": 2025,
+      "live_url": "https://hukm-et.vercel.app/",
+      "description": "A RAG-powered legal-analysis tool for Ethiopian criminal law. Users describe scenarios in plain language; HUKM retrieves relevant articles from the Criminal Code Proclamation 414/2004 using vector embeddings, runs structured 7-step analysis through an NVIDIA-hosted LLM, and returns confidence-rated, source-cited results with multi-turn chat.",
+      "tech_stack": ["Next.js 14", "TypeScript", "Tailwind CSS 3", "PostgreSQL", "pgvector", "Supabase", "NVIDIA AI", "Redis", "Rate Limiting"],
+      "tags": ["AI Powered", "Legal Tech", "Full Stack"],
+      "key_features": [
+        "Vector embedding-based legal document retrieval",
+        "7-step structured analysis pipeline",
+        "Confidence-rated, source-cited results",
+        "Multi-turn conversational interface",
+        "Rate limiting and Redis caching"
+      ]
+    },
+    {
+      "name": "StudyLens",
+      "tagline": "AI-Powered Resource Platform",
+      "year": 2024,
+      "live_url": "https://study-lens-blue.vercel.app",
+      "description": "A full-stack study platform where students discover, organize, and retain learning materials through intelligent AI search, spaced repetition algorithms, and personalized analytics dashboards.",
+      "tech_stack": ["Next.js 15", "Bun", "TypeScript", "PostgreSQL", "Prisma", "NextAuth.js", "Tailwind CSS 4", "shadcn/ui", "NVIDIA AI", "ts-fsrs", "Zustand", "TanStack Query", "Recharts", "MDXEditor"],
+      "tags": ["AI Powered", "Full Stack", "Web App"],
+      "key_features": [
+        "Intelligent AI-powered search",
+        "Spaced repetition algorithms (ts-fsrs)",
+        "Personalized analytics dashboards",
+        "Resource organization and discovery",
+        "Student-focused learning platform"
+      ]
+    },
+    {
+      "name": "TechShop Ethiopia",
+      "tagline": "E-Commerce Platform",
+      "year": 2023,
+      "live_url": "https://techshopethiopia.page.gd",
+      "description": "A full-featured Ethiopian tech e-commerce platform with dynamic product listings, shopping cart, user authentication, order management, and an admin dashboard — all built with native PHP and a fully custom MySQL backend.",
+      "tech_stack": ["PHP 7.4+", "MySQL/MySQLi", "Bootstrap 4.6", "jQuery 3.7", "HTML5", "CSS3", "Font Awesome 5", "Slick Carousel", "Google Fonts", "Native Sessions", "Prepared Statements"],
+      "tags": ["E-Commerce", "Full Stack", "Web App"],
+      "key_features": [
+        "Dynamic product listings",
+        "Shopping cart functionality",
+        "User authentication system",
+        "Order management",
+        "Admin dashboard",
+        "Security-focused with prepared statements"
+      ]
+    },
+    {
+      "name": "Personal Portfolio",
+      "tagline": "Interactive Developer Portfolio",
+      "year": 2025,
+      "live_url": "https://resume-samuel-girma.vercel.app",
+      "description": "A dynamic and interactive personal portfolio featuring modern web design, seamless page transitions, an integrated background fluid simulation, custom magnetic cursor effects, and fully responsive project showcases.",
+      "tech_stack": ["HTML5", "CSS3", "Vanilla JS", "WebGL/OGL", "Font Awesome 6", "Google Fonts"],
+      "tags": ["Frontend", "UI/UX", "Web App"],
+      "key_features": [
+        "Fluid simulation background (WebGL/OGL)",
+        "Custom magnetic cursor effects",
+        "Seamless page transitions",
+        "Responsive design",
+        "Interactive project showcases"
+      ]
+    }
+  ],
+  "other_repos": [
+    {
+      "name": "LingoFlow",
+      "description": "AI-Powered Language Translation Tool — Built with Next.js, TypeScript, Tailwind CSS, shadcn/ui & Microsoft Azure Translator. CodeAlpha AI Internship Project.",
+      "tech": ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "Azure Translator"]
+    },
+    {
+      "name": "ACT Admissions Assistant",
+      "description": "AI-powered admissions assistant for American College of Technology",
+      "tech": ["Python"]
+    },
+    {
+      "name": "Movie Review API",
+      "description": "RESTful API for movie reviews",
+      "tech": ["JavaScript"]
+    },
+    {
+      "name": "Smart CV App",
+      "description": "AI-powered CV builder application",
+      "tech": ["JavaScript"]
+    },
+    {
+      "name": "PDF Parser Service",
+      "description": "Service for parsing and extracting data from PDF documents",
+      "tech": ["Python"]
+    },
+    {
+      "name": "Telegram Bot",
+      "description": "Automation bot for Telegram",
+      "tech": ["Python"]
+    }
+  ]
+}
