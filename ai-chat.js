@@ -88,8 +88,17 @@ INSTRUCTIONS:
     } catch (_) {
       apiAvailable = false;
     }
+    
+    if (apiAvailable === false) {
+      setRobotState('offline');
+    } else if (state.robotState === 'offline') {
+      setRobotState('idle');
+    }
     return apiAvailable;
   }
+  
+  // Proactive background polling
+  setInterval(checkApiHealth, 30000);
 
   /* ========== AI PROXY ========== */
   async function callAI(messages) {
@@ -176,6 +185,12 @@ INSTRUCTIONS:
       #sage-bubble.robot-hover { animation: sageBotWiggle 0.6s ease-in-out; }
       #sage-bubble.robot-listening { animation: sageBotPulse 1.2s ease-in-out infinite; }
       #sage-bubble.robot-thinking { animation: sageBotSpin 3s ease-in-out infinite; }
+      #sage-bubble.robot-offline { animation: none; pointer-events: none; }
+      #sage-bubble.robot-offline .sage-robot { filter: grayscale(1) brightness(0.3) !important; animation: none !important; }
+      #sage-bubble.robot-offline .sage-bg-loader { display: none !important; }
+      #sage-bubble.robot-offline .robot-eye-open, #sage-bubble.robot-offline .right-eye-open-group { display: none !important; }
+      #sage-bubble.robot-offline .robot-eye-closed-path { display: block !important; }
+      #sage-bubble.robot-offline .robot-mouth { transform: scaleY(0.1) translateY(-2px); }
 
       @keyframes sageBotFloat {
         0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -614,7 +629,9 @@ INSTRUCTIONS:
             <!-- === LEFT EYE (OPEN) === -->
             <ellipse cx="24" cy="25" rx="5" ry="5.5" fill="rgba(255,215,0,0.15)"/>
             <ellipse cx="24" cy="25" rx="3.5" ry="4.5" fill="#FFD700" filter="url(#botGlowFilter)" class="robot-eye-open"/>
-            <ellipse cx="25" cy="23.5" rx="1.2" ry="1.5" fill="#ffffff" opacity="0.8"/>
+            <ellipse cx="25" cy="23.5" rx="1.2" ry="1.5" fill="#ffffff" opacity="0.8" class="robot-eye-open"/>
+            <!-- LEFT EYE (CLOSED) -->
+            <path d="M20 25 L28 25" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round" fill="none" class="robot-eye-closed-path" style="display: none;"/>
 
             <!-- === RIGHT EYE (DEFAULT OPEN) === -->
             <!-- Glow background -->
@@ -622,8 +639,10 @@ INSTRUCTIONS:
             
             <g class="right-eye-open-group">
               <ellipse cx="40" cy="25" rx="3.5" ry="4.5" fill="#FFD700" filter="url(#botGlowFilter)" class="robot-eye-open"/>
-              <ellipse cx="41" cy="23.5" rx="1.2" ry="1.5" fill="#ffffff" opacity="0.8"/>
+              <ellipse cx="41" cy="23.5" rx="1.2" ry="1.5" fill="#ffffff" opacity="0.8" class="robot-eye-open"/>
             </g>
+            <!-- RIGHT EYE (CLOSED) -->
+            <path d="M36 25 L44 25" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round" fill="none" class="robot-eye-closed-path" style="display: none;"/>
 
             <!-- Winking chevron -->
             <path d="M43 22 L38 25 L43 28" stroke="#FFD700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#botGlowFilter)" class="robot-eye-wink-path"/>
@@ -728,7 +747,7 @@ INSTRUCTIONS:
   function setRobotState(newState) {
     const bubble = document.getElementById('sage-bubble');
     if (!bubble) return;
-    bubble.classList.remove('robot-idle', 'robot-hover', 'robot-listening', 'robot-thinking');
+    bubble.classList.remove('robot-idle', 'robot-hover', 'robot-listening', 'robot-thinking', 'robot-offline');
     bubble.classList.add('robot-' + newState);
     state.robotState = newState;
   }
