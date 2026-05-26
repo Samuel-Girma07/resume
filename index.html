@@ -2238,11 +2238,11 @@
                         </a>
                     </li>
                     <li>
-                        <a class="method-card" href="tel:+251948998804" aria-label="Call Samuel Girma">
+                        <a class="method-card" href="tel:+251948998804" id="phoneMethodCard" aria-label="Call or copy phone number">
                             <span class="method-icon"><i class="fas fa-phone"></i></span>
                             <span class="method-body">
                                 <span class="method-label">Phone</span>
-                                <span class="method-value">+251 948 998 804</span>
+                                <span class="method-value" id="phoneDisplayValue">+251 948 998 804</span>
                             </span>
                             <span class="method-chevron" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
                         </a>
@@ -2265,7 +2265,7 @@
                     <div class="form-group float-label"><input type="text" id="name" name="name" class="form-control" placeholder=" " autocomplete="name" required><label for="name">Full Name</label></div>
                     <div class="form-group float-label"><input type="email" id="email" name="email" class="form-control" placeholder=" " autocomplete="email" required><label for="email">Email Address</label></div>
                     <div class="form-group float-label"><textarea id="message" name="message" class="form-control" rows="5" placeholder=" " required></textarea><label for="message">Your Message</label></div>
-                    <button type="submit" class="cta form-submit" id="contactSubmitBtn" onclick="event.preventDefault(); handleContactForm(event);">
+                    <button type="submit" class="cta form-submit" id="contactSubmitBtn">
                         <span class="btn-face">
                             <span class="form-submit-label">Send Message</span>
                             <svg class="form-submit-icon" width="18px" height="18px" viewBox="0 0 18 18">
@@ -2799,6 +2799,39 @@
                     }
                 }
             }, { passive: true });
+        })();
+
+        /* Phone copy-to-clipboard for desktop users */
+        (function initPhoneCopy() {
+            var phoneCard = document.getElementById('phoneMethodCard');
+            var phoneDisplay = document.getElementById('phoneDisplayValue');
+            if (!phoneCard || !phoneDisplay) return;
+            var phoneNumber = '+251948998804';
+
+            phoneCard.addEventListener('click', function(e) {
+                var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                if (!isMobile) {
+                    e.preventDefault();
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(phoneNumber).then(function() {
+                            var original = phoneDisplay.textContent;
+                            phoneDisplay.textContent = 'Copied to clipboard!';
+                            phoneDisplay.style.color = '#22C55E';
+                            setTimeout(function() {
+                                phoneDisplay.textContent = original;
+                                phoneDisplay.style.color = '';
+                            }, 2000);
+                        }).catch(function() {
+                            var range = document.createRange();
+                            range.selectNode(phoneDisplay);
+                            window.getSelection().removeAllRanges();
+                            window.getSelection().addRange(range);
+                        });
+                    } else {
+                        window.open('mailto:naodtskuyomi@gmail.com?subject=Contact via Portfolio', '_blank');
+                    }
+                }
+            });
         })();
 
     </script>

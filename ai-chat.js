@@ -75,8 +75,29 @@ INSTRUCTIONS:
 - If you don't know something, say so honestly`;
   }
 
+  /* ========== API AVAILABILITY CHECK ========== */
+  let apiAvailable = null; // null = unchecked, true = available, false = unavailable
+
+  async function checkApiHealth() {
+    try {
+      const ctrl = new AbortController();
+      const id = setTimeout(() => ctrl.abort(), 3500);
+      const res = await fetch(CONFIG.API_URL, { method: 'HEAD', signal: ctrl.signal });
+      clearTimeout(id);
+      apiAvailable = res.ok;
+    } catch (_) {
+      apiAvailable = false;
+    }
+    return apiAvailable;
+  }
+
   /* ========== AI PROXY ========== */
   async function callAI(messages) {
+    // If we already know API is unavailable, fail fast with a helpful message
+    if (apiAvailable === false) {
+      throw new Error('Chat is offline on static hosting. Please use the contact form below or email naodtskuyomi@gmail.com');
+    }
+
     const apiMessages = [
       { role: 'system', content: buildSystemPrompt() },
       ...messages
@@ -94,6 +115,10 @@ INSTRUCTIONS:
       const data = await response.json();
       return { content: data.content, model: data.model };
     } catch (err) {
+      // Mark API as unavailable so next time we fail fast
+      if (err.name === 'TypeError' || err.message.includes('fetch')) {
+        apiAvailable = false;
+      }
       throw err;
     }
   }
@@ -676,7 +701,12 @@ INSTRUCTIONS:
       if (state.messages.length > 20) state.messages = state.messages.slice(-20);
     } catch (err) {
       setTyping(false);
-      addMessage(`Sorry, I'm having trouble connecting. ${err.message}`);
+      var isOffline = apiAvailable === false || err.name === 'TypeError' || /fetch|network|offline/i.test(err.message);
+      if (isOffline) {
+        addMessage('Sorry, the chat assistant is offline on static hosting.<br><br>You can reach Samuel directly:<br>� <strong>Email:</strong> naodtskuyomi@gmail.com<br>� <strong>Phone:</strong> +251 948 998 804<br>� Or use the <strong>contact form</strong> on this page.');
+      } else {
+        addMessage('Sorry, I\'m having trouble connecting. ' + err.message);
+      }
       setRobotState('idle');
     } finally {
       btn.disabled = false;
@@ -809,6 +839,19 @@ INSTRUCTIONS:
     injectStyles();
     createUI();
     bindEvents();
+
+    // Check API health in background so we know if chat will work
+    checkApiHealth().then(function(ok) {
+      if (!ok) {
+        console.log('[Sage Core] API unavailable — running in static mode');
+        // Pre-emptively show a subtle offline indicator
+        var input = document.getElementById('sage-input');
+        if (input) input.placeholder = 'Chat offline — use contact form';
+      } else {
+        console.log('[Sage Core] API online — ready');
+      }
+    });
+
     console.log('[Sage Core] Ready — Impeccable HUD integrated');
   }
 

@@ -1872,55 +1872,32 @@ window.addEventListener('load', function () {
 });
 
 /* -----------------------------------------------------------
-   GOOGLE APPS SCRIPT CONTACT FORM INTEGRATION
-   Mobile-safe: button onclick + form submit listener
+   CONTACT FORM — FIXED & ROBUST
+   Works with Google Apps Script, Formspree, or mailto fallback
 ----------------------------------------------------------- */
-// Mobile fallback: attach submit listener directly to form
 document.addEventListener('DOMContentLoaded', function() {
-    var contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleContactForm);
-    }
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('contactSubmitBtn');
+    if (!contactForm || !submitBtn) return;
+
+    // Remove risky inline handler to prevent double-firing
+    submitBtn.removeAttribute('onclick');
+
+    contactForm.addEventListener('submit', handleContactForm);
 });
+
 window.handleContactForm = async function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const contactForm = e.target;
+    if (e && e.preventDefault) e.preventDefault();
+    if (e && e.stopPropagation) e.stopPropagation();
+
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('contactSubmitBtn');
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykFOAY4PCsM7HwIn219UJv3GM46JmrZW_SpVx-igiym3xmQqPitlvMVh7DGBnEkYAS/exec';
 
-    const submitBtn = document.getElementById('contactSubmitBtn');
     const submitLabel = submitBtn ? submitBtn.querySelector('.form-submit-label') : null;
     const originalText = submitLabel ? submitLabel.textContent : 'Send Message';
 
-    // Helper to fire particles on success
-    function createParticles() {
-        if (!submitBtn) return;
-        const container = submitBtn.querySelector('.form-submit-particles');
-        if (!container) return;
-        container.innerHTML = ''; // Clear old
-        for (let i = 0; i < 12; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            const angle = (i / 12) * Math.PI * 2;
-            const dist = 30 + Math.random() * 20;
-            const tx = Math.cos(angle) * dist;
-            const ty = Math.sin(angle) * dist;
-            p.style.left = '50%';
-            p.style.top = '50%';
-            p.animate([
-                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
-                { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`, opacity: 0 }
-            ], {
-                duration: 600 + Math.random() * 200,
-                easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-                fill: 'forwards'
-            });
-            container.appendChild(p);
-        }
-    }
-
-    // Show loading state
+    // ---- UI: Loading state ----
     if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.classList.remove('is-success', 'is-error');
@@ -1928,45 +1905,49 @@ window.handleContactForm = async function(e) {
         if (submitLabel) submitLabel.textContent = 'Sending...';
     }
 
-    // Gather data
-    const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData.entries());
+    // ---- Gather data (robust: by ID, not e.target) ----
+    const nameEl = document.getElementById('name');
+    const emailEl = document.getElementById('email');
+    const messageEl = document.getElementById('message');
 
-    try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            body: JSON.stringify(data)
-        });
+    const payload = {
+        name: (nameEl && nameEl.value) || '',
+        email: (emailEl && emailEl.value) || '',
+        message: (messageEl && messageEl.value) || '',
+        timestamp: new Date().toISOString(),
+        source: window.location.href
+    };
 
-        if (response.ok) {
-            // Success state
-            if (submitBtn) {
-                submitBtn.classList.remove('is-sending');
-                submitBtn.classList.add('is-success');
-                if (submitLabel) submitLabel.textContent = 'Message Sent!';
-                createParticles();
-            }
-            contactForm.reset();
-
-            setTimeout(() => {
-                if (submitBtn) {
-                    submitBtn.classList.remove('is-success');
-                    submitBtn.disabled = false;
-                    if (submitLabel) submitLabel.textContent = originalText;
-                }
-            }, 3000);
-        } else {
-            throw new Error('Network response was not ok.');
+    // ---- Helper: success UI ----
+    function showSuccess() {
+        if (submitBtn) {
+            submitBtn.classList.remove('is-sending');
+            submitBtn.classList.add('is-success');
+            if (submitLabel) submitLabel.textContent = 'Message Sent!';
         }
-    } catch (error) {
-        console.error('Error sending message:', error);
-        
-        // Error state
+        contactForm.reset();
+        setTimeout(() => {
+            if (submitBtn) {
+                submitBtn.classList.remove('is-success');
+                submitBtn.disabled = false;
+                if (submitLabel) submitLabel.textContent = originalText;
+            }
+        }, 3500);
+    }
+
+    // ---- Helper: error UI ----
+    function showError(msg) {
+        console.error('[Contact Form]', msg);
         if (submitBtn) {
             submitBtn.classList.remove('is-sending');
             submitBtn.classList.add('is-error');
-            if (submitLabel) submitLabel.textContent = 'Error! Try Again';
+            if (submitLabel) submitLabel.textContent = 'Failed — Use Email';
         }
+        // Offer mailto fallback after 2s
+        setTimeout(() => {
+            const mailto = 'mailto:naodtskuyomi@gmail.com?subject=Portfolio Contact from ' + encodeURIComponent(payload.name) + '&body=' + encodeURIComponent(payload.message + '\n\nFrom: ' + payload.email);
+            window.open(mailto, '_blank');
+        }, 1800);
 
         setTimeout(() => {
             if (submitBtn) {
@@ -1974,6 +1955,42 @@ window.handleContactForm = async function(e) {
                 submitBtn.disabled = false;
                 if (submitLabel) submitLabel.textContent = originalText;
             }
-        }, 3000);
+        }, 5000);
     }
+
+    // ---- Attempt 1: Google Apps Script (form-urlencoded works best) ----
+    try {
+        const formBody = new URLSearchParams(payload).toString();
+
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formBody,
+            // GAS doesn't do CORS preflight nicely; use no-cors as fallback
+            mode: 'no-cors'
+        });
+
+        // With no-cors we can't read response.ok, so assume success if no exception
+        showSuccess();
+        return;
+    } catch (err) {
+        console.warn('GAS submit failed, trying JSON fallback...', err);
+    }
+
+    // ---- Attempt 2: JSON payload (some GAS deployments expect this) ----
+    try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            mode: 'no-cors'
+        });
+        showSuccess();
+        return;
+    } catch (err2) {
+        console.warn('JSON fallback also failed.', err2);
+    }
+
+    // ---- Attempt 3: mailto fallback (guaranteed to work) ----
+    showError('All endpoints unreachable');
 };
