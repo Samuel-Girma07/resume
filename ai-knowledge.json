@@ -187,26 +187,34 @@
   ],
   "other_repos": [
     {
+      "name": "resume",
+      "description": "",
+      "tech": [
+        "CSS"
+      ],
+      "updated": "2026-05-26T12:44:08Z"
+    },
+    {
       "name": "act-gpa-calculator",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [
         "Kotlin"
       ],
-      "url": "https://github.com/Samuel-Girma07/act-gpa-calculator"
+      "updated": "2026-05-24T11:53:44Z"
     },
     {
       "name": "smart-cv-app",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [
         "JavaScript"
       ],
-      "url": "https://github.com/Samuel-Girma07/smart-cv-app"
+      "updated": "2026-05-18T20:12:24Z"
     },
     {
       "name": "cv-builder",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [],
-      "url": "https://github.com/Samuel-Girma07/cv-builder"
+      "updated": "2026-05-13T08:31:48Z"
     },
     {
       "name": "web-assignment-1",
@@ -214,7 +222,7 @@
       "tech": [
         "JavaScript"
       ],
-      "url": "https://github.com/Samuel-Girma07/web-assignment-1"
+      "updated": "2026-04-26T07:44:26Z"
     },
     {
       "name": "lingoflow-translation-tool",
@@ -222,65 +230,71 @@
       "tech": [
         "TypeScript"
       ],
-      "url": "https://github.com/Samuel-Girma07/lingoflow-translation-tool"
+      "updated": "2026-04-23T20:20:45Z"
     },
     {
       "name": "school-game",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [
         "HTML"
       ],
-      "url": "https://github.com/Samuel-Girma07/school-game"
+      "updated": "2026-04-03T07:51:11Z"
     },
     {
       "name": "schoolgame",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [],
-      "url": "https://github.com/Samuel-Girma07/schoolgame"
+      "updated": "2026-04-03T07:48:35Z"
     },
     {
       "name": "Recommendation",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [],
-      "url": "https://github.com/Samuel-Girma07/Recommendation"
+      "updated": "2026-03-11T22:27:52Z"
+    },
+    {
+      "name": "Techshop-Ethiopia",
+      "description": "Electronics shopping website ",
+      "tech": [],
+      "updated": "2026-03-11T10:40:52Z"
     },
     {
       "name": "pdf-parser-service",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [
         "Python"
       ],
-      "url": "https://github.com/Samuel-Girma07/pdf-parser-service"
+      "updated": "2026-03-10T22:06:48Z"
     },
     {
       "name": "Samuel-Girma07",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [],
-      "url": "https://github.com/Samuel-Girma07/Samuel-Girma07"
+      "updated": "2026-03-09T09:59:38Z"
     },
     {
       "name": "track",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [
         "Python"
       ],
-      "url": "https://github.com/Samuel-Girma07/track"
+      "updated": "2026-03-08T22:09:31Z"
     },
     {
       "name": "telegrambot",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [
         "Python"
       ],
-      "url": "https://github.com/Samuel-Girma07/telegrambot"
+      "updated": "2026-01-17T08:07:49Z"
     },
     {
       "name": "telegram",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [
         "Python"
       ],
-      "url": "https://github.com/Samuel-Girma07/telegram"
+      "updated": "2026-01-08T20:04:20Z"
     },
     {
       "name": "factsapp",
@@ -288,19 +302,31 @@
       "tech": [
         "TypeScript"
       ],
-      "url": "https://github.com/Samuel-Girma07/factsapp"
+      "updated": "2026-01-03T14:18:47Z"
+    },
+    {
+      "name": "portfoliowebsite",
+      "description": "",
+      "tech": [
+        "HTML"
+      ],
+      "updated": "2025-11-30T16:11:11Z"
     },
     {
       "name": "website",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [],
-      "url": "https://github.com/Samuel-Girma07/website"
+      "updated": "2025-11-30T13:00:51Z"
     },
     {
       "name": "Samuel-Girma07.github.io",
-      "description": "GitHub repository without a description.",
+      "description": "",
       "tech": [],
-      "url": "https://github.com/Samuel-Girma07/Samuel-Girma07.github.io"
+      "updated": "2025-05-15T11:57:08Z"
     }
-  ]
+  ],
+  "_meta": {
+    "last_sync": "2026-05-26T13:02:51.412Z",
+    "repo_count": 21
+  }
 }
