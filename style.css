@@ -3763,19 +3763,30 @@ p.intro-text .intro-uni {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     CTA HOVER BUTTON (Send Message)
+     CTA HOVER BUTTON (Send Message) — Proactive & Animated
      ═══════════════════════════════════════════════════════════ */
   .cta.form-submit {
     position: relative;
     margin: 20px 0 0 0;
     padding: 12px 18px;
-    transition: all 0.2s ease;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     border: none;
     background: none;
     cursor: pointer;
     width: auto;
     display: inline-flex;
     align-items: center;
+    overflow: visible;
+  }
+
+  /* Idle attention pulse — draws the eye */
+  .cta.form-submit:not(:hover):not(.is-sending):not(.is-success):not(.is-error):before {
+    animation: idlePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes idlePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.35); }
+    50%      { box-shadow: 0 0 0 8px rgba(255, 215, 0, 0); }
   }
 
   .cta.form-submit:before {
@@ -3788,8 +3799,34 @@ p.intro-text .intro-uni {
     background: var(--accent-color);
     width: 45px;
     height: 45px;
-    transition: all 0.3s ease;
+    transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
     z-index: 0;
+  }
+
+  /* Shimmer sweep overlay on hover */
+  .cta.form-submit:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    border-radius: 50px;
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .cta.form-submit:hover:after {
+    opacity: 1;
+    animation: shimmerSweep 0.9s ease forwards;
+  }
+
+  @keyframes shimmerSweep {
+    0%   { left: -60%; }
+    100% { left: 140%; }
   }
 
   .cta.form-submit .form-submit-label {
@@ -3801,7 +3838,7 @@ p.intro-text .intro-uni {
     color: #121212;
     z-index: 1;
     margin-left: 8px;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .cta.form-submit .form-submit-icon {
@@ -3814,23 +3851,44 @@ p.intro-text .intro-uni {
     stroke: #121212;
     stroke-width: 2;
     transform: translateX(-5px);
-    transition: all 0.3s ease;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 1;
   }
 
-  /* Hover state */
+  /* Hover state — springy, glowing, alive */
   .cta.form-submit:hover:before {
     width: 100%;
     background: var(--accent-color);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.45), 0 0 40px rgba(255, 215, 0, 0.15);
+    box-shadow:
+      0 0 20px rgba(255, 215, 0, 0.5),
+      0 0 50px rgba(255, 215, 0, 0.2),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+
+  .cta.form-submit:hover .form-submit-label {
+    transform: translateX(2px);
   }
 
   .cta.form-submit:hover .form-submit-icon {
-    transform: translateX(0);
+    transform: translateX(3px) scale(1.15);
+    animation: arrowBounce 0.6s ease infinite alternate;
   }
 
+  @keyframes arrowBounce {
+    0%   { transform: translateX(3px) scale(1.15); }
+    100% { transform: translateX(7px) scale(1.15); }
+  }
+
+  /* Active / click — ripple + snap */
   .cta.form-submit:active {
-    transform: scale(0.95);
+    transform: scale(0.92);
+    transition: transform 0.08s ease;
+  }
+
+  .cta.form-submit:active:before {
+    box-shadow:
+      0 0 10px rgba(255, 215, 0, 0.6),
+      0 0 30px rgba(255, 215, 0, 0.25);
   }
 
   /* ── State: SENDING ── */
@@ -3843,25 +3901,32 @@ p.intro-text .intro-uni {
   .cta.form-submit.is-sending {
     pointer-events: none;
   }
-  
+
   .cta.form-submit.is-sending .form-submit-icon {
     animation: iconMove 1s infinite alternate ease-in-out;
   }
 
   @keyframes btnPulse {
-    from { opacity: 0.8; }
-    to { opacity: 1; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    from { opacity: 0.8; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    to   { opacity: 1;   box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
   }
 
   @keyframes iconMove {
     from { transform: translateX(0px); }
-    to { transform: translateX(5px); }
+    to   { transform: translateX(6px); }
   }
 
   /* ── State: SUCCESS ── */
   .cta.form-submit.is-success:before {
     width: 100%;
     background: #22C55E;
+    animation: successPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes successPop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.08); }
+    100% { transform: scale(1); }
   }
 
   .cta.form-submit.is-success .form-submit-label {
@@ -3885,6 +3950,7 @@ p.intro-text .intro-uni {
   .cta.form-submit.is-error:before {
     width: 100%;
     background: #dc3545;
+    animation: errorShake 0.5s ease;
   }
 
   .cta.form-submit.is-error .form-submit-label {
@@ -3906,6 +3972,13 @@ p.intro-text .intro-uni {
     60%      { transform: translateX(-5px); }
     80%      { transform: translateX(5px); }
   }
+
+  @keyframes errorShake {
+    0%, 100% { transform: scale(1); }
+    25%      { transform: scale(1.04); }
+    75%      { transform: scale(0.98); }
+  }
+
 
   /* ── FOOTER META ROW ─────────────────────────────────────────── */
   .footer-main {
