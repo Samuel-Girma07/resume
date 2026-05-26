@@ -1626,7 +1626,7 @@
 
                 <div class="form-divider" aria-hidden="true"><span>or drop a message</span></div>
 
-                <form class="contact-form" id="contactForm" onsubmit="handleContactForm(event)">
+                <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); handleContactForm(event);">
                     <div class="form-group float-label"><input type="text" id="name" name="name" class="form-control" placeholder=" " autocomplete="name" required><label for="name">Full Name</label></div>
                     <div class="form-group float-label"><input type="email" id="email" name="email" class="form-control" placeholder=" " autocomplete="email" required><label for="email">Email Address</label></div>
                     <div class="form-group float-label"><textarea id="message" name="message" class="form-control" rows="5" placeholder=" " required></textarea><label for="message">Your Message</label></div>
