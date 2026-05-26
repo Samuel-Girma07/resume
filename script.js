@@ -1873,9 +1873,18 @@ window.addEventListener('load', function () {
 
 /* -----------------------------------------------------------
    GOOGLE APPS SCRIPT CONTACT FORM INTEGRATION
+   Mobile-safe: button onclick + form submit listener
 ----------------------------------------------------------- */
+// Mobile fallback: attach submit listener directly to form
+document.addEventListener('DOMContentLoaded', function() {
+    var contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactForm);
+    }
+});
 window.handleContactForm = async function(e) {
     e.preventDefault();
+    e.stopPropagation();
     
     const contactForm = e.target;
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykFOAY4PCsM7HwIn219UJv3GM46JmrZW_SpVx-igiym3xmQqPitlvMVh7DGBnEkYAS/exec';

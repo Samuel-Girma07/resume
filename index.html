@@ -73,7 +73,6 @@
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             overflow: hidden;
             z-index: 1;
-            pointer-events: none; /* Let clicks pass through to <button> */
         }
         
         /* Animated border glow (rotating conic gradient) */
@@ -2262,11 +2261,11 @@
 
                 <div class="form-divider" aria-hidden="true"><span>or drop a message</span></div>
 
-                <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); handleContactForm(event);">
+                <form class="contact-form" id="contactForm">
                     <div class="form-group float-label"><input type="text" id="name" name="name" class="form-control" placeholder=" " autocomplete="name" required><label for="name">Full Name</label></div>
                     <div class="form-group float-label"><input type="email" id="email" name="email" class="form-control" placeholder=" " autocomplete="email" required><label for="email">Email Address</label></div>
                     <div class="form-group float-label"><textarea id="message" name="message" class="form-control" rows="5" placeholder=" " required></textarea><label for="message">Your Message</label></div>
-                    <button type="submit" class="cta form-submit" id="contactSubmitBtn">
+                    <button type="submit" class="cta form-submit" id="contactSubmitBtn" onclick="event.preventDefault(); handleContactForm(event);">
                         <span class="btn-face">
                             <span class="form-submit-label">Send Message</span>
                             <svg class="form-submit-icon" width="18px" height="18px" viewBox="0 0 18 18">
