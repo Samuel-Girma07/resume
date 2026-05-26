@@ -1874,64 +1874,66 @@ window.addEventListener('load', function () {
 /* -----------------------------------------------------------
    GOOGLE APPS SCRIPT CONTACT FORM INTEGRATION
 ----------------------------------------------------------- */
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.querySelector('.contact-form');
-    if (!contactForm) return;
-
+window.handleContactForm = async function(e) {
+    e.preventDefault();
+    
+    const contactForm = e.target;
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykFOAY4PCsM7HwIn219UJv3GM46JmrZW_SpVx-igiym3xmQqPitlvMVh7DGBnEkYAS/exec';
 
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    const submitBtn = contactForm.querySelector('.form-submit');
+    const submitLabel = submitBtn.querySelector('.form-submit-label');
+    const submitIcon = submitBtn.querySelector('i');
+    const originalText = submitLabel ? submitLabel.textContent : 'Send Message';
+    const originalIcon = submitIcon ? submitIcon.className : 'fas fa-paper-plane';
 
-        const submitBtn = contactForm.querySelector('.form-submit');
-        const submitLabel = submitBtn.querySelector('.form-submit-label');
-        const submitIcon = submitBtn.querySelector('i');
-        const originalText = submitLabel.textContent;
-        const originalIcon = submitIcon.className;
-
-        // Show loading state
+    // Show loading state
+    if (submitBtn) {
         submitBtn.disabled = true;
-        submitLabel.textContent = 'Sending...';
-        submitIcon.className = 'fas fa-spinner fa-spin';
+        if (submitLabel) submitLabel.textContent = 'Sending...';
+        if (submitIcon) submitIcon.className = 'fas fa-spinner fa-spin';
+    }
 
-        // Gather data
-        const formData = new FormData(contactForm);
-        const data = Object.fromEntries(formData.entries());
+    // Gather data
+    const formData = new FormData(contactForm);
+    const data = Object.fromEntries(formData.entries());
 
-        try {
-            const response = await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(data) // Send as plain text body to avoid CORS preflight issues natively handled by GAS
-            });
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
 
-            if (response.ok) {
-                // Success state
-                submitLabel.textContent = 'Message Sent!';
-                submitIcon.className = 'fas fa-check';
-                submitBtn.style.background = '#28a745';
-                contactForm.reset();
-
-                setTimeout(() => {
-                    submitLabel.textContent = originalText;
-                    submitIcon.className = originalIcon;
-                    submitBtn.style.background = '';
-                    submitBtn.disabled = false;
-                }, 3000);
-            } else {
-                throw new Error('Network response was not ok.');
-            }
-        } catch (error) {
-            console.error('Error sending message:', error);
-            submitLabel.textContent = 'Error! Try Again';
-            submitIcon.className = 'fas fa-exclamation-triangle';
-            submitBtn.style.background = '#dc3545';
+        if (response.ok) {
+            // Success state
+            if (submitLabel) submitLabel.textContent = 'Message Sent!';
+            if (submitIcon) submitIcon.className = 'fas fa-check';
+            if (submitBtn) submitBtn.style.background = '#28a745';
+            contactForm.reset();
 
             setTimeout(() => {
-                submitLabel.textContent = originalText;
-                submitIcon.className = originalIcon;
+                if (submitLabel) submitLabel.textContent = originalText;
+                if (submitIcon) submitIcon.className = originalIcon;
+                if (submitBtn) {
+                    submitBtn.style.background = '';
+                    submitBtn.disabled = false;
+                }
+            }, 3000);
+        } else {
+            throw new Error('Network response was not ok.');
+        }
+    } catch (error) {
+        console.error('Error sending message:', error);
+        if (submitLabel) submitLabel.textContent = 'Error! Try Again';
+        if (submitIcon) submitIcon.className = 'fas fa-exclamation-triangle';
+        if (submitBtn) submitBtn.style.background = '#dc3545';
+
+        setTimeout(() => {
+            if (submitLabel) submitLabel.textContent = originalText;
+            if (submitIcon) submitIcon.className = originalIcon;
+            if (submitBtn) {
                 submitBtn.style.background = '';
                 submitBtn.disabled = false;
-            }, 3000);
-        }
-    });
-});
+            }
+        }, 3000);
+    }
+};
