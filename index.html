@@ -303,6 +303,324 @@
             stroke: #dc3545;
         }
 
+        /* ═══════════════════════════════════════════════════════════
+           FOOTER — Editorial Dark Grid
+           ═══════════════════════════════════════════════════════════ */
+
+        .footer {
+            position: relative;
+            margin-left: var(--sidebar-width);
+            width: calc(75% - 160px);
+            padding: 0 80px 40px;
+            contain: layout;
+        }
+
+        /* Animated top divider line */
+        .footer-topline {
+            position: relative;
+            height: 1px;
+            margin-bottom: 48px;
+            overflow: visible;
+        }
+
+        .footer-topline::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 215, 0, 0.2) 20%,
+                rgba(255, 215, 0, 0.6) 50%,
+                rgba(255, 215, 0, 0.2) 80%,
+                transparent 100%);
+        }
+
+        .footer-topline-glow {
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 5px;
+            background: radial-gradient(ellipse, rgba(255, 215, 0, 0.4), transparent 70%);
+            animation: footerGlowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes footerGlowPulse {
+            0%, 100% { opacity: 0.4; transform: translateX(-50%) scaleX(1); }
+            50% { opacity: 1; transform: translateX(-50%) scaleX(1.5); }
+        }
+
+        /* Main grid */
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 0.9fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* Brand column */
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-monogram-wrap {
+            position: relative;
+            width: 56px;
+            height: 56px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-monogram {
+            position: relative;
+            z-index: 2;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            letter-spacing: -0.02em;
+        }
+
+        .footer-monogram-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: linear-gradient(140deg, rgba(255, 215, 0, 0.1), transparent);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: monoRingPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes monoRingPulse {
+            0%, 100% { border-color: rgba(255, 215, 0, 0.25); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 30px rgba(0,0,0,0.3); }
+            50% { border-color: rgba(255, 215, 0, 0.5); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 40px rgba(255,215,0,0.1); }
+        }
+
+        .footer-brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .footer-brand-text strong {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-white);
+            letter-spacing: 0.5px;
+        }
+
+        .footer-brand-text span {
+            font-family: var(--mono-font);
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: rgba(255, 215, 0, 0.55);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .footer-tagline {
+            font-family: var(--serif-font);
+            font-size: 1.05rem;
+            font-weight: 350;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+            max-width: 280px;
+        }
+
+        .footer-tagline em {
+            font-style: italic;
+            color: var(--accent-color);
+        }
+
+        /* Column headings */
+        .footer-heading {
+            font-family: var(--mono-font);
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 215, 0, 0.5);
+            margin: 0 0 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-heading-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.55rem;
+            color: rgba(255, 215, 0, 0.35);
+            letter-spacing: 0.05em;
+        }
+
+        /* Link lists */
+        .footer-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--serif-font);
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            position: relative;
+            padding-left: 0;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .link-dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.35);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+            padding-left: 8px;
+        }
+
+        .footer-links a:hover .link-dot {
+            background: var(--accent-color);
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            transform: scale(1.5);
+        }
+
+        /* CV Download button */
+        .footer-cv-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            background: rgba(255, 215, 0, 0.05);
+            color: var(--accent-color);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .footer-cv-btn:hover {
+            background: rgba(255, 215, 0, 0.12);
+            border-color: rgba(255, 215, 0, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-cv-btn svg {
+            transition: transform 0.3s ease;
+        }
+
+        .footer-cv-btn:hover svg {
+            transform: translateY(2px);
+        }
+
+        /* Bottom bar */
+        .footer-base {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .footer-base-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-copy {
+            font-family: var(--mono-font);
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+        }
+
+        .footer-sep {
+            color: rgba(255, 215, 0, 0.3);
+            font-size: 0.7rem;
+        }
+
+        .footer-location {
+            font-family: var(--serif-font);
+            font-style: italic;
+            font-size: 0.82rem;
+            color: rgba(255, 215, 0, 0.45);
+        }
+
+        .footer-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--mono-font);
+            font-size: 0.65rem;
+            color: rgba(34, 197, 94, 0.7);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22C55E;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 0.6; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .footer-backtop {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.5);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .footer-backtop:hover {
+            border-color: rgba(255, 215, 0, 0.4);
+            background: rgba(255, 215, 0, 0.08);
+            color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
         /* ----------------------------------------
            STUDYLENS CARD � EDITORIAL DARK GLASS
         ---------------------------------------- */
@@ -1917,61 +2235,78 @@
 
         </div>
 
-        <footer class="footer">
-            <div class="footer-main">
-                <!-- Brand block: monogram, identity line, sign-off statement -->
+                <footer class="footer">
+            <div class="footer-topline" aria-hidden="true">
+                <span class="footer-topline-glow"></span>
+            </div>
+
+            <div class="footer-grid">
+                <!-- Brand -->
                 <div class="footer-brand">
-                    <div class="footer-brand-row">
-                        <span class="footer-monogram" aria-hidden="true">SG</span>
-                        <span class="footer-brand-name">
-                            <strong>Samuel Girma</strong>
-                            <span>CS � Web Developer � Designer</span>
-                        </span>
+                    <div class="footer-monogram-wrap">
+                        <span class="footer-monogram">SG</span>
+                        <span class="footer-monogram-ring"></span>
                     </div>
-                    <p class="footer-brand-statement">
-                        Crafting <em>thoughtful</em> digital experiences from
-                        <em>Addis Ababa</em>, with a love for typography and
-                        a respect for the system.
+                    <div class="footer-brand-text">
+                        <strong>Samuel Girma</strong>
+                        <span>Full-Stack Developer & Designer</span>
+                    </div>
+                    <p class="footer-tagline">
+                        Building digital experiences from <em>Addis Ababa</em>.
                     </p>
                 </div>
 
-                <!-- Sitemap -->
-                <nav class="footer-col" aria-label="Sitemap">
-                    <h3 class="footer-col-title">Sitemap</h3>
-                    <ul>
-                        <li><a href="#about" class="mobile-nav-link" data-page="about">About</a></li>
-                        <li><a href="#resume" class="mobile-nav-link" data-page="resume">Resume</a></li>
-                        <li><a href="#projects" class="mobile-nav-link" data-page="projects">Projects</a></li>
-                        <li><a href="#contact" class="mobile-nav-link" data-page="contact">Contact</a></li>
-                        <li><a href="cv.pdf" target="_blank" rel="noopener noreferrer">Download CV <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
+                <!-- Navigation -->
+                <nav class="footer-nav" aria-label="Footer navigation">
+                    <h3 class="footer-heading">
+                        <span class="footer-heading-num">01</span> Navigate
+                    </h3>
+                    <ul class="footer-links">
+                        <li><a href="#about" data-page="about"><span class="link-dot"></span>About</a></li>
+                        <li><a href="#resume" data-page="resume"><span class="link-dot"></span>Resume</a></li>
+                        <li><a href="#projects" data-page="projects"><span class="link-dot"></span>Projects</a></li>
+                        <li><a href="#contact" data-page="contact"><span class="link-dot"></span>Contact</a></li>
                     </ul>
                 </nav>
 
-                <!-- Elsewhere: real email + socials -->
-                <nav class="footer-col" aria-label="Elsewhere">
-                    <h3 class="footer-col-title">Elsewhere</h3>
-                    <ul>
-                        <li><a href="mailto:naodtskuyomi@gmail.com">naodtskuyomi@gmail.com <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
-                        <li><a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank" rel="noopener noreferrer">LinkedIn <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
-                        <li><a href="https://github.com/Samuel-Girma07" target="_blank" rel="noopener noreferrer">GitHub <span class="footer-link-icon"><i class="fas fa-arrow-up-right-from-square"></i></span></a></li>
-                        <li><a href="tel:+251948998804">+251 948 998 804</a></li>
+                <!-- Connect -->
+                <nav class="footer-connect" aria-label="Connect">
+                    <h3 class="footer-heading">
+                        <span class="footer-heading-num">02</span> Connect
+                    </h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:naodtskuyomi@gmail.com"><span class="link-dot"></span>Email</a></li>
+                        <li><a href="https://www.linkedin.com/in/samuel-girma-04a18b398" target="_blank" rel="noopener noreferrer"><span class="link-dot"></span>LinkedIn</a></li>
+                        <li><a href="https://github.com/Samuel-Girma07" target="_blank" rel="noopener noreferrer"><span class="link-dot"></span>GitHub</a></li>
+                        <li><a href="tel:+251948998804"><span class="link-dot"></span>+251 948 998 804</a></li>
                     </ul>
+                    <a href="cv.pdf" target="_blank" rel="noopener noreferrer" class="footer-cv-btn">
+                        <span>Download CV</span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M7 1v8M7 9l-3-3m3 3l3-3M1 11h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
                 </nav>
             </div>
 
-            <!-- Bottom bar: copyright + crafted line + back-to-top + system meta -->
-            <div class="footer-bottom">
-                <div class="footer-copy">
-                    <p>&copy; <span id="footer-year">2026</span> Samuel Girma. All rights reserved.</p>
-                    <span class="footer-craft">Crafted by hand in Addis Ababa.</span>
+            <!-- Bottom bar -->
+            <div class="footer-base">
+                <div class="footer-base-left">
+                    <span class="footer-copy">&copy; <span id="footer-year">2026</span> Samuel Girma</span>
+                    <span class="footer-sep" aria-hidden="true">/</span>
+                    <span class="footer-location">Addis Ababa, Ethiopia</span>
                 </div>
-                <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-                    <i class="fas fa-arrow-up"></i>
+                <div class="footer-base-center">
+                    <span class="footer-status">
+                        <span class="status-dot"></span>
+                        Available for work
+                    </span>
+                </div>
+                <button id="back-to-top" class="footer-backtop" aria-label="Back to top">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 14V2M8 2L3 7M8 2l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </button>
-                <div class="footer-system" aria-hidden="true">
-                    <span class="footer-system-dot"></span>
-                    <span>SYS v2.1 � ALL SYSTEMS NOMINAL</span>
-                </div>
             </div>
         </footer>
 
