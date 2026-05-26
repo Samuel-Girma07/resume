@@ -20,7 +20,7 @@ export const config = {
   runtime: 'edge'
 };
 
-export default async function handler(request) {
+export default async function handler(request, context) {
   // CORS headers
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -109,6 +109,30 @@ export default async function handler(request) {
       const content = data.choices?.[0]?.message?.content || data.choices?.[0]?.message?.reasoning;
 
       if (content) {
+        // --- TELEGRAM LOGGING ---
+        const botToken = process.env.TELEGRAM_BOT_TOKEN;
+        const chatId = process.env.TELEGRAM_CHAT_ID;
+        
+        if (botToken && chatId) {
+          const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+          const message = `🤖 **New Chat on Portfolio**\n\n👤 **User:** ${queryText}\n\n✦ **Sage:** ${content.slice(0, 1500)}${content.length > 1500 ? '...' : ''}`;
+          
+          const telegramPromise = fetch(telegramUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: message,
+              parse_mode: 'Markdown'
+            })
+          }).catch(e => console.warn('[Telegram Log Error]', e));
+
+          // Ensure Vercel doesn't kill the function before the fetch completes
+          if (context && context.waitUntil) {
+            context.waitUntil(telegramPromise);
+          }
+        }
+
         return new Response(JSON.stringify({
           content,
           model: model.name,
