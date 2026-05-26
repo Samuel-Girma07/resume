@@ -190,9 +190,9 @@
       "name": "resume",
       "description": "",
       "tech": [
-        "CSS"
+        "HTML"
       ],
-      "updated": "2026-05-26T14:49:53Z"
+      "updated": "2026-05-26T15:16:01Z"
     },
     {
       "name": "act-gpa-calculator",
@@ -326,7 +326,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-05-26T15:09:11.785Z",
+    "last_sync": "2026-05-26T15:19:28.744Z",
     "repo_count": 21
   }
 }
