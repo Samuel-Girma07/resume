@@ -82,7 +82,7 @@ INSTRUCTIONS:
     try {
       const ctrl = new AbortController();
       const id = setTimeout(() => ctrl.abort(), 3500);
-      const res = await fetch(CONFIG.API_URL, { method: 'HEAD', signal: ctrl.signal });
+      const res = await fetch(CONFIG.API_URL, { method: 'OPTIONS', signal: ctrl.signal });
       clearTimeout(id);
       apiAvailable = res.ok;
     } catch (_) {
