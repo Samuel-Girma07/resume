@@ -1880,17 +1880,43 @@ window.handleContactForm = async function(e) {
     const contactForm = e.target;
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykFOAY4PCsM7HwIn219UJv3GM46JmrZW_SpVx-igiym3xmQqPitlvMVh7DGBnEkYAS/exec';
 
-    const submitBtn = contactForm.querySelector('.form-submit');
-    const submitLabel = submitBtn.querySelector('.form-submit-label');
-    const submitIcon = submitBtn.querySelector('i');
+    const submitBtn = document.getElementById('contactSubmitBtn');
+    const submitLabel = submitBtn ? submitBtn.querySelector('.form-submit-label') : null;
     const originalText = submitLabel ? submitLabel.textContent : 'Send Message';
-    const originalIcon = submitIcon ? submitIcon.className : 'fas fa-paper-plane';
+
+    // Helper to fire particles on success
+    function createParticles() {
+        if (!submitBtn) return;
+        const container = submitBtn.querySelector('.form-submit-particles');
+        if (!container) return;
+        container.innerHTML = ''; // Clear old
+        for (let i = 0; i < 12; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const angle = (i / 12) * Math.PI * 2;
+            const dist = 30 + Math.random() * 20;
+            const tx = Math.cos(angle) * dist;
+            const ty = Math.sin(angle) * dist;
+            p.style.left = '50%';
+            p.style.top = '50%';
+            p.animate([
+                { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`, opacity: 0 }
+            ], {
+                duration: 600 + Math.random() * 200,
+                easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                fill: 'forwards'
+            });
+            container.appendChild(p);
+        }
+    }
 
     // Show loading state
     if (submitBtn) {
         submitBtn.disabled = true;
+        submitBtn.classList.remove('is-success', 'is-error');
+        submitBtn.classList.add('is-sending');
         if (submitLabel) submitLabel.textContent = 'Sending...';
-        if (submitIcon) submitIcon.className = 'fas fa-spinner fa-spin';
     }
 
     // Gather data
@@ -1905,17 +1931,19 @@ window.handleContactForm = async function(e) {
 
         if (response.ok) {
             // Success state
-            if (submitLabel) submitLabel.textContent = 'Message Sent!';
-            if (submitIcon) submitIcon.className = 'fas fa-check';
-            if (submitBtn) submitBtn.style.background = '#28a745';
+            if (submitBtn) {
+                submitBtn.classList.remove('is-sending');
+                submitBtn.classList.add('is-success');
+                if (submitLabel) submitLabel.textContent = 'Message Sent!';
+                createParticles();
+            }
             contactForm.reset();
 
             setTimeout(() => {
-                if (submitLabel) submitLabel.textContent = originalText;
-                if (submitIcon) submitIcon.className = originalIcon;
                 if (submitBtn) {
-                    submitBtn.style.background = '';
+                    submitBtn.classList.remove('is-success');
                     submitBtn.disabled = false;
+                    if (submitLabel) submitLabel.textContent = originalText;
                 }
             }, 3000);
         } else {
@@ -1923,16 +1951,19 @@ window.handleContactForm = async function(e) {
         }
     } catch (error) {
         console.error('Error sending message:', error);
-        if (submitLabel) submitLabel.textContent = 'Error! Try Again';
-        if (submitIcon) submitIcon.className = 'fas fa-exclamation-triangle';
-        if (submitBtn) submitBtn.style.background = '#dc3545';
+        
+        // Error state
+        if (submitBtn) {
+            submitBtn.classList.remove('is-sending');
+            submitBtn.classList.add('is-error');
+            if (submitLabel) submitLabel.textContent = 'Error! Try Again';
+        }
 
         setTimeout(() => {
-            if (submitLabel) submitLabel.textContent = originalText;
-            if (submitIcon) submitIcon.className = originalIcon;
             if (submitBtn) {
-                submitBtn.style.background = '';
+                submitBtn.classList.remove('is-error');
                 submitBtn.disabled = false;
+                if (submitLabel) submitLabel.textContent = originalText;
             }
         }, 3000);
     }
