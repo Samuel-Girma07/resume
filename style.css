@@ -3763,7 +3763,7 @@ p.intro-text .intro-uni {
   }
 
   /* ═══════════════════════════════════════════════════════════
-     CTA HOVER BUTTON (Provided Design)
+     CTA HOVER BUTTON (Send Message)
      ═══════════════════════════════════════════════════════════ */
   .cta.form-submit {
     position: relative;
@@ -3818,17 +3818,11 @@ p.intro-text .intro-uni {
     z-index: 1;
   }
 
-  /* Adjust default icon rendering */
-  .cta.form-submit-icon .icon-path, 
-  .cta.form-submit-icon .icon-poly {
-    transition: stroke-dashoffset 0.3s ease;
-  }
-
   /* Hover state */
   .cta.form-submit:hover:before {
     width: 100%;
     background: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.45), 0 0 40px rgba(255, 215, 0, 0.15);
   }
 
   .cta.form-submit:hover .form-submit-icon {
@@ -3867,7 +3861,7 @@ p.intro-text .intro-uni {
   /* ── State: SUCCESS ── */
   .cta.form-submit.is-success:before {
     width: 100%;
-    background: #28a745;
+    background: #22C55E;
   }
 
   .cta.form-submit.is-success .form-submit-label {
