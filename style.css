@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg-color: #121212;
   --card-bg: #1e1e1e;
   --accent-color: #FFD700;
@@ -6324,3 +6324,176 @@ p.intro-text .intro-uni {
                 padding: 40px 20px 30px;
             }
         }
+
+
+/* ============================================================
+   SKILLS RAILS — Alternating Category Marquees
+   ============================================================ */
+
+.skills-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  padding: 6px 0 2px;
+}
+
+/* ── Rail Row ── */
+.skill-rail-row {
+  position: relative;
+}
+
+/* ── Row Label ── */
+.skill-rail-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.skill-rail-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+/* Category icon colors */
+.skill-rail-label-frontend .skill-rail-icon {
+  background: rgba(255, 215, 0, 0.12);
+  color: #FFD700;
+}
+.skill-rail-label-backend .skill-rail-icon {
+  background: rgba(52, 211, 153, 0.12);
+  color: #34d399;
+}
+.skill-rail-label-database .skill-rail-icon {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+}
+.skill-rail-label-design .skill-rail-icon {
+  background: rgba(167, 139, 250, 0.12);
+  color: #a78bfa;
+}
+
+.skill-rail-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+/* ── Track (marquee strip) ── */
+.skill-rail-track {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  padding: 4px 0;
+}
+
+.skill-rail-scroll {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  will-change: transform;
+}
+
+/* ── Animations ── */
+@keyframes railScrollLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes railScrollRight {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.skill-rail-scroll[data-direction="left"] {
+  animation: railScrollLeft 28s linear infinite;
+}
+
+.skill-rail-scroll[data-direction="right"] {
+  animation: railScrollRight 28s linear infinite;
+}
+
+/* Pause on hover */
+.skill-rail-row:hover .skill-rail-scroll {
+  animation-play-state: paused;
+}
+
+/* ── Row hover: category tint on pills ── */
+.skill-rail-label-frontend ~ .skill-rail-track .skill-item:hover {
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 0 4px 16px -2px rgba(255, 215, 0, 0.12);
+}
+.skill-rail-label-backend ~ .skill-rail-track .skill-item:hover {
+  border-color: rgba(52, 211, 153, 0.4);
+  box-shadow: 0 4px 16px -2px rgba(52, 211, 153, 0.12);
+}
+.skill-rail-label-database ~ .skill-rail-track .skill-item:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 4px 16px -2px rgba(56, 189, 248, 0.12);
+}
+.skill-rail-label-design ~ .skill-rail-track .skill-item:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+  box-shadow: 0 4px 16px -2px rgba(167, 139, 250, 0.12);
+}
+
+/* ── Entrance animations ── */
+.page.active .skill-rail-row,
+.page.anim-enter-up .skill-rail-row,
+.page.anim-enter-down .skill-rail-row {
+  animation: railRowReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.skill-rail-row:nth-child(1) { animation-delay: 0.05s !important; }
+.skill-rail-row:nth-child(2) { animation-delay: 0.14s !important; }
+.skill-rail-row:nth-child(3) { animation-delay: 0.23s !important; }
+.skill-rail-row:nth-child(4) { animation-delay: 0.32s !important; }
+
+@keyframes railRowReveal {
+  0%   { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .skills-rail {
+    gap: 22px;
+  }
+  .skill-rail-label {
+    margin-bottom: 10px;
+  }
+  .skill-rail-text {
+    font-size: 0.78rem;
+  }
+  .skill-rail-track {
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  }
+}
+
+@media (max-width: 480px) {
+  .skills-rail {
+    gap: 18px;
+  }
+  .skill-rail-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 0.7rem;
+  }
+  .skill-rail-track {
+    mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  }
+}
