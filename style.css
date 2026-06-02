@@ -6376,11 +6376,6 @@ p.intro-text .intro-uni {
   background: rgba(56, 189, 248, 0.12);
   color: #38bdf8;
 }
-.skill-rail-label-design .skill-rail-icon {
-  background: rgba(167, 139, 250, 0.12);
-  color: #a78bfa;
-}
-
 .skill-rail-text {
   font-family: 'Syne', sans-serif;
   font-weight: 700;
@@ -6444,11 +6439,6 @@ p.intro-text .intro-uni {
   border-color: rgba(56, 189, 248, 0.4);
   box-shadow: 0 4px 16px -2px rgba(56, 189, 248, 0.12);
 }
-.skill-rail-label-design ~ .skill-rail-track .skill-item:hover {
-  border-color: rgba(167, 139, 250, 0.4);
-  box-shadow: 0 4px 16px -2px rgba(167, 139, 250, 0.12);
-}
-
 /* ── Entrance animations ── */
 .page.active .skill-rail-row,
 .page.anim-enter-up .skill-rail-row,
