@@ -198,7 +198,7 @@ canvas#fluid {
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 15px;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   color: #ccc;
   width: 100%;
 }
@@ -2398,6 +2398,7 @@ p.intro-text .intro-uni {
   opacity: 0;
   position: relative;
   will-change: transform, opacity, filter;
+  overflow-x: hidden;
 }
 
 .page.active {
@@ -2790,6 +2791,8 @@ p.intro-text .intro-uni {
   color: #ccc;
   text-decoration: none;
   transition: color 0.3s ease;
+  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 .contact-info a:hover {
