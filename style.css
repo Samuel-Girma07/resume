@@ -313,6 +313,7 @@ canvas#fluid {
   padding: 60px 80px;
   position: relative;
   overflow-y: auto;
+  overflow-x: hidden;
   contain: layout style;
 }
 
@@ -1489,6 +1490,7 @@ p.intro-text .intro-uni {
     height: auto;
     max-height: min(100dvh, 100vh);
     overflow-y: auto;
+  overflow-x: hidden;
     padding:
       calc(78px + env(safe-area-inset-top))
       max(18px, env(safe-area-inset-right))
@@ -6388,6 +6390,7 @@ p.intro-text .intro-uni {
 /* ── Track (marquee strip) ── */
 .skill-rail-track {
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
   position: relative;
   mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
