@@ -201,6 +201,11 @@ canvas#fluid {
   font-size: 0.82rem;
   color: #ccc;
   width: 100%;
+}
+
+/* Indent phone and address only, leave email flush-left */
+.contact-info li:nth-child(2),
+.contact-info li:nth-child(3) {
   padding-left: 8px;
 }
 
