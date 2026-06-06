@@ -158,18 +158,18 @@ INSTRUCTIONS:
 
       #sage-root, #sage-root * { cursor: auto !important; }
 
-      /* ─── AI ROBOT BUTTON ─── */
+      /* ─── BAYMAX FULL-BODY BUTTON (fully transparent, no glow) ─── */
       #sage-bubble {
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
+        width: 104px;
+        height: 156px;
+        border-radius: 0;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         outline: none !important;
         cursor: pointer;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: center;
         pointer-events: auto;
         position: relative;
@@ -177,8 +177,8 @@ INSTRUCTIONS:
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
-      #sage-bubble:hover { transform: scale(1.15) translateY(-4px); }
-      #sage-bubble:active { transform: scale(0.93) translateY(-1px); }
+      #sage-bubble:hover { transform: translateY(-4px); }
+      #sage-bubble:active { transform: translateY(-1px); }
 
       /* Dynamic Animations mapped to states */
       #sage-bubble.robot-idle { animation: sageBotFloat 4s ease-in-out infinite; }
@@ -186,10 +186,9 @@ INSTRUCTIONS:
       #sage-bubble.robot-listening { animation: sageBotPulse 1.2s ease-in-out infinite; }
       #sage-bubble.robot-thinking { animation: sageBotSpin 3s ease-in-out infinite; }
       #sage-bubble.robot-offline { animation: none; pointer-events: none; }
-      #sage-bubble.robot-offline .bm-svg { filter: grayscale(1) brightness(0.45) !important; }
+      #sage-bubble.robot-offline .bm-svg { filter: grayscale(1) brightness(0.45) drop-shadow(0 10px 16px rgba(0,0,0,0.45)) !important; }
       #sage-bubble.robot-offline .bm-breathe { animation: none !important; }
-      #sage-bubble.robot-offline .sage-bg-loader { display: none !important; }
-      #sage-bubble.robot-offline .bm-eye { transform: scaleY(0.12) !important; }
+      #sage-bubble.robot-offline #bm-face { transform: scaleY(0.12) !important; }
 
       @keyframes sageBotFloat {
         0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -215,53 +214,95 @@ INSTRUCTIONS:
         75% { transform: rotate(-8deg); }
       }
 
-      /* ─── BAYMAX SVG STYLING ─── */
+      /* ─── BAYMAX SVG STYLING (no glow, soft drop shadow only) ─── */
       .bm-svg {
-        width: 60px;
-        height: 60px;
-        filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) drop-shadow(0 0 14px rgba(255,215,0,0.18));
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 10px 16px rgba(0,0,0,0.45));
         transition: filter 0.3s ease;
         pointer-events: none;
         overflow: visible;
         will-change: transform;
       }
-      #sage-bubble:hover .bm-svg {
-        filter: drop-shadow(0 8px 18px rgba(0,0,0,0.6)) drop-shadow(0 0 24px rgba(255,215,0,0.4));
-      }
 
-      /* Isolated parallax layers — GPU compositing only */
-      #bm-body, #bm-head, #bm-face {
+      /* Isolated parallax / animation layers — GPU compositing only */
+      #bm-torso, #bm-head, #bm-face, #bm-left-arm, #bm-right-arm, #bm-legs {
         will-change: transform;
-        transform: translate3d(0,0,0);
       }
-      #bm-body { transform-origin: 50% 100%; }
-      #bm-head { transform-origin: 50% 70%; }
+      #bm-torso { transform-origin: 50% 70%; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+      #bm-head  { transform-origin: 50% 100%; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+      #bm-left-arm  { transform-origin: 78% 38%; }
+      #bm-right-arm { transform-origin: 22% 38%; }
 
       /* Idle breathing — drives the whole figure */
       .bm-breathe {
         animation: bmBreathe 4.5s ease-in-out infinite;
-        transform-origin: 50% 92%;
+        transform-origin: 50% 95%;
       }
       @keyframes bmBreathe {
         0%, 100% { transform: scale(1, 1); }
-        50% { transform: scale(1.025, 1.04); }
+        50% { transform: scale(1.015, 1.025); }
       }
 
-      /* Autonomous blink — smooth Y squash */
-      .bm-eye {
+      /* Autonomous blink — smooth Y squash on the face group */
+      #bm-face {
         transform-box: fill-box;
         transform-origin: center;
         transition: transform 0.09s ease-in-out;
       }
-      .bm-svg.is-blinking .bm-eye { transform: scaleY(0.08); }
+      .bm-svg.is-blinking #bm-face { transform: scaleY(0.08); }
 
-      /* Click rubber-band pop feedback */
-      .bm-svg.is-popping { animation: bmPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-      @keyframes bmPop {
-        0% { transform: scale(1); }
-        35% { transform: scale(1.18, 0.86); }
-        65% { transform: scale(0.94, 1.08); }
-        100% { transform: scale(1); }
+      /* STATE 1 — On-load greeting wave (right arm) */
+      .bm-svg.is-waving #bm-right-arm {
+        animation: bmWave 0.7s ease-in-out 3;
+      }
+      @keyframes bmWave {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-38deg); }
+        75% { transform: rotate(-14deg); }
+      }
+
+      /* STATE 3 — Sleep mode: head droops, eyes close */
+      .bm-svg.is-sleeping #bm-head { transform: translateY(7px) rotate(-3deg) !important; }
+      .bm-svg.is-sleeping #bm-face { transform: scaleY(0.1) !important; }
+      .bm-svg.is-sleeping #bm-left-arm,
+      .bm-svg.is-sleeping #bm-right-arm { transform: rotate(6deg); transition: transform 0.6s ease; }
+      .bm-zzz { opacity: 0; transition: opacity 0.4s ease; }
+      .bm-svg.is-sleeping .bm-zzz { opacity: 1; animation: bmZzz 2.4s ease-in-out infinite; }
+      @keyframes bmZzz {
+        0% { opacity: 0; transform: translate(0,0) scale(0.7); }
+        40% { opacity: 0.9; }
+        100% { opacity: 0; transform: translate(6px,-14px) scale(1.1); }
+      }
+
+      /* STATE 4 — Low-battery deflation slump */
+      .bm-svg.is-deflating #bm-torso { animation: bmDeflate 2s ease-in-out; }
+      .bm-svg.is-deflating #bm-head { animation: bmDeflateHead 2s ease-in-out; }
+      @keyframes bmDeflate {
+        0%, 100% { transform: scaleY(1) translateY(0); }
+        45% { transform: scaleY(0.86) translateY(6px); }
+      }
+      @keyframes bmDeflateHead {
+        0%, 100% { transform: scaleY(1) translateY(0); }
+        45% { transform: scaleY(0.9) translateY(9px); }
+      }
+
+      /* STATE 6 — Fist-bump click: right arm extends + hand wiggles */
+      .bm-svg.is-bumping #bm-right-arm { animation: bmBump 0.7s cubic-bezier(0.34,1.56,0.64,1); }
+      @keyframes bmBump {
+        0% { transform: rotate(0deg); }
+        40% { transform: rotate(-46deg); }
+        55% { transform: rotate(-40deg); }
+        70% { transform: rotate(-48deg); }
+        85% { transform: rotate(-42deg); }
+        100% { transform: rotate(0deg); }
+      }
+      .bm-svg.is-bumping #bm-right-hand { animation: bmWiggle 0.7s ease-in-out; transform-origin: center; }
+      @keyframes bmWiggle {
+        0%, 100% { transform: translateX(0) rotate(0deg); }
+        45% { transform: translateX(2px) rotate(8deg); }
+        60% { transform: translateX(-2px) rotate(-8deg); }
+        75% { transform: translateX(1px) rotate(4deg); }
       }
 
       /* ─── NOTIFICATION ─── */
@@ -471,26 +512,6 @@ INSTRUCTIONS:
         86%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
       }
 
-      .sage-bg-loader {
-        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        width: 100%; height: 100%; z-index: -1; pointer-events: none;
-      }
-      .sage-circle {
-        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        width: 0px; height: 0px; border-radius: 100%; opacity: 0;
-        animation: pulse_4923 4s infinite linear;
-        border: 0.5px solid var(--sg-accent); box-shadow: 0px 0px 5px var(--sg-accent-mid);
-      }
-      .sage-circle:nth-child(1) { animation-delay: .2s; }
-      .sage-circle:nth-child(2) { animation-delay: .4s; }
-      .sage-circle:nth-child(3) { animation-delay: .8s; }
-      .sage-circle:nth-child(4) { animation-delay: 1s; }
-      @keyframes pulse_4923 {
-        0% { opacity: 0.0; width: 0px; height: 0px; transform: translate(-50%, -50%) scale(1); }
-        10% { opacity: 0.5; transform: translate(-50%, -50%) scale(2); }
-        100% { opacity: 0.0; width: 120px; height: 120px; transform: translate(-50%, -50%) scale(1); }
-      }
-
       /* ─── INPUT ─── */
       #sage-input-area {
         padding: 20px 24px;
@@ -566,70 +587,101 @@ INSTRUCTIONS:
     document.head.appendChild(css);
   }
 
-  /* ========== BAYMAX SVG (layered, parallax-ready) ========== */
+  /* ========== BAYMAX FULL-BODY SVG (layered, parallax-ready) ========== */
   function getRobotSVG() {
     return `
-      <svg class="bm-svg" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <svg class="bm-svg" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-          <!-- Soft glossy volumetric body shading -->
-          <radialGradient id="bmBodyGrad" cx="0.38" cy="0.3" r="0.85">
+          <radialGradient id="bmBodyGrad" cx="0.4" cy="0.28" r="0.85">
             <stop offset="0%" stop-color="#ffffff"/>
-            <stop offset="55%" stop-color="#f3f4f6"/>
-            <stop offset="100%" stop-color="#c8ccd4"/>
+            <stop offset="55%" stop-color="#eef0f3"/>
+            <stop offset="100%" stop-color="#c2c6cf"/>
           </radialGradient>
-          <radialGradient id="bmHeadGrad" cx="0.4" cy="0.32" r="0.9">
+          <radialGradient id="bmHeadGrad" cx="0.4" cy="0.3" r="0.9">
             <stop offset="0%" stop-color="#ffffff"/>
             <stop offset="58%" stop-color="#f1f2f5"/>
             <stop offset="100%" stop-color="#c4c8d1"/>
           </radialGradient>
+          <radialGradient id="bmLimbGrad" cx="0.38" cy="0.3" r="0.95">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="60%" stop-color="#e9ebef"/>
+            <stop offset="100%" stop-color="#bcc0c9"/>
+          </radialGradient>
           <linearGradient id="bmRim" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+            <stop offset="0%" stop-color="rgba(255,255,255,0.95)"/>
             <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
           </linearGradient>
           <radialGradient id="bmFloor" cx="0.5" cy="0.5" r="0.5">
-            <stop offset="0%" stop-color="rgba(0,0,0,0.45)"/>
+            <stop offset="0%" stop-color="rgba(0,0,0,0.4)"/>
             <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
           </radialGradient>
         </defs>
 
         <g class="bm-breathe">
           <!-- Contact shadow -->
-          <ellipse cx="32" cy="69" rx="17" ry="3.5" fill="url(#bmFloor)"/>
+          <ellipse cx="100" cy="289" rx="54" ry="9" fill="url(#bmFloor)"/>
 
-          <!-- ===== BODY (anchor base) ===== -->
-          <g id="bm-body">
-            <!-- upper torso -->
-            <path d="M14 50
-                     C14 41 21 36 32 36
-                     C43 36 50 41 50 50
-                     L50 60
-                     C50 67 43 70 32 70
-                     C21 70 14 67 14 60 Z"
-                  fill="url(#bmBodyGrad)" stroke="#b9bdc6" stroke-width="0.8"/>
-            <!-- shoulder highlight -->
-            <path d="M20 42 C25 38 39 38 44 42" stroke="url(#bmRim)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7"/>
-            <!-- subtle belly seam -->
-            <path d="M32 44 L32 60" stroke="#d4d7de" stroke-width="0.8" opacity="0.5"/>
-            <!-- little chest port (heart core) -->
-            <circle cx="32" cy="52" r="3.4" fill="#fafbfc" stroke="#cfd3da" stroke-width="0.8"/>
-            <circle cx="32" cy="52" r="1.4" fill="#FFD700" opacity="0.85"/>
+          <!-- ===== LEGS ===== -->
+          <g id="bm-legs">
+            <path d="M74 214 C70 214 67 218 67 226 L64 274 C64 284 72 289 82 289 C90 289 95 284 95 276 L96 220 C96 216 93 214 89 214 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+            <path d="M126 214 C130 214 133 218 133 226 L136 274 C136 284 128 289 118 289 C110 289 105 284 105 276 L104 220 C104 216 107 214 111 214 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+            <!-- feet -->
+            <ellipse cx="79" cy="287" rx="17" ry="7" fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+            <ellipse cx="121" cy="287" rx="17" ry="7" fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+          </g>
+
+          <!-- ===== LEFT ARM (Baymax's left = viewer right) ===== -->
+          <g id="bm-left-arm">
+            <path d="M150 132 C168 138 178 156 176 182 C175 196 170 206 162 206 C156 206 152 198 152 188 L150 150 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+            <ellipse cx="167" cy="200" rx="15" ry="13" fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+          </g>
+
+          <!-- ===== RIGHT ARM (waves / fist-bumps) ===== -->
+          <g id="bm-right-arm">
+            <path d="M50 132 C32 138 22 156 24 182 C25 196 30 206 38 206 C44 206 48 198 48 188 L50 150 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+            <g id="bm-right-hand">
+              <ellipse cx="33" cy="200" rx="15" ry="13" fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+            </g>
+          </g>
+
+          <!-- ===== TORSO ===== -->
+          <g id="bm-torso">
+            <path d="M52 150
+                     C48 110 66 90 100 90
+                     C134 90 152 110 148 150
+                     L146 196
+                     C144 214 124 224 100 224
+                     C76 224 56 214 54 196 Z"
+                  fill="url(#bmBodyGrad)" stroke="#b4b8c1" stroke-width="1.2"/>
+            <!-- soft shoulder highlight -->
+            <path d="M64 112 C76 100 124 100 136 112" stroke="url(#bmRim)" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.7"/>
+            <!-- belly seam -->
+            <path d="M100 120 L100 200" stroke="#d2d5dc" stroke-width="1.4" opacity="0.5"/>
+            <!-- chest heart port -->
+            <circle cx="100" cy="156" r="8" fill="#fafbfc" stroke="#cdd1d8" stroke-width="1.2"/>
+            <circle cx="100" cy="156" r="3.4" fill="#FFD700" opacity="0.85"/>
           </g>
 
           <!-- ===== HEAD ===== -->
           <g id="bm-head">
-            <!-- oval head outline -->
-            <ellipse cx="32" cy="22" rx="20" ry="15" fill="url(#bmHeadGrad)" stroke="#b9bdc6" stroke-width="0.8"/>
-            <!-- glossy top highlight -->
-            <ellipse cx="26" cy="15" rx="9" ry="4.5" fill="#ffffff" opacity="0.65"/>
+            <ellipse cx="100" cy="62" rx="52" ry="40" fill="url(#bmHeadGrad)" stroke="#b4b8c1" stroke-width="1.2"/>
+            <ellipse cx="78" cy="42" rx="24" ry="12" fill="#ffffff" opacity="0.6"/>
+
+            <!-- sleep "z" marks near the head -->
+            <g class="bm-zzz" fill="#9aa0ab">
+              <text x="150" y="40" font-family="sans-serif" font-size="16" font-weight="700">z</text>
+              <text x="160" y="26" font-family="sans-serif" font-size="20" font-weight="700">Z</text>
+            </g>
 
             <!-- ===== FACE (eyes + connecting slot) ===== -->
             <g id="bm-face">
-              <!-- connecting horizontal slot line -->
-              <line x1="20" y1="23" x2="44" y2="23" stroke="#111315" stroke-width="2.2" stroke-linecap="round"/>
-              <!-- left eye -->
-              <circle class="bm-eye" cx="22" cy="23" r="4.1" fill="#111315"/>
-              <!-- right eye -->
-              <circle class="bm-eye" cx="42" cy="23" r="4.1" fill="#111315"/>
+              <line x1="62" y1="64" x2="138" y2="64" stroke="#111315" stroke-width="6" stroke-linecap="round"/>
+              <circle cx="68" cy="64" r="11" fill="#111315"/>
+              <circle cx="132" cy="64" r="11" fill="#111315"/>
             </g>
           </g>
         </g>
@@ -655,10 +707,6 @@ INSTRUCTIONS:
     root.id = 'sage-root';
     root.innerHTML = `
       <div id="sage-bubble" class="robot-idle" role="button" aria-label="Open AI Assistant">
-        <div class="sage-bg-loader">
-          <div class="sage-circle"></div><div class="sage-circle"></div>
-          <div class="sage-circle"></div><div class="sage-circle"></div>
-        </div>
         ${getRobotSVG()}
         <div id="sage-notify"></div>
       </div>
@@ -793,13 +841,13 @@ INSTRUCTIONS:
         setTimeout(() => setRobotState('idle'), 800);
       }
 
-      // Snappy rubber-band pop on every click for haptic-style feedback
+      // STATE 6 — fist-bump sequence on every click (arm extend + hand wiggle)
+      wakeUp();
       document.querySelectorAll('.bm-svg').forEach(svg => {
-        svg.classList.remove('is-popping');
-        // force reflow so the animation can restart
-        void svg.offsetWidth;
-        svg.classList.add('is-popping');
-        setTimeout(() => svg.classList.remove('is-popping'), 520);
+        svg.classList.remove('is-bumping');
+        void svg.offsetWidth; // force reflow so the animation restarts
+        svg.classList.add('is-bumping');
+        setTimeout(() => svg.classList.remove('is-bumping'), 720);
       });
     });
 
@@ -838,9 +886,28 @@ INSTRUCTIONS:
       }
     });
 
-    // ===== 3D PARALLAX STATE MACHINE =====
+    // ===== ANIMATION STATE MACHINE =====
     initParallax();
     initBlinking();
+    initLowBattery();
+    initCuriosityHover();
+    triggerGreeting();
+  }
+
+  /* ===== shared sleep state + wake helper ===== */
+  let sleepTimer = null;
+  let isSleeping = false;
+
+  function wakeUp() {
+    if (isSleeping) {
+      isSleeping = false;
+      document.querySelectorAll('.bm-svg').forEach(s => s.classList.remove('is-sleeping'));
+    }
+    clearTimeout(sleepTimer);
+    sleepTimer = setTimeout(() => {
+      isSleeping = true;
+      document.querySelectorAll('.bm-svg').forEach(s => s.classList.add('is-sleeping'));
+    }, 6000);
   }
 
   /* ========== PARALLAX (60 FPS lerp loop) ========== */
@@ -851,72 +918,131 @@ INSTRUCTIONS:
     let targetX = 0, targetY = 0;
     let curX = 0, curY = 0;
 
-    // Max translation (% of layer's own influence) — clamped so the face
-    // can never clip past the head outline. Units are SVG userspace px.
-    const BODY_MAX = { x: 0.6, y: 0.4 };   // ~2% — nearly static anchor
-    const HEAD_MAX = { x: 3.0, y: 2.2 };   // moderate
-    const FACE_MAX = { x: 4.0, y: 3.0 };   // significantly more → "turning" illusion
+    // Per-layer parallax depth (SVG userspace px). Face moves most → "turning".
+    const TORSO_MAX = { x: 3, y: 2 };    // slight
+    const HEAD_MAX  = { x: 9, y: 6 };    // moderate
+    const FACE_MAX  = { x: 16, y: 11 };  // heavy
 
     const lerp = (a, b, t) => a + (b - a) * t;
 
     if (!isTouch) {
-      // Desktop: track the cursor relative to the avatar center
+      // Global window listener so Baymax tracks the cursor everywhere
       window.addEventListener('mousemove', (e) => {
-        const bubble = document.getElementById('sage-bubble');
-        if (!bubble) return;
-        const rect = bubble.getBoundingClientRect();
+        wakeUp();
+        const face = document.getElementById('bm-face');
+        const ref = face || document.getElementById('sage-bubble');
+        if (!ref) return;
+        const rect = ref.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
-        // Normalize against a generous radius so it stays responsive on big screens
-        const radius = Math.min(Math.max(window.innerWidth, window.innerHeight) / 2, 700);
+        const radius = Math.min(Math.max(window.innerWidth, window.innerHeight) / 2, 720);
         targetX = Math.max(-1, Math.min(1, (e.clientX - cx) / radius));
         targetY = Math.max(-1, Math.min(1, (e.clientY - cy) / radius));
       }, { passive: true });
+      // start the inactivity timer immediately
+      wakeUp();
     } else {
-      // Touch: no cursor — map gentle scroll position + slow organic sway
       window.addEventListener('scroll', () => {
         const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-        const p = (window.scrollY / max) * 2 - 1; // -1 .. 1
-        targetY = Math.max(-1, Math.min(1, p));
+        targetY = Math.max(-1, Math.min(1, (window.scrollY / max) * 2 - 1));
       }, { passive: true });
     }
 
     function frame(now) {
-      // Organic auto-sway on touch (and when the cursor is idle it adds life)
       if (isTouch) {
         targetX = Math.sin(now / 2600) * 0.6;
         targetY = (targetY * 0.7) + (Math.cos(now / 3400) * 0.3);
       }
 
-      // Smooth ease toward target — the 0.12 factor keeps it fluid at 60fps
-      curX = lerp(curX, targetX, 0.12);
-      curY = lerp(curY, targetY, 0.12);
+      // When asleep, ease back to neutral so the CSS sleep pose can take over
+      const tX = isSleeping ? 0 : targetX;
+      const tY = isSleeping ? 0 : targetY;
+      curX = lerp(curX, tX, 0.1);
+      curY = lerp(curY, tY, 0.1);
 
-      const body = document.getElementById('bm-body');
+      const torso = document.getElementById('bm-torso');
       const head = document.getElementById('bm-head');
       const face = document.getElementById('bm-face');
 
-      if (body) body.style.transform =
-        `translate3d(${(curX * BODY_MAX.x).toFixed(2)}px, ${(curY * BODY_MAX.y).toFixed(2)}px, 0)`;
-      if (head) head.style.transform =
-        `translate3d(${(curX * HEAD_MAX.x).toFixed(2)}px, ${(curY * HEAD_MAX.y).toFixed(2)}px, 0)`;
-      if (face) face.style.transform =
-        `translate3d(${(curX * FACE_MAX.x).toFixed(2)}px, ${(curY * FACE_MAX.y).toFixed(2)}px, 0)`;
+      // Skip inline transforms while sleeping so the CSS pose isn't overridden
+      if (!isSleeping) {
+        if (torso) torso.style.transform =
+          `translate(${(curX * TORSO_MAX.x).toFixed(2)}px, ${(curY * TORSO_MAX.y).toFixed(2)}px)`;
+        if (head) head.style.transform =
+          `translate(${(curX * HEAD_MAX.x).toFixed(2)}px, ${(curY * HEAD_MAX.y).toFixed(2)}px) rotate(${(curX * headTilt).toFixed(2)}deg)`;
+        if (face) face.style.transform =
+          `translate(${(curX * FACE_MAX.x).toFixed(2)}px, ${(curY * FACE_MAX.y).toFixed(2)}px)`;
+      } else {
+        if (torso) torso.style.transform = '';
+        if (face) face.style.transform = '';
+        if (head) head.style.transform = '';
+      }
 
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
   }
 
-  /* ========== AUTONOMOUS BLINKING ========== */
+  /* Extra head tilt amount, boosted during STATE 5 curiosity hover */
+  let headTilt = 1.5;
+
+  /* ========== STATE 5 — CURIOSITY HOVER ========== */
+  function initCuriosityHover() {
+    const onEnter = () => { headTilt = 9; };
+    const onLeave = () => { headTilt = 1.5; };
+    const attach = (el) => {
+      el.addEventListener('mouseenter', onEnter);
+      el.addEventListener('mouseleave', onLeave);
+    };
+    document.querySelectorAll('a, button').forEach(el => {
+      if (el.closest('#sage-root')) return; // skip our own widget
+      attach(el);
+    });
+    // Catch dynamically added links/buttons too
+    const obs = new MutationObserver(() => {
+      document.querySelectorAll('a, button').forEach(el => {
+        if (el.closest('#sage-root') || el.dataset.bmHover) return;
+        el.dataset.bmHover = '1';
+        attach(el);
+      });
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  }
+
+  /* ========== STATE 1 — ON-LOAD GREETING WAVE ========== */
+  function triggerGreeting() {
+    setTimeout(() => {
+      document.querySelectorAll('.bm-svg').forEach(svg => {
+        svg.classList.add('is-waving');
+        setTimeout(() => svg.classList.remove('is-waving'), 2200);
+      });
+    }, 700);
+  }
+
+  /* ========== STATE 4 — RARE LOW-BATTERY DEFLATION ========== */
+  function initLowBattery() {
+    setInterval(() => {
+      if (isSleeping) return;
+      if (Math.random() < 0.015) { // ~1.5% chance every 10s
+        document.querySelectorAll('.bm-svg').forEach(svg => {
+          svg.classList.add('is-deflating');
+          setTimeout(() => svg.classList.remove('is-deflating'), 2000);
+        });
+      }
+    }, 10000);
+  }
+
+  /* ========== STATE 2 — AUTONOMOUS BLINKING ========== */
   function initBlinking() {
     function scheduleBlink() {
-      const delay = 4000 + Math.random() * 4000; // every 4–8s
+      const delay = 4000 + Math.random() * 2000; // every 4–6s
       setTimeout(() => {
-        document.querySelectorAll('.bm-svg').forEach(svg => {
-          svg.classList.add('is-blinking');
-          setTimeout(() => svg.classList.remove('is-blinking'), 130);
-        });
+        if (!isSleeping) {
+          document.querySelectorAll('.bm-svg').forEach(svg => {
+            svg.classList.add('is-blinking');
+            setTimeout(() => svg.classList.remove('is-blinking'), 130);
+          });
+        }
         scheduleBlink();
       }, delay);
     }
