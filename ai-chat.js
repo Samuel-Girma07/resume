@@ -160,9 +160,9 @@ INSTRUCTIONS:
 
       /* ─── BAYMAX FULL-BODY BUTTON (fully transparent, no glow) ─── */
       #sage-bubble {
-        width: 128px;
-        height: 192px;
-        max-height: 192px;
+        width: 80px;
+        height: 110px;
+        max-height: 110px;
         border-radius: 0;
         background: transparent !important;
         border: none !important;
@@ -233,9 +233,9 @@ INSTRUCTIONS:
       }
       #bm-torso { transform-origin: 50% 80%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
       #bm-head  { transform-origin: 50% 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
-      /* Arms pivot from the TOP-CENTER of the shoulder joint */
-      #bm-left-arm  { transform-origin: 20% 10%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
-      #bm-right-arm { transform-origin: 80% 10%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+      /* Arms pivot from the TOP-CENTER of their own bounding box (the shoulder) */
+      #bm-left-arm  { transform-origin: top center; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+      #bm-right-arm { transform-origin: top center; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
 
       /* Idle breathing — drives the whole figure */
       .bm-breathe {
@@ -257,12 +257,16 @@ INSTRUCTIONS:
 
       /* STATE 1 — On-load greeting wave (right arm pivots from shoulder) */
       .bm-svg.is-waving #bm-right-arm {
-        animation: bmWave 0.8s cubic-bezier(0.45, 0, 0.55, 1) 3;
+        animation: waveAction 2s cubic-bezier(0.45, 0, 0.55, 1) forwards;
       }
-      @keyframes bmWave {
-        0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(28deg); }
-        75% { transform: rotate(8deg); }
+      @keyframes waveAction {
+        0%   { transform: rotate(0deg); }
+        20%  { transform: rotate(130deg); }
+        35%  { transform: rotate(110deg); }
+        50%  { transform: rotate(140deg); }
+        65%  { transform: rotate(110deg); }
+        80%  { transform: rotate(140deg); }
+        100% { transform: rotate(0deg); }
       }
 
       /* STATE 3 — Sleep mode: head droops, eyes close */
@@ -290,14 +294,14 @@ INSTRUCTIONS:
         45% { transform: scaleY(0.9) translateY(9px); }
       }
 
-      /* STATE 6 — Fist-bump click: right arm extends + hand wiggles */
+      /* STATE 6 — Fist-bump click: right arm raises ~90° + hand shakes */
       .bm-svg.is-bumping #bm-right-arm { animation: bmBump 0.8s cubic-bezier(0.34,1.56,0.64,1); }
       @keyframes bmBump {
         0% { transform: rotate(0deg); }
-        40% { transform: rotate(40deg); }
-        55% { transform: rotate(34deg); }
-        70% { transform: rotate(42deg); }
-        85% { transform: rotate(36deg); }
+        40% { transform: rotate(90deg); }
+        55% { transform: rotate(82deg); }
+        70% { transform: rotate(94deg); }
+        85% { transform: rotate(86deg); }
         100% { transform: rotate(0deg); }
       }
       .bm-svg.is-bumping #bm-right-hand { animation: bmWiggle 0.8s cubic-bezier(0.34,1.56,0.64,1); transform-origin: center; }
@@ -632,47 +636,21 @@ INSTRUCTIONS:
                   fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
           </g>
 
-          <!-- ===== RIGHT ARM (viewer-left, waves / fist-bumps) ===== -->
+          <!-- ===== RIGHT ARM (viewer-left, waves / fist-bumps) — pill rect ===== -->
           <g id="bm-right-arm">
-            <path d="M70 100
-                     C52 102 40 120 37 150
-                     C35 174 37 196 44 208
-                     C40 214 39 224 46 230
-                     C52 235 60 233 62 226
-                     C66 230 73 228 73 220
-                     C71 196 70 150 72 122
-                     C73 110 76 100 70 100 Z"
+            <rect x="30" y="112" width="26" height="116" rx="13" ry="13"
                   fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
-            <!-- stubby fingers -->
+            <!-- stubby hand at the end -->
             <g id="bm-right-hand">
-              <path d="M40 218
-                       C40 230 46 236 53 236
-                       C61 236 66 230 66 220
-                       C63 224 60 224 58 220
-                       C56 225 52 225 50 220
-                       C48 224 44 224 42 219 Z"
-                    fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
+              <ellipse cx="43" cy="226" rx="15" ry="13" fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
             </g>
           </g>
 
-          <!-- ===== LEFT ARM (viewer-right) ===== -->
+          <!-- ===== LEFT ARM (viewer-right) — pill rect ===== -->
           <g id="bm-left-arm">
-            <path d="M130 100
-                     C148 102 160 120 163 150
-                     C165 174 163 196 156 208
-                     C160 214 161 224 154 230
-                     C148 235 140 233 138 226
-                     C134 230 127 228 127 220
-                     C129 196 130 150 128 122
-                     C127 110 124 100 130 100 Z"
+            <rect x="144" y="112" width="26" height="116" rx="13" ry="13"
                   fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
-            <path d="M160 218
-                     C160 230 154 236 147 236
-                     C139 236 134 230 134 220
-                     C137 224 140 224 142 220
-                     C144 225 148 225 150 220
-                     C152 224 156 224 158 219 Z"
-                  fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
+            <ellipse cx="157" cy="226" rx="15" ry="13" fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
           </g>
 
           <!-- ===== TORSO (seamless pear-shaped balloon) ===== -->
@@ -946,9 +924,9 @@ INSTRUCTIONS:
     let curX = 0, curY = 0;
 
     // Per-layer parallax depth (SVG userspace px). Face moves most → "turning".
-    const TORSO_MAX = { x: 3, y: 2 };    // slight
-    const HEAD_MAX  = { x: 8, y: 5 };    // moderate
-    const FACE_MAX  = { x: 13, y: 9 };   // heavy
+    const TORSO_MAX = { x: 1, y: 1 };    // barely
+    const HEAD_MAX  = { x: 3, y: 2 };    // slight
+    const FACE_MAX  = { x: 6, y: 4 };    // most
     const lerpFactor = 0.05;             // low = buttery-smooth weighted delay
 
     const lerp = (a, b, t) => a + (b - a) * t;
@@ -997,7 +975,7 @@ INSTRUCTIONS:
         if (torso) torso.style.transform =
           `translate(${(curX * TORSO_MAX.x).toFixed(2)}px, ${(curY * TORSO_MAX.y).toFixed(2)}px)`;
         if (head) head.style.transform =
-          `translate(${(curX * HEAD_MAX.x).toFixed(2)}px, ${(curY * HEAD_MAX.y).toFixed(2)}px) rotate(${(curX * headTilt).toFixed(2)}deg)`;
+          `translate(${(curX * HEAD_MAX.x).toFixed(2)}px, ${(curY * HEAD_MAX.y).toFixed(2)}px) rotate(${(curX * 1.5 + curiousRot).toFixed(2)}deg)`;
         if (face) face.style.transform =
           `translate(${(curX * FACE_MAX.x).toFixed(2)}px, ${(curY * FACE_MAX.y).toFixed(2)}px)`;
       } else {
@@ -1011,24 +989,24 @@ INSTRUCTIONS:
     requestAnimationFrame(frame);
   }
 
-  /* Extra head tilt amount, boosted during STATE 5 curiosity hover */
-  let headTilt = 1.5;
+  /* Curiosity head tilt (degrees), applied while hovering a page link/button */
+  let curiousRot = 0;
 
-  /* ========== STATE 5 — CURIOSITY HOVER ========== */
+  /* ========== STATE 5 — CURIOSITY HOVER (head tilts 10deg) ========== */
   function initCuriosityHover() {
-    const onEnter = () => { headTilt = 9; };
-    const onLeave = () => { headTilt = 1.5; };
+    const onEnter = () => { curiousRot = 10; };
+    const onLeave = () => { curiousRot = 0; };
     const attach = (el) => {
       el.addEventListener('mouseenter', onEnter);
       el.addEventListener('mouseleave', onLeave);
     };
-    document.querySelectorAll('a, button').forEach(el => {
+    document.querySelectorAll('a, button, .btn').forEach(el => {
       if (el.closest('#sage-root')) return; // skip our own widget
       attach(el);
     });
     // Catch dynamically added links/buttons too
     const obs = new MutationObserver(() => {
-      document.querySelectorAll('a, button').forEach(el => {
+      document.querySelectorAll('a, button, .btn').forEach(el => {
         if (el.closest('#sage-root') || el.dataset.bmHover) return;
         el.dataset.bmHover = '1';
         attach(el);
