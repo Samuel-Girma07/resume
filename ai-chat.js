@@ -186,11 +186,10 @@ INSTRUCTIONS:
       #sage-bubble.robot-listening { animation: sageBotPulse 1.2s ease-in-out infinite; }
       #sage-bubble.robot-thinking { animation: sageBotSpin 3s ease-in-out infinite; }
       #sage-bubble.robot-offline { animation: none; pointer-events: none; }
-      #sage-bubble.robot-offline .sage-robot { filter: grayscale(1) brightness(0.3) !important; animation: none !important; }
+      #sage-bubble.robot-offline .bm-svg { filter: grayscale(1) brightness(0.45) !important; }
+      #sage-bubble.robot-offline .bm-breathe { animation: none !important; }
       #sage-bubble.robot-offline .sage-bg-loader { display: none !important; }
-      #sage-bubble.robot-offline .robot-eye-open, #sage-bubble.robot-offline .right-eye-open-group { display: none !important; }
-      #sage-bubble.robot-offline .robot-eye-closed-path { display: block !important; }
-      #sage-bubble.robot-offline .robot-mouth { transform: scaleY(0.1) translateY(-2px); }
+      #sage-bubble.robot-offline .bm-eye { transform: scaleY(0.12) !important; }
 
       @keyframes sageBotFloat {
         0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -216,43 +215,53 @@ INSTRUCTIONS:
         75% { transform: rotate(-8deg); }
       }
 
-      /* ─── SVG ROBOT STYLING ─── */
-      .sage-robot {
+      /* ─── BAYMAX SVG STYLING ─── */
+      .bm-svg {
         width: 60px;
         height: 60px;
-        filter: drop-shadow(0 0 15px rgba(255,215,0,0.4));
-        transition: filter 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        filter: drop-shadow(0 6px 14px rgba(0,0,0,0.55)) drop-shadow(0 0 14px rgba(255,215,0,0.18));
+        transition: filter 0.3s ease;
         pointer-events: none;
+        overflow: visible;
+        will-change: transform;
+      }
+      #sage-bubble:hover .bm-svg {
+        filter: drop-shadow(0 8px 18px rgba(0,0,0,0.6)) drop-shadow(0 0 24px rgba(255,215,0,0.4));
       }
 
-      #sage-bubble:hover .sage-robot {
-        filter: drop-shadow(0 0 24px rgba(255,215,0,0.7)) drop-shadow(0 0 48px rgba(255,215,0,0.4));
+      /* Isolated parallax layers — GPU compositing only */
+      #bm-body, #bm-head, #bm-face {
+        will-change: transform;
+        transform: translate3d(0,0,0);
+      }
+      #bm-body { transform-origin: 50% 100%; }
+      #bm-head { transform-origin: 50% 70%; }
+
+      /* Idle breathing — drives the whole figure */
+      .bm-breathe {
+        animation: bmBreathe 4.5s ease-in-out infinite;
+        transform-origin: 50% 92%;
+      }
+      @keyframes bmBreathe {
+        0%, 100% { transform: scale(1, 1); }
+        50% { transform: scale(1.025, 1.04); }
       }
 
-      .sage-robot .robot-head {
-        animation: robotHeadBob 3s ease-in-out infinite;
-        transform-origin: center 26px;
+      /* Autonomous blink — smooth Y squash */
+      .bm-eye {
+        transform-box: fill-box;
+        transform-origin: center;
+        transition: transform 0.09s ease-in-out;
       }
-      @keyframes robotHeadBob {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        25% { transform: translateY(-1.5px) rotate(1deg); }
-        75% { transform: translateY(-0.5px) rotate(-0.5deg); }
-      }
+      .bm-svg.is-blinking .bm-eye { transform: scaleY(0.08); }
 
-      .sage-robot .robot-eye-open { animation: robotEyeBlink 4s ease-in-out infinite; transform-origin: center; }
-      @keyframes robotEyeBlink {
-        0%, 45%, 55%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-      }
-
-      .sage-robot .robot-eye-wink-path { display: none; }
-      .sage-robot.is-winking .right-eye-open-group { display: none; }
-      .sage-robot.is-winking .robot-eye-wink-path { display: block; }
-
-      .sage-robot .robot-mouth { animation: robotSmile 3.5s ease-in-out infinite; transform-origin: center; }
-      @keyframes robotSmile {
-        0%, 100% { transform: scaleX(1); }
-        50% { transform: scaleX(1.1); }
+      /* Click rubber-band pop feedback */
+      .bm-svg.is-popping { animation: bmPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+      @keyframes bmPop {
+        0% { transform: scale(1); }
+        35% { transform: scale(1.18, 0.86); }
+        65% { transform: scale(0.94, 1.08); }
+        100% { transform: scale(1); }
       }
 
       /* ─── NOTIFICATION ─── */
@@ -550,124 +559,92 @@ INSTRUCTIONS:
 
       /* Reduced motion */
       @media (prefers-reduced-motion: reduce) {
-        #sage-bubble, .sage-robot * { animation: none !important; }
+        #sage-bubble, .bm-svg *, .bm-breathe { animation: none !important; }
         .sage-msg { animation: none; }
       }
     `;
     document.head.appendChild(css);
   }
 
-  /* ========== SVG HUD ROBOT ========== */
+  /* ========== BAYMAX SVG (layered, parallax-ready) ========== */
   function getRobotSVG() {
     return `
-      <svg class="sage-robot" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="bm-svg" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-          <radialGradient id="botBodyGrad" cx="0.5" cy="0.4" r="0.6">
-            <stop offset="0%" stop-color="#2a2a2a"/>
-            <stop offset="50%" stop-color="#1a1a1a"/>
-            <stop offset="100%" stop-color="#0d0d0d"/>
+          <!-- Soft glossy volumetric body shading -->
+          <radialGradient id="bmBodyGrad" cx="0.38" cy="0.3" r="0.85">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="55%" stop-color="#f3f4f6"/>
+            <stop offset="100%" stop-color="#c8ccd4"/>
           </radialGradient>
-          <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#FFE55C"/>
-            <stop offset="100%" stop-color="#FFD700"/>
+          <radialGradient id="bmHeadGrad" cx="0.4" cy="0.32" r="0.9">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="58%" stop-color="#f1f2f5"/>
+            <stop offset="100%" stop-color="#c4c8d1"/>
+          </radialGradient>
+          <linearGradient id="bmRim" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
           </linearGradient>
-          <radialGradient id="botGlow" cx="0.5" cy="0.5" r="0.5">
-            <stop offset="0%" stop-color="rgba(255,215,0,0.6)"/>
-            <stop offset="100%" stop-color="rgba(255,215,0,0)"/>
+          <radialGradient id="bmFloor" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.45)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
           </radialGradient>
-          <filter id="botGlowFilter" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="2.5" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-          <clipPath id="faceClip">
-            <rect x="14" y="16" width="36" height="18" rx="9"/>
-          </clipPath>
         </defs>
 
-        <!-- Floor glow -->
-        <ellipse cx="32" cy="60" rx="16" ry="4" fill="url(#botGlow)">
-          <animate attributeName="rx" values="14;18;14" dur="2.5s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite" />
-        </ellipse>
+        <g class="bm-breathe">
+          <!-- Contact shadow -->
+          <ellipse cx="32" cy="69" rx="17" ry="3.5" fill="url(#bmFloor)"/>
 
-        <!-- Body -->
-        <g class="robot-body">
-          <path d="M20 38 C18 38 18 40 18 42 L18 52 C18 56 22 58 26 58 L38 58 C42 58 46 56 46 52 L46 42 C46 40 46 38 44 38 Z" fill="url(#botBodyGrad)"/>
-          <ellipse cx="32" cy="58" rx="14" ry="3.5" fill="#111"/>
-          <ellipse cx="32" cy="58" rx="10" ry="2.5" fill="url(#goldGrad)"/>
-          <circle cx="32" cy="48" r="6" fill="#111" stroke="#FFD700" stroke-width="1"/>
-          <!-- Dynamic Heart Core -->
-          <circle cx="32" cy="48" r="3.5" fill="#FFD700" filter="url(#botGlowFilter)">
-            <animate attributeName="r" values="3.5;5;3.5" dur="1.5s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0.7;1;0.7" dur="1.5s" repeatCount="indefinite" />
-          </circle>
-        </g>
+          <!-- ===== BODY (anchor base) ===== -->
+          <g id="bm-body">
+            <!-- upper torso -->
+            <path d="M14 50
+                     C14 41 21 36 32 36
+                     C43 36 50 41 50 50
+                     L50 60
+                     C50 67 43 70 32 70
+                     C21 70 14 67 14 60 Z"
+                  fill="url(#bmBodyGrad)" stroke="#b9bdc6" stroke-width="0.8"/>
+            <!-- shoulder highlight -->
+            <path d="M20 42 C25 38 39 38 44 42" stroke="url(#bmRim)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7"/>
+            <!-- subtle belly seam -->
+            <path d="M32 44 L32 60" stroke="#d4d7de" stroke-width="0.8" opacity="0.5"/>
+            <!-- little chest port (heart core) -->
+            <circle cx="32" cy="52" r="3.4" fill="#fafbfc" stroke="#cfd3da" stroke-width="0.8"/>
+            <circle cx="32" cy="52" r="1.4" fill="#FFD700" opacity="0.85"/>
+          </g>
 
-        <!-- Arms -->
-        <g class="robot-arms">
-          <path d="M18 44 Q10 48 12 54 Q14 56 16 54" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
-          <path d="M46 44 Q54 48 52 54 Q50 56 48 54" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
-        </g>
+          <!-- ===== HEAD ===== -->
+          <g id="bm-head">
+            <!-- oval head outline -->
+            <ellipse cx="32" cy="22" rx="20" ry="15" fill="url(#bmHeadGrad)" stroke="#b9bdc6" stroke-width="0.8"/>
+            <!-- glossy top highlight -->
+            <ellipse cx="26" cy="15" rx="9" ry="4.5" fill="#ffffff" opacity="0.65"/>
 
-        <!-- Neck -->
-        <rect x="28" y="34" width="8" height="5" rx="2" fill="url(#goldGrad)"/>
-
-        <!-- HEAD GROUP -->
-        <g class="robot-head">
-          <g class="robot-head-tracker" style="transform-origin: 32px 22px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);">
-          <!-- Head back -->
-          <rect x="12" y="8" width="40" height="28" rx="14" fill="url(#botBodyGrad)"/>
-          <rect x="26" y="12" width="12" height="3" rx="1.5" fill="#FFD700" opacity="0.4"/>
-
-          <!-- === FACE SCREEN === -->
-          <rect x="14" y="16" width="36" height="18" rx="9" fill="#0d0d0d" stroke="#FFD700" stroke-width="1" opacity="0.9"/>
-
-          <g class="robot-face-tracker" style="transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);" clip-path="url(#faceClip)">
-            <!-- === LEFT EYE (OPEN) === -->
-            <ellipse cx="24" cy="25" rx="5" ry="5.5" fill="rgba(255,215,0,0.15)"/>
-            <ellipse cx="24" cy="25" rx="3.5" ry="4.5" fill="#FFD700" filter="url(#botGlowFilter)" class="robot-eye-open"/>
-            <ellipse cx="25" cy="23.5" rx="1.2" ry="1.5" fill="#ffffff" opacity="0.8" class="robot-eye-open"/>
-            <!-- LEFT EYE (CLOSED) -->
-            <path d="M20 25 L28 25" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round" fill="none" class="robot-eye-closed-path" style="display: none;"/>
-
-            <!-- === RIGHT EYE (DEFAULT OPEN) === -->
-            <!-- Glow background -->
-            <ellipse cx="40" cy="25" rx="5" ry="5.5" fill="rgba(255,215,0,0.15)"/>
-            
-            <g class="right-eye-open-group">
-              <ellipse cx="40" cy="25" rx="3.5" ry="4.5" fill="#FFD700" filter="url(#botGlowFilter)" class="robot-eye-open"/>
-              <ellipse cx="41" cy="23.5" rx="1.2" ry="1.5" fill="#ffffff" opacity="0.8" class="robot-eye-open"/>
+            <!-- ===== FACE (eyes + connecting slot) ===== -->
+            <g id="bm-face">
+              <!-- connecting horizontal slot line -->
+              <line x1="20" y1="23" x2="44" y2="23" stroke="#111315" stroke-width="2.2" stroke-linecap="round"/>
+              <!-- left eye -->
+              <circle class="bm-eye" cx="22" cy="23" r="4.1" fill="#111315"/>
+              <!-- right eye -->
+              <circle class="bm-eye" cx="42" cy="23" r="4.1" fill="#111315"/>
             </g>
-            <!-- RIGHT EYE (CLOSED) -->
-            <path d="M36 25 L44 25" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round" fill="none" class="robot-eye-closed-path" style="display: none;"/>
-
-            <!-- Winking chevron -->
-            <path d="M43 22 L38 25 L43 28" stroke="#FFD700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#botGlowFilter)" class="robot-eye-wink-path"/>
-
-            <!-- === SMILE === -->
-            <path d="M26 32 Q32 36 38 32" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round" fill="none" filter="url(#botGlowFilter)" class="robot-mouth"/>
-          </g>
-
-          <!-- === HEADSET === -->
-          <path d="M12 18 Q12 4 32 4 Q52 4 52 18" stroke="#FFD700" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <rect x="8" y="18" width="6" height="12" rx="3" fill="url(#goldGrad)">
-            <animate attributeName="height" values="12;16;12" dur="2s" repeatCount="indefinite" />
-            <animate attributeName="y" values="18;16;18" dur="2s" repeatCount="indefinite" />
-          </rect>
-          <rect x="50" y="18" width="6" height="12" rx="3" fill="url(#goldGrad)">
-            <animate attributeName="height" values="12;16;12" dur="2s" repeatCount="indefinite" />
-            <animate attributeName="y" values="18;16;18" dur="2s" repeatCount="indefinite" />
-          </rect>
-          <path d="M50 24 Q46 24 46 28 Q46 32 42 32 Q40 32 40 34" stroke="#FFD700" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <ellipse cx="39" cy="35" rx="3" ry="2" fill="url(#goldGrad)">
-            <animate attributeName="rx" values="3;4.5;3" dur="2s" repeatCount="indefinite" />
-            <animate attributeName="ry" values="2;3;2" dur="2s" repeatCount="indefinite" />
-          </ellipse>
           </g>
         </g>
+      </svg>
+    `;
+  }
+
+  /* Flat minimalist mask profile for the chat header */
+  function getMaskSVG() {
+    return `
+      <svg class="bm-mask" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="24" cy="18" rx="21" ry="15" fill="#f3f4f6" stroke="#c4c8d1" stroke-width="1"/>
+        <line x1="9" y1="18" x2="39" y2="18" stroke="#111315" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="11" cy="18" r="4.2" fill="#111315"/>
+        <circle cx="37" cy="18" r="4.2" fill="#111315"/>
       </svg>
     `;
   }
@@ -688,7 +665,7 @@ INSTRUCTIONS:
       <div id="sage-window" role="dialog" aria-label="Chat with Sage">
         <div id="sage-header">
           <div id="sage-avatar">
-            ${getRobotSVG()}
+            ${getMaskSVG()}
           </div>
           <div id="sage-info">
             <div id="sage-name">SAGE</div>
@@ -699,7 +676,7 @@ INSTRUCTIONS:
         </div>
         <div id="sage-messages">
           <div class="sage-msg sage-msg-bot">
-            I'm <strong>Sage</strong>, the AI assistant for Samuel's portfolio. How can I help you today?
+            Hello. I am <strong>Baymax</strong>, your personal portfolio companion. How can I help you today?
           </div>
         </div>
         <div id="sage-typing">
@@ -814,14 +791,16 @@ INSTRUCTIONS:
       if (state.open) {
         setTimeout(() => input.focus(), 350);
         setTimeout(() => setRobotState('idle'), 800);
-        
-        // Wink on click!
-        const robots = document.querySelectorAll('.sage-robot');
-        robots.forEach(r => r.classList.add('is-winking'));
-        setTimeout(() => {
-          robots.forEach(r => r.classList.remove('is-winking'));
-        }, 1200);
       }
+
+      // Snappy rubber-band pop on every click for haptic-style feedback
+      document.querySelectorAll('.bm-svg').forEach(svg => {
+        svg.classList.remove('is-popping');
+        // force reflow so the animation can restart
+        void svg.offsetWidth;
+        svg.classList.add('is-popping');
+        setTimeout(() => svg.classList.remove('is-popping'), 520);
+      });
     });
 
     close.addEventListener('click', () => {
@@ -859,50 +838,89 @@ INSTRUCTIONS:
       }
     });
 
-    // Eye-tracking / Head-tracking logic
-    document.addEventListener('mousemove', (e) => {
-      const trackers = document.querySelectorAll('.robot-head-tracker');
-      if (!trackers.length) return;
+    // ===== 3D PARALLAX STATE MACHINE =====
+    initParallax();
+    initBlinking();
+  }
 
-      trackers.forEach(tracker => {
-        const svg = tracker.closest('.sage-robot');
-        if (!svg) return;
-        
-        const rect = svg.getBoundingClientRect();
-        // If SVG is not visible (e.g., chat window closed), skip to save compute
-        if (rect.width === 0 || rect.height === 0) return;
+  /* ========== PARALLAX (60 FPS lerp loop) ========== */
+  function initParallax() {
+    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 
-        const svgCenterX = rect.left + rect.width / 2;
-        const svgCenterY = rect.top + rect.height / 2;
-        
-        const deltaX = e.clientX - svgCenterX;
-        const deltaY = e.clientY - svgCenterY;
-        
-        // Normalize delta based on a reasonable max radius (e.g. 500px)
-        // so it feels responsive even on large screens
-        const maxDistX = Math.min(window.innerWidth / 2, 600);
-        const maxDistY = Math.min(window.innerHeight / 2, 600);
-        
-        const percentX = Math.max(-1, Math.min(1, deltaX / maxDistX));
-        const percentY = Math.max(-1, Math.min(1, deltaY / maxDistY));
-        
-        // Transform params: Push the physics! Max 8px X, 5px Y, 18 deg tilt
-        const tx = percentX * 8;
-        const ty = percentY * 5;
-        const rot = percentX * 18;
-        
-        tracker.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg)`;
-        
-        const faceTracker = tracker.querySelector('.robot-face-tracker');
-        if (faceTracker) {
-          // Extra parallax shift for the inner face (eyes & mouth)
-          // We can push this very far (12px) because the SVG clipPath prevents overflow
-          const faceTx = percentX * 12;
-          const faceTy = percentY * 8;
-          faceTracker.style.transform = `translate(${faceTx}px, ${faceTy}px)`;
-        }
-      });
-    });
+    // Normalized target & current pointer position (-1 .. 1)
+    let targetX = 0, targetY = 0;
+    let curX = 0, curY = 0;
+
+    // Max translation (% of layer's own influence) — clamped so the face
+    // can never clip past the head outline. Units are SVG userspace px.
+    const BODY_MAX = { x: 0.6, y: 0.4 };   // ~2% — nearly static anchor
+    const HEAD_MAX = { x: 3.0, y: 2.2 };   // moderate
+    const FACE_MAX = { x: 4.0, y: 3.0 };   // significantly more → "turning" illusion
+
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    if (!isTouch) {
+      // Desktop: track the cursor relative to the avatar center
+      window.addEventListener('mousemove', (e) => {
+        const bubble = document.getElementById('sage-bubble');
+        if (!bubble) return;
+        const rect = bubble.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        // Normalize against a generous radius so it stays responsive on big screens
+        const radius = Math.min(Math.max(window.innerWidth, window.innerHeight) / 2, 700);
+        targetX = Math.max(-1, Math.min(1, (e.clientX - cx) / radius));
+        targetY = Math.max(-1, Math.min(1, (e.clientY - cy) / radius));
+      }, { passive: true });
+    } else {
+      // Touch: no cursor — map gentle scroll position + slow organic sway
+      window.addEventListener('scroll', () => {
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const p = (window.scrollY / max) * 2 - 1; // -1 .. 1
+        targetY = Math.max(-1, Math.min(1, p));
+      }, { passive: true });
+    }
+
+    function frame(now) {
+      // Organic auto-sway on touch (and when the cursor is idle it adds life)
+      if (isTouch) {
+        targetX = Math.sin(now / 2600) * 0.6;
+        targetY = (targetY * 0.7) + (Math.cos(now / 3400) * 0.3);
+      }
+
+      // Smooth ease toward target — the 0.12 factor keeps it fluid at 60fps
+      curX = lerp(curX, targetX, 0.12);
+      curY = lerp(curY, targetY, 0.12);
+
+      const body = document.getElementById('bm-body');
+      const head = document.getElementById('bm-head');
+      const face = document.getElementById('bm-face');
+
+      if (body) body.style.transform =
+        `translate3d(${(curX * BODY_MAX.x).toFixed(2)}px, ${(curY * BODY_MAX.y).toFixed(2)}px, 0)`;
+      if (head) head.style.transform =
+        `translate3d(${(curX * HEAD_MAX.x).toFixed(2)}px, ${(curY * HEAD_MAX.y).toFixed(2)}px, 0)`;
+      if (face) face.style.transform =
+        `translate3d(${(curX * FACE_MAX.x).toFixed(2)}px, ${(curY * FACE_MAX.y).toFixed(2)}px, 0)`;
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ========== AUTONOMOUS BLINKING ========== */
+  function initBlinking() {
+    function scheduleBlink() {
+      const delay = 4000 + Math.random() * 4000; // every 4–8s
+      setTimeout(() => {
+        document.querySelectorAll('.bm-svg').forEach(svg => {
+          svg.classList.add('is-blinking');
+          setTimeout(() => svg.classList.remove('is-blinking'), 130);
+        });
+        scheduleBlink();
+      }, delay);
+    }
+    scheduleBlink();
   }
 
   /* ========== INIT ========== */
