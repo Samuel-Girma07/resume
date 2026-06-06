@@ -160,8 +160,9 @@ INSTRUCTIONS:
 
       /* ─── BAYMAX FULL-BODY BUTTON (fully transparent, no glow) ─── */
       #sage-bubble {
-        width: 104px;
-        height: 156px;
+        width: 128px;
+        height: 192px;
+        max-height: 192px;
         border-radius: 0;
         background: transparent !important;
         border: none !important;
@@ -174,7 +175,7 @@ INSTRUCTIONS:
         pointer-events: auto;
         position: relative;
         overflow: visible;
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
       }
 
       #sage-bubble:hover { transform: translateY(-4px); }
@@ -228,11 +229,13 @@ INSTRUCTIONS:
       /* Isolated parallax / animation layers — GPU compositing only */
       #bm-torso, #bm-head, #bm-face, #bm-left-arm, #bm-right-arm, #bm-legs {
         will-change: transform;
+        transform-box: fill-box;
       }
-      #bm-torso { transform-origin: 50% 70%; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
-      #bm-head  { transform-origin: 50% 100%; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
-      #bm-left-arm  { transform-origin: 78% 38%; }
-      #bm-right-arm { transform-origin: 22% 38%; }
+      #bm-torso { transform-origin: 50% 80%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+      #bm-head  { transform-origin: 50% 100%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+      /* Arms pivot from the TOP-CENTER of the shoulder joint */
+      #bm-left-arm  { transform-origin: 20% 10%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+      #bm-right-arm { transform-origin: 80% 10%; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
 
       /* Idle breathing — drives the whole figure */
       .bm-breathe {
@@ -252,21 +255,21 @@ INSTRUCTIONS:
       }
       .bm-svg.is-blinking #bm-face { transform: scaleY(0.08); }
 
-      /* STATE 1 — On-load greeting wave (right arm) */
+      /* STATE 1 — On-load greeting wave (right arm pivots from shoulder) */
       .bm-svg.is-waving #bm-right-arm {
-        animation: bmWave 0.7s ease-in-out 3;
+        animation: bmWave 0.8s cubic-bezier(0.45, 0, 0.55, 1) 3;
       }
       @keyframes bmWave {
         0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(-38deg); }
-        75% { transform: rotate(-14deg); }
+        25% { transform: rotate(28deg); }
+        75% { transform: rotate(8deg); }
       }
 
       /* STATE 3 — Sleep mode: head droops, eyes close */
-      .bm-svg.is-sleeping #bm-head { transform: translateY(7px) rotate(-3deg) !important; }
+      .bm-svg.is-sleeping #bm-head { transform: translateY(8px) rotate(-3deg) !important; transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
       .bm-svg.is-sleeping #bm-face { transform: scaleY(0.1) !important; }
-      .bm-svg.is-sleeping #bm-left-arm,
-      .bm-svg.is-sleeping #bm-right-arm { transform: rotate(6deg); transition: transform 0.6s ease; }
+      .bm-svg.is-sleeping #bm-left-arm { transform: rotate(-5deg); transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+      .bm-svg.is-sleeping #bm-right-arm { transform: rotate(5deg); transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
       .bm-zzz { opacity: 0; transition: opacity 0.4s ease; }
       .bm-svg.is-sleeping .bm-zzz { opacity: 1; animation: bmZzz 2.4s ease-in-out infinite; }
       @keyframes bmZzz {
@@ -276,8 +279,8 @@ INSTRUCTIONS:
       }
 
       /* STATE 4 — Low-battery deflation slump */
-      .bm-svg.is-deflating #bm-torso { animation: bmDeflate 2s ease-in-out; }
-      .bm-svg.is-deflating #bm-head { animation: bmDeflateHead 2s ease-in-out; }
+      .bm-svg.is-deflating #bm-torso { animation: bmDeflate 2.2s cubic-bezier(0.34, 1.2, 0.64, 1); }
+      .bm-svg.is-deflating #bm-head { animation: bmDeflateHead 2.2s cubic-bezier(0.34, 1.2, 0.64, 1); }
       @keyframes bmDeflate {
         0%, 100% { transform: scaleY(1) translateY(0); }
         45% { transform: scaleY(0.86) translateY(6px); }
@@ -288,16 +291,16 @@ INSTRUCTIONS:
       }
 
       /* STATE 6 — Fist-bump click: right arm extends + hand wiggles */
-      .bm-svg.is-bumping #bm-right-arm { animation: bmBump 0.7s cubic-bezier(0.34,1.56,0.64,1); }
+      .bm-svg.is-bumping #bm-right-arm { animation: bmBump 0.8s cubic-bezier(0.34,1.56,0.64,1); }
       @keyframes bmBump {
         0% { transform: rotate(0deg); }
-        40% { transform: rotate(-46deg); }
-        55% { transform: rotate(-40deg); }
-        70% { transform: rotate(-48deg); }
-        85% { transform: rotate(-42deg); }
+        40% { transform: rotate(40deg); }
+        55% { transform: rotate(34deg); }
+        70% { transform: rotate(42deg); }
+        85% { transform: rotate(36deg); }
         100% { transform: rotate(0deg); }
       }
-      .bm-svg.is-bumping #bm-right-hand { animation: bmWiggle 0.7s ease-in-out; transform-origin: center; }
+      .bm-svg.is-bumping #bm-right-hand { animation: bmWiggle 0.8s cubic-bezier(0.34,1.56,0.64,1); transform-origin: center; }
       @keyframes bmWiggle {
         0%, 100% { transform: translateX(0) rotate(0deg); }
         45% { transform: translateX(2px) rotate(8deg); }
@@ -619,69 +622,93 @@ INSTRUCTIONS:
 
         <g class="bm-breathe">
           <!-- Contact shadow -->
-          <ellipse cx="100" cy="289" rx="54" ry="9" fill="url(#bmFloor)"/>
+          <ellipse cx="100" cy="286" rx="50" ry="8" fill="url(#bmFloor)"/>
 
-          <!-- ===== LEGS ===== -->
+          <!-- ===== LEGS (stubby) ===== -->
           <g id="bm-legs">
-            <path d="M74 214 C70 214 67 218 67 226 L64 274 C64 284 72 289 82 289 C90 289 95 284 95 276 L96 220 C96 216 93 214 89 214 Z"
-                  fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
-            <path d="M126 214 C130 214 133 218 133 226 L136 274 C136 284 128 289 118 289 C110 289 105 284 105 276 L104 220 C104 216 107 214 111 214 Z"
-                  fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
-            <!-- feet -->
-            <ellipse cx="79" cy="287" rx="17" ry="7" fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
-            <ellipse cx="121" cy="287" rx="17" ry="7" fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+            <path d="M76 244 C68 246 66 254 67 266 C67 278 73 284 84 284 C94 284 98 278 97 268 L96 248 C95 242 84 242 76 244 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
+            <path d="M124 244 C132 246 134 254 133 266 C133 278 127 284 116 284 C106 284 102 278 103 268 L104 248 C105 242 116 242 124 244 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
           </g>
 
-          <!-- ===== LEFT ARM (Baymax's left = viewer right) ===== -->
-          <g id="bm-left-arm">
-            <path d="M150 132 C168 138 178 156 176 182 C175 196 170 206 162 206 C156 206 152 198 152 188 L150 150 Z"
-                  fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
-            <ellipse cx="167" cy="200" rx="15" ry="13" fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
-          </g>
-
-          <!-- ===== RIGHT ARM (waves / fist-bumps) ===== -->
+          <!-- ===== RIGHT ARM (viewer-left, waves / fist-bumps) ===== -->
           <g id="bm-right-arm">
-            <path d="M50 132 C32 138 22 156 24 182 C25 196 30 206 38 206 C44 206 48 198 48 188 L50 150 Z"
-                  fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+            <path d="M70 100
+                     C52 102 40 120 37 150
+                     C35 174 37 196 44 208
+                     C40 214 39 224 46 230
+                     C52 235 60 233 62 226
+                     C66 230 73 228 73 220
+                     C71 196 70 150 72 122
+                     C73 110 76 100 70 100 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
+            <!-- stubby fingers -->
             <g id="bm-right-hand">
-              <ellipse cx="33" cy="200" rx="15" ry="13" fill="url(#bmLimbGrad)" stroke="#b4b8c1" stroke-width="1"/>
+              <path d="M40 218
+                       C40 230 46 236 53 236
+                       C61 236 66 230 66 220
+                       C63 224 60 224 58 220
+                       C56 225 52 225 50 220
+                       C48 224 44 224 42 219 Z"
+                    fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
             </g>
           </g>
 
-          <!-- ===== TORSO ===== -->
-          <g id="bm-torso">
-            <path d="M52 150
-                     C48 110 66 90 100 90
-                     C134 90 152 110 148 150
-                     L146 196
-                     C144 214 124 224 100 224
-                     C76 224 56 214 54 196 Z"
-                  fill="url(#bmBodyGrad)" stroke="#b4b8c1" stroke-width="1.2"/>
-            <!-- soft shoulder highlight -->
-            <path d="M64 112 C76 100 124 100 136 112" stroke="url(#bmRim)" stroke-width="7" stroke-linecap="round" fill="none" opacity="0.7"/>
-            <!-- belly seam -->
-            <path d="M100 120 L100 200" stroke="#d2d5dc" stroke-width="1.4" opacity="0.5"/>
-            <!-- chest heart port -->
-            <circle cx="100" cy="156" r="8" fill="#fafbfc" stroke="#cdd1d8" stroke-width="1.2"/>
-            <circle cx="100" cy="156" r="3.4" fill="#FFD700" opacity="0.85"/>
+          <!-- ===== LEFT ARM (viewer-right) ===== -->
+          <g id="bm-left-arm">
+            <path d="M130 100
+                     C148 102 160 120 163 150
+                     C165 174 163 196 156 208
+                     C160 214 161 224 154 230
+                     C148 235 140 233 138 226
+                     C134 230 127 228 127 220
+                     C129 196 130 150 128 122
+                     C127 110 124 100 130 100 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
+            <path d="M160 218
+                     C160 230 154 236 147 236
+                     C139 236 134 230 134 220
+                     C137 224 140 224 142 220
+                     C144 225 148 225 150 220
+                     C152 224 156 224 158 219 Z"
+                  fill="url(#bmLimbGrad)" stroke="#b9bdc6" stroke-width="1"/>
           </g>
 
-          <!-- ===== HEAD ===== -->
+          <!-- ===== TORSO (seamless pear-shaped balloon) ===== -->
+          <g id="bm-torso">
+            <path d="M64 104
+                     C56 132 47 168 47 205
+                     C47 240 62 258 100 258
+                     C138 258 153 240 153 205
+                     C153 168 144 132 136 104
+                     C128 86 72 86 64 104 Z"
+                  fill="url(#bmBodyGrad)" stroke="#b9bdc6" stroke-width="1.2"/>
+            <!-- soft shoulder highlight -->
+            <path d="M70 116 C82 104 118 104 130 116" stroke="url(#bmRim)" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.65"/>
+            <!-- belly seam -->
+            <path d="M100 128 L100 232" stroke="#d2d5dc" stroke-width="1.4" opacity="0.45"/>
+            <!-- subtle access port / badge on left upper chest (viewer-right) -->
+            <circle cx="122" cy="150" r="7.5" fill="#f4f5f7" stroke="#cdd1d8" stroke-width="1.2"/>
+            <circle cx="122" cy="150" r="2.6" fill="#FFD700" opacity="0.8"/>
+          </g>
+
+          <!-- ===== HEAD (wide squashed oval) ===== -->
           <g id="bm-head">
-            <ellipse cx="100" cy="62" rx="52" ry="40" fill="url(#bmHeadGrad)" stroke="#b4b8c1" stroke-width="1.2"/>
-            <ellipse cx="78" cy="42" rx="24" ry="12" fill="#ffffff" opacity="0.6"/>
+            <ellipse cx="100" cy="62" rx="47" ry="34" fill="url(#bmHeadGrad)" stroke="#b9bdc6" stroke-width="1.2"/>
+            <ellipse cx="80" cy="45" rx="22" ry="10" fill="#ffffff" opacity="0.55"/>
 
             <!-- sleep "z" marks near the head -->
             <g class="bm-zzz" fill="#9aa0ab">
-              <text x="150" y="40" font-family="sans-serif" font-size="16" font-weight="700">z</text>
-              <text x="160" y="26" font-family="sans-serif" font-size="20" font-weight="700">Z</text>
+              <text x="148" y="40" font-family="sans-serif" font-size="15" font-weight="700">z</text>
+              <text x="158" y="26" font-family="sans-serif" font-size="19" font-weight="700">Z</text>
             </g>
 
-            <!-- ===== FACE (eyes + connecting slot) ===== -->
+            <!-- ===== FACE (small solid eyes + thin connecting line) ===== -->
             <g id="bm-face">
-              <line x1="62" y1="64" x2="138" y2="64" stroke="#111315" stroke-width="6" stroke-linecap="round"/>
-              <circle cx="68" cy="64" r="11" fill="#111315"/>
-              <circle cx="132" cy="64" r="11" fill="#111315"/>
+              <line x1="80" y1="63" x2="120" y2="63" stroke="#111315" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="80" cy="63" r="8" fill="#111315"/>
+              <circle cx="120" cy="63" r="8" fill="#111315"/>
             </g>
           </g>
         </g>
@@ -920,8 +947,9 @@ INSTRUCTIONS:
 
     // Per-layer parallax depth (SVG userspace px). Face moves most → "turning".
     const TORSO_MAX = { x: 3, y: 2 };    // slight
-    const HEAD_MAX  = { x: 9, y: 6 };    // moderate
-    const FACE_MAX  = { x: 16, y: 11 };  // heavy
+    const HEAD_MAX  = { x: 8, y: 5 };    // moderate
+    const FACE_MAX  = { x: 13, y: 9 };   // heavy
+    const lerpFactor = 0.05;             // low = buttery-smooth weighted delay
 
     const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -957,8 +985,8 @@ INSTRUCTIONS:
       // When asleep, ease back to neutral so the CSS sleep pose can take over
       const tX = isSleeping ? 0 : targetX;
       const tY = isSleeping ? 0 : targetY;
-      curX = lerp(curX, tX, 0.1);
-      curY = lerp(curY, tY, 0.1);
+      curX = lerp(curX, tX, lerpFactor);
+      curY = lerp(curY, tY, lerpFactor);
 
       const torso = document.getElementById('bm-torso');
       const head = document.getElementById('bm-head');
