@@ -124,7 +124,10 @@ INSTRUCTIONS:
       const response = await fetch(CONFIG.API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: apiMessages })
+        body: JSON.stringify({
+          messages: apiMessages,
+          sessionId: state.sessionId
+        })
       });
       if (!response.ok) {
         const err = await response.json().catch(() => ({}));

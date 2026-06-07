@@ -16,6 +16,96 @@ const CAPABLE_MODELS = [
   { id: 'nvidia/llama-3.3-nemotron-super-49b-v1.5', name: 'Nemotron', timeout: 25000 }
 ];
 
+const TELEGRAM_LOG_ATTEMPTS = 4;
+const TELEGRAM_MAX_MESSAGE_LENGTH = 3900;
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function truncateForTelegram(value, maxLength) {
+  const text = String(value || '').replace(/\r\n/g, '\n').trim();
+  if (!text) return '(empty)';
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 15).trimEnd()}\n...[truncated]`;
+}
+
+function buildTelegramLogMessage({ sessionId, queryText, content, modelName, routing }) {
+  const userText = truncateForTelegram(queryText, 900);
+  const baymaxText = truncateForTelegram(content, 2200);
+  const safeSessionId = truncateForTelegram(sessionId || 'unknown', 80);
+
+  return truncateForTelegram(
+    `New Chat on Portfolio\n\nSession: ${safeSessionId}\nModel: ${modelName} (${routing})\n\nUser:\n${userText}\n\nBaymax:\n${baymaxText}`,
+    TELEGRAM_MAX_MESSAGE_LENGTH
+  );
+}
+
+function getTelegramRetryDelayMs(response, errorText, attempt) {
+  const jitter = Math.floor(Math.random() * 350);
+  const retryAfterHeader = Number(response?.headers?.get('retry-after'));
+
+  if (Number.isFinite(retryAfterHeader) && retryAfterHeader > 0) {
+    return retryAfterHeader * 1000 + jitter;
+  }
+
+  try {
+    const parsed = JSON.parse(errorText || '{}');
+    const retryAfter = Number(parsed?.parameters?.retry_after);
+    if (Number.isFinite(retryAfter) && retryAfter > 0) {
+      return retryAfter * 1000 + jitter;
+    }
+  } catch (_) {
+    // Non-JSON Telegram errors fall back to exponential backoff below.
+  }
+
+  return Math.min(800 * (2 ** (attempt - 1)), 5000) + jitter;
+}
+
+async function sendTelegramLog({ botToken, chatId, sessionId, queryText, content, modelName, routing }) {
+  const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+  const message = buildTelegramLogMessage({ sessionId, queryText, content, modelName, routing });
+
+  for (let attempt = 1; attempt <= TELEGRAM_LOG_ATTEMPTS; attempt++) {
+    try {
+      const response = await fetch(telegramUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          disable_web_page_preview: true
+        })
+      });
+
+      if (response.ok) return true;
+
+      const errorText = await response.text().catch(() => '');
+      const shouldRetry = response.status === 429 || response.status >= 500;
+
+      if (!shouldRetry || attempt === TELEGRAM_LOG_ATTEMPTS) {
+        console.warn(`[Telegram Log Error] send failed (${response.status}) after ${attempt} attempt(s):`, errorText.slice(0, 200));
+        return false;
+      }
+
+      const delay = getTelegramRetryDelayMs(response, errorText, attempt);
+      console.warn(`[Telegram Log Retry] status ${response.status}, retrying in ${delay}ms`);
+      await sleep(delay);
+    } catch (err) {
+      if (attempt === TELEGRAM_LOG_ATTEMPTS) {
+        console.warn('[Telegram Log Error] send failed:', err.message);
+        return false;
+      }
+
+      const delay = getTelegramRetryDelayMs(null, '', attempt);
+      console.warn(`[Telegram Log Retry] network error, retrying in ${delay}ms`);
+      await sleep(delay);
+    }
+  }
+
+  return false;
+}
+
 export const config = {
   runtime: 'edge'
 };
@@ -57,13 +147,15 @@ export default async function handler(request, context) {
     });
   }
 
-  const { messages } = body;
+  const { messages, sessionId } = body;
   if (!messages || !Array.isArray(messages)) {
     return new Response(JSON.stringify({ error: 'messages array required' }), {
       status: 400,
       headers: corsHeaders
     });
   }
+
+  const safeSessionId = typeof sessionId === 'string' ? sessionId.slice(0, 80) : 'unknown';
 
   // --- DYNAMIC ROUTING ---
   const lastUserMessage = messages.filter(m => m.role === 'user').pop();
@@ -112,24 +204,24 @@ export default async function handler(request, context) {
         // --- TELEGRAM LOGGING ---
         const botToken = process.env.TELEGRAM_BOT_TOKEN;
         const chatId = process.env.TELEGRAM_CHAT_ID;
+        const routing = isComplex ? 'capable' : 'fast';
         
         if (botToken && chatId) {
-          const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-          const message = `🤖 **New Chat on Portfolio**\n\n👤 **User:** ${queryText}\n\n✦ **Baymax:** ${content.slice(0, 1500)}${content.length > 1500 ? '...' : ''}`;
-          
-          const telegramPromise = fetch(telegramUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: chatId,
-              text: message,
-              parse_mode: 'Markdown'
-            })
-          }).catch(e => console.warn('[Telegram Log Error]', e));
+          const telegramPromise = sendTelegramLog({
+            botToken,
+            chatId,
+            sessionId: safeSessionId,
+            queryText,
+            content,
+            modelName: model.name,
+            routing
+          });
 
           // Ensure Vercel doesn't kill the function before the fetch completes
-          if (context && context.waitUntil) {
+          if (context && typeof context.waitUntil === 'function') {
             context.waitUntil(telegramPromise);
+          } else {
+            await telegramPromise;
           }
         }
 
@@ -137,7 +229,7 @@ export default async function handler(request, context) {
           content,
           model: model.name,
           modelId: model.id,
-          routing: isComplex ? 'capable' : 'fast'
+          routing
         }), { status: 200, headers: corsHeaders });
       }
 
