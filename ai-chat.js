@@ -13,6 +13,10 @@
     POSITION: 'bottom-right',
   };
 
+  const BAYMAX_IDLE_SRC = 'baymax-idle.webp';
+  const BAYMAX_WAVE_SRC = 'baymax-wave.webp';
+  const BAYMAX_WAVE_DURATION = 2500;
+
   let state = {
     open: false,
     messages: [],
@@ -21,6 +25,9 @@
     sessionId: 'session_' + Math.random().toString(36).slice(2, 11),
     robotState: 'idle'
   };
+
+  let waveResetTimer = null;
+  let curiousTimer = null;
 
   /* ========== KNOWLEDGE BASE ========== */
   async function loadKnowledge() {
@@ -147,22 +154,37 @@ INSTRUCTIONS:
         --sg-text-muted: var(--text-grey, #a3a3a3);
         --sg-font-head: 'Orbitron', sans-serif;
         --sg-font-body: 'Plus Jakarta Sans', sans-serif;
+        --baymax-avatar-width: 124px;
+        --baymax-avatar-height: 150px;
+        --baymax-avatar-gap: 16px;
+        --sage-root-bottom: 28px;
+        --sage-window-top-safe: 18px;
 
         position: fixed;
         z-index: 999999;
         ${CONFIG.POSITION.includes('right') ? 'right: 28px;' : 'left: 28px;'}
-        bottom: 28px;
+        bottom: var(--sage-root-bottom);
         font-family: var(--sg-font-body);
         pointer-events: none;
       }
 
-      #sage-root, #sage-root * { cursor: auto !important; }
+      #sage-root { cursor: auto !important; }
+      #sage-window, #sage-window * { cursor: auto !important; }
+      #sage-input, #sage-input * { cursor: text !important; }
+      #sage-close, #sage-close *, #sage-send, #sage-send * { cursor: pointer !important; }
+      #sage-send:disabled, #sage-send:disabled * { cursor: not-allowed !important; }
+      #sage-bubble, #sage-bubble * { cursor: pointer !important; }
 
-      /* ─── AI ROBOT BUTTON ─── */
+      /* ─── AI COMPANION AVATAR ─── */
       #sage-bubble {
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
+        --baymax-shift-x: 0px;
+        --baymax-shift-y: 0px;
+        --baymax-tilt: 0deg;
+        --baymax-hover-y: 0px;
+        --baymax-hover-scale: 1;
+        width: var(--baymax-avatar-width);
+        height: var(--baymax-avatar-height);
+        border-radius: 18px;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -174,92 +196,171 @@ INSTRUCTIONS:
         pointer-events: auto;
         position: relative;
         overflow: visible;
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        user-select: none;
+        -webkit-user-select: none;
+        transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), filter 0.28s ease;
       }
 
-      #sage-bubble:hover { transform: scale(1.15) translateY(-4px); }
-      #sage-bubble:active { transform: scale(0.93) translateY(-1px); }
+      #sage-bubble:hover {
+        transform: translateY(-3px) scale(1.015);
+        filter: drop-shadow(0 14px 22px rgba(0,0,0,0.45));
+      }
+      #sage-bubble:active { transform: translateY(-1px) scale(0.985); }
+      #sage-bubble.robot-offline { opacity: 0.6; filter: grayscale(1); pointer-events: none; }
 
-      /* Dynamic Animations mapped to states */
-      #sage-bubble.robot-idle { animation: sageBotFloat 4s ease-in-out infinite; }
-      #sage-bubble.robot-hover { animation: sageBotWiggle 0.6s ease-in-out; }
-      #sage-bubble.robot-listening { animation: sageBotPulse 1.2s ease-in-out infinite; }
-      #sage-bubble.robot-thinking { animation: sageBotSpin 3s ease-in-out infinite; }
-      #sage-bubble.robot-offline { animation: none; pointer-events: none; }
-      #sage-bubble.robot-offline .sage-robot { filter: grayscale(1) brightness(0.3) !important; animation: none !important; }
-      #sage-bubble.robot-offline .sage-bg-loader { display: none !important; }
-      #sage-bubble.robot-offline .robot-eye-open, #sage-bubble.robot-offline .right-eye-open-group { display: none !important; }
-      #sage-bubble.robot-offline .robot-eye-closed-path { display: block !important; }
-      #sage-bubble.robot-offline .robot-mouth { transform: scaleY(0.1) translateY(-2px); }
-
-      @keyframes sageBotFloat {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        25% { transform: translateY(-8px) rotate(2deg); }
-        50% { transform: translateY(-4px) rotate(-1deg); }
-        75% { transform: translateY(-6px) rotate(1.5deg); }
-      }
-      @keyframes sageBotWiggle {
-        0%, 100% { transform: rotate(0deg) scale(1); }
-        15% { transform: rotate(-8deg) scale(1.05); }
-        30% { transform: rotate(6deg) scale(1.05); }
-        45% { transform: rotate(-4deg) scale(1.05); }
-        60% { transform: rotate(2deg) scale(1.05); }
-        75% { transform: rotate(-1deg) scale(1.02); }
-      }
-      @keyframes sageBotPulse {
-        0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255,215,0,0.3)); }
-        50% { transform: scale(1.1); filter: drop-shadow(0 0 30px rgba(255,215,0,0.8)); }
-      }
-      @keyframes sageBotSpin {
-        0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(8deg); }
-        75% { transform: rotate(-8deg); }
-      }
-
-      /* ─── SVG ROBOT STYLING ─── */
-      .sage-robot {
-        width: 60px;
-        height: 60px;
-        filter: drop-shadow(0 0 15px rgba(255,215,0,0.4));
-        transition: filter 0.3s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      .baymax-avatar {
+        position: relative;
+        width: var(--baymax-avatar-width);
+        height: var(--baymax-avatar-height);
+        max-width: 100%;
+        transform-origin: 50% 88%;
+        transform: translate3d(var(--baymax-shift-x), calc(var(--baymax-shift-y) + var(--baymax-hover-y)), 0) rotate(var(--baymax-tilt)) scale(var(--baymax-hover-scale));
+        transition: transform 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
+        user-select: none;
+        -webkit-user-select: none;
         pointer-events: none;
       }
 
-      #sage-bubble:hover .sage-robot {
-        filter: drop-shadow(0 0 24px rgba(255,215,0,0.7)) drop-shadow(0 0 48px rgba(255,215,0,0.4));
+      .baymax-avatar::after {
+        content: '';
+        position: absolute;
+        z-index: 0;
+        left: 20%;
+        right: 20%;
+        bottom: 1px;
+        height: 9px;
+        border-radius: 999px;
+        background: radial-gradient(ellipse at center, rgba(0,0,0,0.32), rgba(0,0,0,0) 72%);
+        filter: blur(1px);
+        opacity: 0.72;
+        transform: scaleX(0.96);
+        transform-origin: center;
+        transition: transform 0.38s ease, opacity 0.38s ease;
       }
 
-      .sage-robot .robot-head {
-        animation: robotHeadBob 3s ease-in-out infinite;
-        transform-origin: center 26px;
-      }
-      @keyframes robotHeadBob {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        25% { transform: translateY(-1.5px) rotate(1deg); }
-        75% { transform: translateY(-0.5px) rotate(-0.5deg); }
-      }
-
-      .sage-robot .robot-eye-open { animation: robotEyeBlink 4s ease-in-out infinite; transform-origin: center; }
-      @keyframes robotEyeBlink {
-        0%, 45%, 55%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
+      .baymax-motion {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        transform-origin: 50% 88%;
+        animation: baymaxBreathe 4.8s ease-in-out infinite;
+        will-change: transform;
       }
 
-      .sage-robot .robot-eye-wink-path { display: none; }
-      .sage-robot.is-winking .right-eye-open-group { display: none; }
-      .sage-robot.is-winking .robot-eye-wink-path { display: block; }
+      .baymax-avatar-sm {
+        width: 44px;
+        height: 44px;
+        aspect-ratio: auto;
+      }
 
-      .sage-robot .robot-mouth { animation: robotSmile 3.5s ease-in-out infinite; transform-origin: center; }
-      @keyframes robotSmile {
-        0%, 100% { transform: scaleX(1); }
-        50% { transform: scaleX(1.1); }
+      #sage-avatar .baymax-avatar::after { display: none; }
+      #sage-avatar .baymax-motion { animation: none; }
+
+      .baymax-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        user-select: none;
+        -webkit-user-select: none;
+        pointer-events: none;
+        transition: opacity 0.3s ease-in-out, transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), filter 0.38s ease;
+        will-change: opacity, transform;
+      }
+
+      .baymax-img-idle {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .baymax-img-wave {
+        opacity: 0;
+        transform: translateY(5px) scale(0.97);
+        filter: blur(0.2px);
+      }
+
+      #sage-bubble.robot-hover {
+        --baymax-hover-y: -4px;
+        --baymax-hover-scale: 1.025;
+      }
+
+      #sage-bubble.robot-hover .baymax-avatar::after {
+        opacity: 0.52;
+        transform: scaleX(0.82);
+      }
+
+      #sage-bubble.robot-listening .baymax-motion {
+        animation: baymaxListen 2.2s ease-in-out infinite;
+      }
+
+      #sage-bubble.robot-thinking:not(.is-waving) .baymax-motion {
+        animation: baymaxThinking 1.35s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      }
+
+      #sage-bubble.is-curious:not(.is-waving) .baymax-avatar {
+        animation: baymaxCurious 0.92s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      #sage-bubble.is-waving .baymax-avatar {
+        animation: baymaxHello 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      #sage-bubble.is-waving .baymax-motion {
+        animation: none;
+      }
+
+      #sage-bubble.is-waving .baymax-img-idle {
+        opacity: 0;
+        transform: translateY(-5px) scale(1.02);
+        filter: blur(0.35px);
+      }
+
+      #sage-bubble.is-waving .baymax-img-wave {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: none;
+      }
+
+      @keyframes baymaxBreathe {
+        0%, 100% { transform: translate3d(0, 0, 0) scaleX(1) scaleY(1); }
+        45% { transform: translate3d(0, -2px, 0) scaleX(1.014) scaleY(0.992); }
+        70% { transform: translate3d(0, -1px, 0) scaleX(1.006) scaleY(0.997); }
+      }
+
+      @keyframes baymaxListen {
+        0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+        35% { transform: translate3d(1px, -2px, 0) rotate(0.8deg) scale(1.008); }
+        70% { transform: translate3d(-1px, -1px, 0) rotate(-0.45deg) scale(1.004); }
+      }
+
+      @keyframes baymaxThinking {
+        0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+        25% { transform: translate3d(-1.5px, -2px, 0) rotate(-1deg); }
+        55% { transform: translate3d(1.5px, -1px, 0) rotate(0.9deg); }
+        78% { transform: translate3d(0, -2px, 0) rotate(0deg); }
+      }
+
+      @keyframes baymaxCurious {
+        0%, 100% { transform: translate3d(var(--baymax-shift-x), calc(var(--baymax-shift-y) + var(--baymax-hover-y)), 0) rotate(var(--baymax-tilt)) scale(var(--baymax-hover-scale)); }
+        28% { transform: translate3d(calc(var(--baymax-shift-x) - 2px), calc(var(--baymax-shift-y) + var(--baymax-hover-y) - 5px), 0) rotate(-2deg) scale(1.02); }
+        58% { transform: translate3d(calc(var(--baymax-shift-x) + 2px), calc(var(--baymax-shift-y) + var(--baymax-hover-y) - 2px), 0) rotate(1.4deg) scale(1.01); }
+      }
+
+      @keyframes baymaxHello {
+        0% { transform: translateY(0) rotate(0deg); }
+        38% { transform: translateY(-4px) rotate(-1.4deg); }
+        68% { transform: translateY(1px) rotate(0.8deg); }
+        100% { transform: translateY(0) rotate(0deg); }
       }
 
       /* ─── NOTIFICATION ─── */
       #sage-notify {
         position: absolute;
-        top: 2px;
-        right: 2px;
+        top: 8px;
+        right: 4px;
         width: 14px;
         height: 14px;
         background: var(--sg-accent);
@@ -274,15 +375,15 @@ INSTRUCTIONS:
         50% { transform: scale(1.4); opacity: 0.4; }
       }
 
-      /* ─── CHAT WINDOW (Impeccable Design) ─── */
+      /* ─── CHAT WINDOW ─── */
       #sage-window {
         position: absolute;
-        bottom: 88px;
+        bottom: calc(var(--baymax-avatar-height) + var(--baymax-avatar-gap));
         ${CONFIG.POSITION.includes('right') ? 'right: 0;' : 'left: 0;'}
         width: 380px;
         max-width: calc(100vw - 40px);
-        height: 600px;
-        max-height: calc(100vh - 120px);
+        height: min(600px, calc(100vh - var(--baymax-avatar-height) - var(--baymax-avatar-gap) - var(--sage-root-bottom) - var(--sage-window-top-safe)));
+        max-height: calc(100vh - var(--baymax-avatar-height) - var(--baymax-avatar-gap) - var(--sage-root-bottom) - var(--sage-window-top-safe));
         background: var(--sg-bg);
         border: 1px solid var(--sg-border);
         border-radius: 24px;
@@ -297,6 +398,9 @@ INSTRUCTIONS:
         pointer-events: none;
         transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         transform-origin: bottom ${CONFIG.POSITION.includes('right') ? 'right' : 'left'};
+      }
+      #sage-window, #sage-window * {
+        box-sizing: border-box;
       }
       #sage-window.open {
         opacity: 1;
@@ -314,18 +418,19 @@ INSTRUCTIONS:
       }
 
       #sage-avatar {
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
         border-radius: 12px;
         background: rgba(18,18,18,0.4);
-        border: 1px solid rgba(255,215,0,0.15);
+        border: 1px solid rgba(255,255,255,0.15);
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: inset 0 0 20px rgba(255,215,0,0.05);
+        box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
+        overflow: hidden;
       }
-      #sage-avatar svg { width: 36px; height: 36px; }
+      #sage-avatar .baymax-avatar { transform: translateY(3px); }
 
       #sage-info { flex: 1; }
       #sage-name {
@@ -396,7 +501,7 @@ INSTRUCTIONS:
         border: 1px solid rgba(255,255,255,0.04);
         border-bottom-left-radius: 6px;
       }
-      .sage-msg-bot strong { color: var(--sg-accent); font-weight: 600; }
+      .sage-msg-bot strong { color: var(--sg-text); font-weight: 600; }
       .sage-msg-bot code {
         background: rgba(255,255,255,0.05);
         padding: 3px 6px;
@@ -462,33 +567,15 @@ INSTRUCTIONS:
         86%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
       }
 
-      .sage-bg-loader {
-        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        width: 100%; height: 100%; z-index: -1; pointer-events: none;
-      }
-      .sage-circle {
-        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        width: 0px; height: 0px; border-radius: 100%; opacity: 0;
-        animation: pulse_4923 4s infinite linear;
-        border: 0.5px solid var(--sg-accent); box-shadow: 0px 0px 5px var(--sg-accent-mid);
-      }
-      .sage-circle:nth-child(1) { animation-delay: .2s; }
-      .sage-circle:nth-child(2) { animation-delay: .4s; }
-      .sage-circle:nth-child(3) { animation-delay: .8s; }
-      .sage-circle:nth-child(4) { animation-delay: 1s; }
-      @keyframes pulse_4923 {
-        0% { opacity: 0.0; width: 0px; height: 0px; transform: translate(-50%, -50%) scale(1); }
-        10% { opacity: 0.5; transform: translate(-50%, -50%) scale(2); }
-        100% { opacity: 0.0; width: 120px; height: 120px; transform: translate(-50%, -50%) scale(1); }
-      }
-
       /* ─── INPUT ─── */
       #sage-input-area {
         padding: 20px 24px;
         background: transparent;
         display: flex;
+        align-items: center;
         gap: 12px;
         position: relative;
+        width: 100%;
       }
       #sage-input-area::before {
         content: '';
@@ -499,6 +586,8 @@ INSTRUCTIONS:
       }
       #sage-input {
         flex: 1;
+        min-width: 0;
+        width: 0;
         background: rgba(255,255,255,0.02);
         border: 1px solid rgba(255,255,255,0.06);
         border-radius: 24px;
@@ -511,14 +600,15 @@ INSTRUCTIONS:
         box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
       }
       #sage-input::placeholder { color: rgba(255,255,255,0.25); }
-      #sage-input:focus { 
-        border-color: rgba(255,215,0,0.3); 
+      #sage-input:focus {
+        border-color: rgba(255,255,255,0.3);
         background: rgba(255,255,255,0.04); 
-        box-shadow: 0 0 0 3px rgba(255,215,0,0.05), inset 0 2px 4px rgba(0,0,0,0.2);
+        box-shadow: 0 0 0 3px rgba(255,255,255,0.05), inset 0 2px 4px rgba(0,0,0,0.2);
       }
 
       #sage-send {
         width: 48px; height: 48px;
+        min-width: 48px;
         flex-shrink: 0;
         border-radius: 50%;
         background: var(--sg-accent);
@@ -541,157 +631,172 @@ INSTRUCTIONS:
 
       /* Mobile */
       @media (max-width: 520px) {
-        #sage-root { right: 16px !important; left: 16px !important; bottom: 85px; }
+        #sage-root {
+          --sage-root-bottom: 85px;
+          --sage-window-top-safe: 14px;
+          right: 16px !important;
+          left: 16px !important;
+        }
         #sage-window {
-          width: 100%; height: 60vh;
-          bottom: 75px; right: 0 !important; left: 0 !important;
+          width: 100%;
+          height: min(60vh, calc(100vh - var(--baymax-avatar-height) - var(--baymax-avatar-gap) - var(--sage-root-bottom) - var(--sage-window-top-safe)));
+          max-width: 100%;
+          border-radius: 20px;
+          bottom: calc(var(--baymax-avatar-height) + var(--baymax-avatar-gap)); right: 0 !important; left: 0 !important;
+        }
+        #sage-header {
+          padding: 16px 16px 14px;
+          gap: 12px;
+        }
+        #sage-avatar {
+          width: 42px;
+          height: 42px;
+        }
+        #sage-name {
+          font-size: 0.96rem;
+        }
+        #sage-close {
+          width: 40px;
+          height: 40px;
+        }
+        #sage-messages {
+          padding: 16px;
+          gap: 12px;
+        }
+        .sage-msg {
+          max-width: 92%;
+          padding: 12px 14px;
+          border-radius: 17px;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+        #sage-typing {
+          margin-left: 16px;
+          margin-bottom: 4px;
+        }
+        #sage-input-area {
+          padding: 12px;
+          gap: 8px;
+        }
+        #sage-input-area::before {
+          left: 12px;
+          right: 12px;
+        }
+        #sage-input {
+          min-width: 0;
+          width: 0;
+          height: 44px;
+          padding: 11px 14px;
+          border-radius: 22px;
+          font-size: 16px;
+        }
+        #sage-send {
+          width: 44px;
+          height: 44px;
+          min-width: 44px;
         }
       }
 
       /* Reduced motion */
       @media (prefers-reduced-motion: reduce) {
-        #sage-bubble, .sage-robot * { animation: none !important; }
+        #sage-bubble { transition: none !important; }
+        .baymax-avatar, .baymax-motion { transition: none !important; animation: none !important; }
+        .baymax-img { transition: none !important; }
+        #sage-bubble.is-waving .baymax-avatar { animation: none !important; }
+        #sage-bubble.is-curious .baymax-avatar { animation: none !important; }
         .sage-msg { animation: none; }
       }
     `;
     document.head.appendChild(css);
   }
 
-  /* ========== SVG HUD ROBOT ========== */
-  function getRobotSVG() {
+  function getBaymaxAvatarHTML(sizeClass = '') {
+    const className = ['baymax-avatar', sizeClass].filter(Boolean).join(' ');
     return `
-      <svg class="sage-robot" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="botBodyGrad" cx="0.5" cy="0.4" r="0.6">
-            <stop offset="0%" stop-color="#2a2a2a"/>
-            <stop offset="50%" stop-color="#1a1a1a"/>
-            <stop offset="100%" stop-color="#0d0d0d"/>
-          </radialGradient>
-          <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#FFE55C"/>
-            <stop offset="100%" stop-color="#FFD700"/>
-          </linearGradient>
-          <radialGradient id="botGlow" cx="0.5" cy="0.5" r="0.5">
-            <stop offset="0%" stop-color="rgba(255,215,0,0.6)"/>
-            <stop offset="100%" stop-color="rgba(255,215,0,0)"/>
-          </radialGradient>
-          <filter id="botGlowFilter" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="2.5" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-          <clipPath id="faceClip">
-            <rect x="14" y="16" width="36" height="18" rx="9"/>
-          </clipPath>
-        </defs>
-
-        <!-- Floor glow -->
-        <ellipse cx="32" cy="60" rx="16" ry="4" fill="url(#botGlow)">
-          <animate attributeName="rx" values="14;18;14" dur="2.5s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.6;1;0.6" dur="2.5s" repeatCount="indefinite" />
-        </ellipse>
-
-        <!-- Body -->
-        <g class="robot-body">
-          <path d="M20 38 C18 38 18 40 18 42 L18 52 C18 56 22 58 26 58 L38 58 C42 58 46 56 46 52 L46 42 C46 40 46 38 44 38 Z" fill="url(#botBodyGrad)"/>
-          <ellipse cx="32" cy="58" rx="14" ry="3.5" fill="#111"/>
-          <ellipse cx="32" cy="58" rx="10" ry="2.5" fill="url(#goldGrad)"/>
-          <circle cx="32" cy="48" r="6" fill="#111" stroke="#FFD700" stroke-width="1"/>
-          <!-- Dynamic Heart Core -->
-          <circle cx="32" cy="48" r="3.5" fill="#FFD700" filter="url(#botGlowFilter)">
-            <animate attributeName="r" values="3.5;5;3.5" dur="1.5s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0.7;1;0.7" dur="1.5s" repeatCount="indefinite" />
-          </circle>
-        </g>
-
-        <!-- Arms -->
-        <g class="robot-arms">
-          <path d="M18 44 Q10 48 12 54 Q14 56 16 54" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
-          <path d="M46 44 Q54 48 52 54 Q50 56 48 54" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
-        </g>
-
-        <!-- Neck -->
-        <rect x="28" y="34" width="8" height="5" rx="2" fill="url(#goldGrad)"/>
-
-        <!-- HEAD GROUP -->
-        <g class="robot-head">
-          <g class="robot-head-tracker" style="transform-origin: 32px 22px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);">
-          <!-- Head back -->
-          <rect x="12" y="8" width="40" height="28" rx="14" fill="url(#botBodyGrad)"/>
-          <rect x="26" y="12" width="12" height="3" rx="1.5" fill="#FFD700" opacity="0.4"/>
-
-          <!-- === FACE SCREEN === -->
-          <rect x="14" y="16" width="36" height="18" rx="9" fill="#0d0d0d" stroke="#FFD700" stroke-width="1" opacity="0.9"/>
-
-          <g class="robot-face-tracker" style="transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);" clip-path="url(#faceClip)">
-            <!-- === LEFT EYE (OPEN) === -->
-            <ellipse cx="24" cy="25" rx="5" ry="5.5" fill="rgba(255,215,0,0.15)"/>
-            <ellipse cx="24" cy="25" rx="3.5" ry="4.5" fill="#FFD700" filter="url(#botGlowFilter)" class="robot-eye-open"/>
-            <ellipse cx="25" cy="23.5" rx="1.2" ry="1.5" fill="#ffffff" opacity="0.8" class="robot-eye-open"/>
-            <!-- LEFT EYE (CLOSED) -->
-            <path d="M20 25 L28 25" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round" fill="none" class="robot-eye-closed-path" style="display: none;"/>
-
-            <!-- === RIGHT EYE (DEFAULT OPEN) === -->
-            <!-- Glow background -->
-            <ellipse cx="40" cy="25" rx="5" ry="5.5" fill="rgba(255,215,0,0.15)"/>
-            
-            <g class="right-eye-open-group">
-              <ellipse cx="40" cy="25" rx="3.5" ry="4.5" fill="#FFD700" filter="url(#botGlowFilter)" class="robot-eye-open"/>
-              <ellipse cx="41" cy="23.5" rx="1.2" ry="1.5" fill="#ffffff" opacity="0.8" class="robot-eye-open"/>
-            </g>
-            <!-- RIGHT EYE (CLOSED) -->
-            <path d="M36 25 L44 25" stroke="#FFD700" stroke-width="2.5" stroke-linecap="round" fill="none" class="robot-eye-closed-path" style="display: none;"/>
-
-            <!-- Winking chevron -->
-            <path d="M43 22 L38 25 L43 28" stroke="#FFD700" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#botGlowFilter)" class="robot-eye-wink-path"/>
-
-            <!-- === SMILE === -->
-            <path d="M26 32 Q32 36 38 32" stroke="#FFD700" stroke-width="1.5" stroke-linecap="round" fill="none" filter="url(#botGlowFilter)" class="robot-mouth"/>
-          </g>
-
-          <!-- === HEADSET === -->
-          <path d="M12 18 Q12 4 32 4 Q52 4 52 18" stroke="#FFD700" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <rect x="8" y="18" width="6" height="12" rx="3" fill="url(#goldGrad)">
-            <animate attributeName="height" values="12;16;12" dur="2s" repeatCount="indefinite" />
-            <animate attributeName="y" values="18;16;18" dur="2s" repeatCount="indefinite" />
-          </rect>
-          <rect x="50" y="18" width="6" height="12" rx="3" fill="url(#goldGrad)">
-            <animate attributeName="height" values="12;16;12" dur="2s" repeatCount="indefinite" />
-            <animate attributeName="y" values="18;16;18" dur="2s" repeatCount="indefinite" />
-          </rect>
-          <path d="M50 24 Q46 24 46 28 Q46 32 42 32 Q40 32 40 34" stroke="#FFD700" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <ellipse cx="39" cy="35" rx="3" ry="2" fill="url(#goldGrad)">
-            <animate attributeName="rx" values="3;4.5;3" dur="2s" repeatCount="indefinite" />
-            <animate attributeName="ry" values="2;3;2" dur="2s" repeatCount="indefinite" />
-          </ellipse>
-          </g>
-        </g>
-      </svg>
+      <span class="${className}" aria-hidden="true">
+        <span class="baymax-motion">
+          <img class="baymax-img baymax-img-idle" src="${BAYMAX_IDLE_SRC}" alt="" draggable="false" decoding="async">
+          <img class="baymax-img baymax-img-wave" src="${BAYMAX_WAVE_SRC}" alt="" draggable="false" decoding="async">
+        </span>
+      </span>
     `;
   }
 
-  /* ========== UI ========== */
+  function preloadBaymaxAssets() {
+    [BAYMAX_IDLE_SRC, BAYMAX_WAVE_SRC].forEach(src => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = src;
+    });
+  }
+
+  function restartBaymaxWaveLayer(bubble) {
+    const wave = bubble.querySelector('.baymax-img-wave');
+    if (!wave) return;
+    wave.replaceWith(wave.cloneNode(false));
+  }
+
+  function stopBaymaxWave(bubble = document.getElementById('sage-bubble')) {
+    if (!bubble) return;
+    clearTimeout(waveResetTimer);
+    waveResetTimer = null;
+    bubble.classList.remove('is-waving');
+  }
+
+  function startBaymaxWave(bubble = document.getElementById('sage-bubble')) {
+    if (!bubble) return;
+    bubble.classList.remove('is-curious');
+    stopBaymaxWave(bubble);
+    restartBaymaxWaveLayer(bubble);
+    void bubble.offsetWidth;
+    bubble.classList.add('is-waving');
+    waveResetTimer = setTimeout(() => {
+      stopBaymaxWave(bubble);
+    }, BAYMAX_WAVE_DURATION);
+  }
+
+  function setBaymaxLean(bubble, x = 0, y = 0, tilt = 0) {
+    if (!bubble) return;
+    bubble.style.setProperty('--baymax-shift-x', `${x.toFixed(2)}px`);
+    bubble.style.setProperty('--baymax-shift-y', `${y.toFixed(2)}px`);
+    bubble.style.setProperty('--baymax-tilt', `${tilt.toFixed(2)}deg`);
+  }
+
+  function resetBaymaxLean(bubble) {
+    setBaymaxLean(bubble, 0, 0, 0);
+  }
+
+  function scheduleBaymaxCuriosity(bubble) {
+    if (!bubble || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    clearTimeout(curiousTimer);
+    curiousTimer = setTimeout(() => {
+      if (state.open || bubble.classList.contains('is-waving') || state.robotState === 'offline') {
+        scheduleBaymaxCuriosity(bubble);
+        return;
+      }
+      bubble.classList.add('is-curious');
+      setTimeout(() => {
+        bubble.classList.remove('is-curious');
+        scheduleBaymaxCuriosity(bubble);
+      }, 950);
+    }, 5200 + Math.random() * 3600);
+  }
+
   function createUI() {
     const root = document.createElement('div');
     root.id = 'sage-root';
     root.innerHTML = `
       <div id="sage-bubble" class="robot-idle" role="button" aria-label="Open AI Assistant">
-        <div class="sage-bg-loader">
-          <div class="sage-circle"></div><div class="sage-circle"></div>
-          <div class="sage-circle"></div><div class="sage-circle"></div>
-        </div>
-        ${getRobotSVG()}
+        ${getBaymaxAvatarHTML()}
         <div id="sage-notify"></div>
       </div>
-      <div id="sage-window" role="dialog" aria-label="Chat with Sage">
+      <div id="sage-window" role="dialog" aria-label="Chat with Baymax">
         <div id="sage-header">
           <div id="sage-avatar">
-            ${getRobotSVG()}
+            ${getBaymaxAvatarHTML('baymax-avatar-sm')}
           </div>
           <div id="sage-info">
-            <div id="sage-name">SAGE</div>
+            <div id="sage-name">BAYMAX</div>
           </div>
           <button id="sage-close" aria-label="Close chat">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -699,7 +804,7 @@ INSTRUCTIONS:
         </div>
         <div id="sage-messages">
           <div class="sage-msg sage-msg-bot">
-            I'm <strong>Sage</strong>, the AI assistant for Samuel's portfolio. How can I help you today?
+            Hello, I am <strong>Baymax</strong>, your personal frontend companion for Samuel's portfolio. How can I help you today?
           </div>
         </div>
         <div id="sage-typing">
@@ -711,7 +816,7 @@ INSTRUCTIONS:
           </svg>
         </div>
         <div id="sage-input-area">
-          <input id="sage-input" type="text" placeholder="Initialize query..." autocomplete="off">
+          <input id="sage-input" type="text" placeholder="Ask Baymax..." autocomplete="off">
           <button id="sage-send" aria-label="Send">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </button>
@@ -720,9 +825,7 @@ INSTRUCTIONS:
     `;
     document.body.appendChild(root);
   }
-
-  /* ========== MESSAGES ========== */
-  function addMessage(content, isUser) {
+function addMessage(content, isUser) {
     const el = document.getElementById('sage-messages');
     const msg = document.createElement('div');
     msg.className = `sage-msg ${isUser ? 'sage-msg-user' : 'sage-msg-bot'}`;
@@ -750,6 +853,26 @@ INSTRUCTIONS:
     bubble.classList.remove('robot-idle', 'robot-hover', 'robot-listening', 'robot-thinking', 'robot-offline');
     bubble.classList.add('robot-' + newState);
     state.robotState = newState;
+  }
+
+  function openChat(win, input, bubble) {
+    state.open = true;
+    win.classList.add('open');
+    setRobotState('thinking');
+    const n = document.getElementById('sage-notify');
+    if (n) n.style.display = 'none';
+    startBaymaxWave(bubble);
+    setTimeout(() => input.focus(), 350);
+    setTimeout(() => {
+      if (state.open) setRobotState('idle');
+    }, 800);
+  }
+
+  function closeChat(win, bubble) {
+    state.open = false;
+    win.classList.remove('open');
+    stopBaymaxWave(bubble);
+    setRobotState('idle');
   }
 
   /* ========== SEND HANDLER ========== */
@@ -798,44 +921,41 @@ INSTRUCTIONS:
     const send = document.getElementById('sage-send');
 
     bubble.addEventListener('mouseenter', () => {
+      clearTimeout(curiousTimer);
+      bubble.classList.remove('is-curious');
       if (!state.open) setRobotState('hover');
     });
 
+    bubble.addEventListener('pointermove', e => {
+      if (bubble.classList.contains('is-waving')) return;
+      const rect = bubble.getBoundingClientRect();
+      const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+      setBaymaxLean(bubble, nx * 4, ny * 2, nx * 2.2);
+    });
+
     bubble.addEventListener('mouseleave', () => {
+      resetBaymaxLean(bubble);
       if (!state.open) setRobotState('idle');
+      scheduleBaymaxCuriosity(bubble);
     });
 
     bubble.addEventListener('click', () => {
-      state.open = !state.open;
-      win.classList.toggle('open', state.open);
-      setRobotState(state.open ? 'thinking' : 'idle');
-      const n = document.getElementById('sage-notify');
-      if (n) n.style.display = 'none';
       if (state.open) {
-        setTimeout(() => input.focus(), 350);
-        setTimeout(() => setRobotState('idle'), 800);
-        
-        // Wink on click!
-        const robots = document.querySelectorAll('.sage-robot');
-        robots.forEach(r => r.classList.add('is-winking'));
-        setTimeout(() => {
-          robots.forEach(r => r.classList.remove('is-winking'));
-        }, 1200);
+        closeChat(win, bubble);
+        return;
       }
+      openChat(win, input, bubble);
     });
 
     close.addEventListener('click', () => {
-      state.open = false;
-      win.classList.remove('open');
-      setRobotState('idle');
+      closeChat(win, bubble);
     });
 
     // Click outside to close (pointerdown for reliability)
     document.addEventListener('pointerdown', (e) => {
       if (state.open && !win.contains(e.target) && !bubble.contains(e.target)) {
-        state.open = false;
-        win.classList.remove('open');
-        setRobotState('idle');
+        closeChat(win, bubble);
       }
     });
 
@@ -853,56 +973,11 @@ INSTRUCTIONS:
     });
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && state.open) {
-        state.open = false;
-        win.classList.remove('open');
-        setRobotState('idle');
+        closeChat(win, bubble);
       }
     });
 
-    // Eye-tracking / Head-tracking logic
-    document.addEventListener('mousemove', (e) => {
-      const trackers = document.querySelectorAll('.robot-head-tracker');
-      if (!trackers.length) return;
-
-      trackers.forEach(tracker => {
-        const svg = tracker.closest('.sage-robot');
-        if (!svg) return;
-        
-        const rect = svg.getBoundingClientRect();
-        // If SVG is not visible (e.g., chat window closed), skip to save compute
-        if (rect.width === 0 || rect.height === 0) return;
-
-        const svgCenterX = rect.left + rect.width / 2;
-        const svgCenterY = rect.top + rect.height / 2;
-        
-        const deltaX = e.clientX - svgCenterX;
-        const deltaY = e.clientY - svgCenterY;
-        
-        // Normalize delta based on a reasonable max radius (e.g. 500px)
-        // so it feels responsive even on large screens
-        const maxDistX = Math.min(window.innerWidth / 2, 600);
-        const maxDistY = Math.min(window.innerHeight / 2, 600);
-        
-        const percentX = Math.max(-1, Math.min(1, deltaX / maxDistX));
-        const percentY = Math.max(-1, Math.min(1, deltaY / maxDistY));
-        
-        // Transform params: Push the physics! Max 8px X, 5px Y, 18 deg tilt
-        const tx = percentX * 8;
-        const ty = percentY * 5;
-        const rot = percentX * 18;
-        
-        tracker.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg)`;
-        
-        const faceTracker = tracker.querySelector('.robot-face-tracker');
-        if (faceTracker) {
-          // Extra parallax shift for the inner face (eyes & mouth)
-          // We can push this very far (12px) because the SVG clipPath prevents overflow
-          const faceTx = percentX * 12;
-          const faceTy = percentY * 8;
-          faceTracker.style.transform = `translate(${faceTx}px, ${faceTy}px)`;
-        }
-      });
-    });
+    scheduleBaymaxCuriosity(bubble);
   }
 
   /* ========== INIT ========== */
@@ -911,6 +986,7 @@ INSTRUCTIONS:
       await new Promise(r => document.addEventListener('DOMContentLoaded', r));
     }
     await loadKnowledge();
+    preloadBaymaxAssets();
     injectStyles();
     createUI();
     bindEvents();
