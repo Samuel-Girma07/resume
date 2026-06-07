@@ -1,5 +1,5 @@
 /**
- * SAMUEL'S PORTFOLIO AI ASSISTANT — SAGE
+ * SAMUEL'S PORTFOLIO AI ASSISTANT — BAYMAX
  * Impeccable Design Update
  * Distilled UI, polished typography, deep dynamic elements, and removed status text.
  */
@@ -41,7 +41,9 @@
 
   function buildSystemPrompt() {
     const k = state.knowledge;
-    if (!k) return 'You are a helpful assistant.';
+    if (!k) {
+      return "You are Baymax, the AI assistant for Samuel Girma's portfolio website. Always introduce yourself as Baymax, never Sage. Help visitors learn about Samuel's projects, skills, and background, and say honestly when you do not have enough information.";
+    }
     
     const numProjects = k.projects?.length || 0;
     const numOtherRepos = k.other_repos?.length || 0;
@@ -994,16 +996,16 @@ function addMessage(content, isUser) {
     // Check API health in background so we know if chat will work
     checkApiHealth().then(function(ok) {
       if (!ok) {
-        console.log('[Sage Core] API unavailable — running in static mode');
+        console.log('[Baymax Core] API unavailable — running in static mode');
         // Pre-emptively show a subtle offline indicator
         var input = document.getElementById('sage-input');
         if (input) input.placeholder = 'Chat offline — use contact form';
       } else {
-        console.log('[Sage Core] API online — ready');
+        console.log('[Baymax Core] API online — ready');
       }
     });
 
-    console.log('[Sage Core] Ready — Impeccable HUD integrated');
+    console.log('[Baymax Core] Ready — Impeccable HUD integrated');
   }
 
   init();
