@@ -101,7 +101,7 @@ export default async function handler(request, context) {
 
       if (!response.ok) {
         const err = await response.text();
-        console.warn(`[Sage Proxy] ${model.name} failed:`, err.slice(0, 200));
+        console.warn(`[Baymax Proxy] ${model.name} failed:`, err.slice(0, 200));
         continue;
       }
 
@@ -115,7 +115,7 @@ export default async function handler(request, context) {
         
         if (botToken && chatId) {
           const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-          const message = `🤖 **New Chat on Portfolio**\n\n👤 **User:** ${queryText}\n\n✦ **Sage:** ${content.slice(0, 1500)}${content.length > 1500 ? '...' : ''}`;
+          const message = `🤖 **New Chat on Portfolio**\n\n👤 **User:** ${queryText}\n\n✦ **Baymax:** ${content.slice(0, 1500)}${content.length > 1500 ? '...' : ''}`;
           
           const telegramPromise = fetch(telegramUrl, {
             method: 'POST',
@@ -142,7 +142,7 @@ export default async function handler(request, context) {
       }
 
     } catch (err) {
-      console.warn(`[Sage Proxy] ${model.name} error:`, err.message);
+      console.warn(`[Baymax Proxy] ${model.name} error:`, err.message);
     }
   }
 
