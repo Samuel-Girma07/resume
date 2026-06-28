@@ -187,12 +187,18 @@
   ],
   "other_repos": [
     {
+      "name": "cv-builder-platform",
+      "description": "SSR CV & Cover Letter Builder with Node.js, Express, EJS, PostgreSQL, and NVIDIA NIM AI",
+      "tech": [],
+      "updated": "2026-06-25T11:12:58Z"
+    },
+    {
       "name": "resume",
       "description": "",
       "tech": [
         "CSS"
       ],
-      "updated": "2026-06-14T04:58:10Z"
+      "updated": "2026-06-21T05:06:53Z"
     },
     {
       "name": "Nahom-Mulugeta",
@@ -338,7 +344,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-06-21T05:06:48.692Z",
-    "repo_count": 23
+    "last_sync": "2026-06-28T04:41:32.823Z",
+    "repo_count": 24
   }
 }
