@@ -158,6 +158,34 @@
       ]
     },
     {
+      "name": "CV Builder Platform",
+      "tagline": "API-First CV & Cover Letter Builder",
+      "year": 2026,
+      "live_url": "https://cv-builder-platform.onrender.com",
+      "description": "A full-stack web application for building structured CV profiles, scoring job applications against CV data, and generating tailored cover letters and PDFs with AI assistance.",
+      "tech_stack": [
+        "Node.js",
+        "Express.js",
+        "Vanilla JS",
+        "PostgreSQL",
+        "NVIDIA AI",
+        "JWT Auth",
+        "PDFKit"
+      ],
+      "tags": [
+        "AI Powered",
+        "Full Stack",
+        "Web App"
+      ],
+      "key_features": [
+        "Structured CV profile builder",
+        "PDF resume parsing",
+        "AI-generated professional summaries",
+        "ATS score generation",
+        "Tailored cover letter generation"
+      ]
+    },
+    {
       "name": "Personal Portfolio",
       "tagline": "Interactive Developer Portfolio",
       "year": 2025,

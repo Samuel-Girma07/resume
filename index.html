@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -701,7 +701,70 @@
                     </div>
                 </div>
 
-                <!-- PROJECT 3: Personal Portfolio -->
+                <!-- PROJECT 3: CV Builder Platform -->
+                <div class="showcase-wrapper">
+                    <div class="sl-card">
+                        <div class="sl-slider">
+                            <div class="sl-track" id="slTrackSPA5">
+                                <div class="sl-slide"><img src="cbp-slide1.png" alt="CV Builder Platform screenshot 1" width="1818" height="1020" loading="lazy" decoding="async"></div>
+                                <div class="sl-slide"><img src="cbp-slide2.png" alt="CV Builder Platform screenshot 2" width="1818" height="1020" loading="lazy" decoding="async"></div>
+                                <div class="sl-slide"><img src="cbp-slide3.png" alt="CV Builder Platform screenshot 3" width="1818" height="1020" loading="lazy" decoding="async"></div>
+                            </div>
+                            <div class="sl-counter"><span id="slNumSPA5">01</span> / 03</div>
+                            <button class="sl-arr sl-arr-prev" onclick="spaSlChange5(-1)" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                            <button class="sl-arr sl-arr-next" onclick="spaSlChange5(1)" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+                            <div class="sl-dots" id="spaSlDots5">
+                                <button class="sl-dot active" onclick="spaSlGo5(0)" aria-label="Slide 1"></button>
+                                <button class="sl-dot" onclick="spaSlGo5(1)" aria-label="Slide 2"></button>
+                                <button class="sl-dot" onclick="spaSlGo5(2)" aria-label="Slide 3"></button>
+                            </div>
+                        </div>
+                        <div class="sl-body">
+                            <div class="sl-left">
+                                <div class="sl-watermark">CB</div>
+                                <div class="sl-title-row">
+                                    <h3 class="sl-title">CV Builder Platform</h3>
+                                </div>
+                                <p class="sl-subtitle">API-First CV & Cover Letter Builder</p>
+                                <ul class="sl-metrics" aria-hidden="true">
+                                    <li class="sl-metric"><i class="fas fa-calendar"></i><span>2026</span></li>
+                                    <li class="sl-metric"><i class="fas fa-microchip"></i><span>7 stack</span></li>
+                                </ul>
+                                <p class="sl-desc">A full-stack web application for building structured CV profiles, scoring job applications against CV data, and generating tailored cover letters and PDFs with AI assistance.</p>
+                                <p class="sl-stack-label">Tech Stack</p>
+                                <div class="sl-tech-marquee">
+                                    <div class="sl-tech-track">
+                                        <div class="sl-tech-item"><i class="fab fa-node-js" style="color:#339933"></i> Node.js</div>
+                                        <div class="sl-tech-item"><i class="fas fa-server" style="color:#000000"></i> Express.js</div>
+                                        <div class="sl-tech-item"><i class="fab fa-js" style="color:#F7DF1E"></i> Vanilla JS</div>
+                                        <div class="sl-tech-item"><i class="fas fa-database" style="color:#336791"></i> PostgreSQL</div>
+                                        <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
+                                        <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> JWT Auth</div>
+                                        <div class="sl-tech-item"><i class="fas fa-file-pdf" style="color:#e2e8f0"></i> PDFKit</div>
+                                        <div class="sl-tech-item"><i class="fab fa-node-js" style="color:#339933"></i> Node.js</div>
+                                        <div class="sl-tech-item"><i class="fas fa-server" style="color:#000000"></i> Express.js</div>
+                                        <div class="sl-tech-item"><i class="fab fa-js" style="color:#F7DF1E"></i> Vanilla JS</div>
+                                        <div class="sl-tech-item"><i class="fas fa-database" style="color:#336791"></i> PostgreSQL</div>
+                                        <div class="sl-tech-item"><i class="fas fa-microchip" style="color:#76b900"></i> NVIDIA AI</div>
+                                        <div class="sl-tech-item"><i class="fas fa-shield-alt" style="color:#FFD700"></i> JWT Auth</div>
+                                        <div class="sl-tech-item"><i class="fas fa-file-pdf" style="color:#e2e8f0"></i> PDFKit</div>
+                                    </div>
+                                </div>
+                                <a href="https://cv-builder-platform.onrender.com" target="_blank" rel="noopener noreferrer" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
+                            </div>
+                            <div class="sl-divider"></div>
+                            <div class="sl-right">
+                                <div class="sl-tags">
+                                    <span class="sl-tag">AI Powered</span>
+                                    <span class="sl-tag">Full Stack</span>
+                                    <span class="sl-tag">Web App</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROJECT 4: Personal Portfolio -->
                 <div class="showcase-wrapper">
                     <div class="sl-card">
                         <div class="sl-slider">
@@ -932,6 +995,7 @@
             makeSlider({ trackId: 'slTrackSPA2', numId: 'slNumSPA2', dotsSel: '#spaSlDots2 .sl-dot', changeFn: 'spaSlChange2', goFn: 'spaSlGo2' });
             makeSlider({ trackId: 'slTrackSPA3', numId: 'slNumSPA3', dotsSel: '#spaSlDots3 .sl-dot', changeFn: 'spaSlChange3', goFn: 'spaSlGo3' });
             makeSlider({ trackId: 'slTrackSPA4', numId: 'slNumSPA4', dotsSel: '#spaSlDots4 .sl-dot', changeFn: 'spaSlChange4', goFn: 'spaSlGo4' });
+            makeSlider({ trackId: 'slTrackSPA5', numId: 'slNumSPA5', dotsSel: '#spaSlDots5 .sl-dot', changeFn: 'spaSlChange5', goFn: 'spaSlGo5' });
         })();
 
         /* -------------------------------------------------------
