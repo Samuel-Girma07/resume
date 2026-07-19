@@ -81,16 +81,11 @@
     <div id="cursor-dot"></div>
     <div id="cursor-ring"></div>
 
-    <!-- Mobile HUD Status Strip: section name + clock only. Hidden on desktop. -->
-    <div class="hud-strip" aria-hidden="true">
-        <div class="hud-strip-cell hud-strip-center">
-            <span class="hud-strip-section" id="hud-section-name">ABOUT</span>
-        </div>
-        <div class="hud-strip-cell hud-strip-right">
-            <span class="hud-strip-label hud-strip-time" id="hud-clock">--:--</span>
-        </div>
-        <div class="hud-strip-progress" id="hud-strip-progress"></div>
-    </div>
+    <!-- Phase C: Mobile HUD status strip removed. Section identity is
+         now carried by the bottom dock's active state (see .dock below).
+         The initClock / initSectionSync / initScrollProgress JS in the
+         inline script are guarded by `if (!el) return` so they no-op
+         cleanly without these elements in the DOM. -->
 
     <button class="hamburger" aria-label="Open profile panel" aria-expanded="false" aria-controls="sidebar">
         <span class="ham-bg" aria-hidden="true"></span>
@@ -134,14 +129,11 @@
         <div class="badge">Full Stack Developer</div>
         <p id="typewriter-subtitle"></p>
 
-        <nav class="mobile-nav" aria-label="Mobile section navigation">
-            <ul class="mobile-nav-links">
-                <li><a href="#about" class="mobile-nav-link active" data-page="about">About</a></li>
-                <li><a href="#resume" class="mobile-nav-link" data-page="resume">Resume</a></li>
-                <li><a href="#projects" class="mobile-nav-link" data-page="projects">Projects</a></li>
-                <li><a href="#contact" class="mobile-nav-link" data-page="contact">Contact</a></li>
-            </ul>
-        </nav>
+        <!-- Phase E: removed <nav class="mobile-nav"> 2x2 grid. Primary page
+             navigation is owned by the .dock (mobile) and the top .navbar
+             (desktop). The sidebar is now identity + contact + CV only.
+             SPA nav JS still works because .mobile-nav-link is present on
+             the .dock-item anchors above. -->
 
         <ul class="contact-info">
             <li><i class="fas fa-envelope"></i> <a href="mailto:samuelgirmakebenessa@gmail.com">samuelgirmakebenessa@gmail.com</a></li>
@@ -203,83 +195,29 @@
                         <span class="mhero-corner mhero-corner-br" aria-hidden="true"></span>
                     </div>
 
-                    <p class="mhero-eyebrow"><span aria-hidden="true">/</span> Hello ï¿½ I'm</p>
 
-                    <div class="mhero-headline">
-                        <h1 class="mhero-name">
-                            <span class="mhero-name-first">Samuel</span>
-                            <span class="mhero-name-last">
-                                <span class="mhero-name-amp" aria-hidden="true">G.</span>
-                                <span class="mhero-name-portrait" aria-hidden="true">
-                                    <img src="PHOTO.webp" alt="" width="663" height="799" loading="lazy" decoding="async">
-                                    <span class="mhero-name-portrait-ring"></span>
-                                </span>
-                            </span>
-                        </h1>
+
+                    <div class="mhero-content">
+                        <div class="mhero-portrait-container" aria-hidden="true">
+                            <img src="PHOTO.webp" alt="Samuel G." width="663" height="799" loading="lazy" decoding="async">
+                        </div>
+                        <h1 class="mhero-name">Samuel G.</h1>
                         <p class="mhero-lede">
-                            A Third-Year CS student crafting
+                            A Fourth-Year CS student crafting
                             <em>beautiful</em>, functional digital
                             experiences with <em>creative design</em>.
                         </p>
                     </div>
 
-                    <div class="mhero-ctas">
-                        <a href="#projects" class="mhero-cta mhero-cta-primary mobile-nav-link" data-page="projects">
-                            <span class="mhero-cta-label">View Projects</span>
-                            <span class="mhero-cta-arrow" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M5 12h14M13 6l6 6-6 6"/>
-                                </svg>
-                            </span>
-                            <span class="mhero-cta-shine" aria-hidden="true"></span>
-                        </a>
-                        <a href="#contact" class="mhero-cta mhero-cta-ghost mobile-nav-link" data-page="contact">
-                            <span class="mhero-cta-label">Get in touch</span>
-                            <span class="mhero-cta-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 7l9 6 9-6M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7a2 2 0 012-2h14a2 2 0 012 2"/>
-                                </svg>
-                            </span>
-                        </a>
-                    </div>
 
-                    <div class="mhero-marquee" aria-hidden="true">
-                        <div class="mhero-marquee-track">
-                            <span>NEXT.JS</span><span class="mhero-marquee-dot"></span>
-                            <span>TYPESCRIPT</span><span class="mhero-marquee-dot"></span>
-                            <span>PYTHON</span><span class="mhero-marquee-dot"></span>
-                            <span>FIGMA</span><span class="mhero-marquee-dot"></span>
-                            <span>TAILWIND</span><span class="mhero-marquee-dot"></span>
-                            <span>SQL</span><span class="mhero-marquee-dot"></span>
-                            <span>REACT</span><span class="mhero-marquee-dot"></span>
-                            <span>NEXT.JS</span><span class="mhero-marquee-dot"></span>
-                            <span>TYPESCRIPT</span><span class="mhero-marquee-dot"></span>
-                            <span>PYTHON</span><span class="mhero-marquee-dot"></span>
-                            <span>FIGMA</span><span class="mhero-marquee-dot"></span>
-                            <span>TAILWIND</span><span class="mhero-marquee-dot"></span>
-                            <span>SQL</span><span class="mhero-marquee-dot"></span>
-                            <span>REACT</span><span class="mhero-marquee-dot"></span>
-                        </div>
-                    </div>
                 </header>
 
-                <!-- Mobile-only editorial section break: thin chapter rule
-                     + chapter caption (ï¿½ 02 ï¿½ discipline) ? sets up the
-                     "What I Do" grid as a chapter in the hero's narrative. -->
-                <div class="m-section-break" data-mobile-only aria-hidden="true">
-                    <span class="m-section-break-rule"></span>
-                    <span class="m-section-break-caption">
-                        <span class="m-section-break-num">ï¿½&nbsp;02</span>
-                        <span class="m-section-break-sep">ï¿½</span>
-                        <span class="m-section-break-name">Discipline</span>
-                    </span>
-                    <span class="m-section-break-rule"></span>
-                </div>
+
 
                 <h2 class="page-title">About Me</h2>
                 <br>
                 <p class="intro-text">
-                    I am a <em>dynamic</em> Third-Year Full Stack Developer at <span class="intro-uni">American College of Technology</span>,
+                    I am a <em>dynamic</em> Fourth-Year Full Stack Developer at <span class="intro-uni">American College of Technology</span>,
                     passionate about creating <em>beautiful, functional</em> digital experiences. I blend technical skills with
                     <em>creative design</em> to build engaging solutions.
                 </p>
@@ -289,7 +227,6 @@
                     <div class="wid-card wid-card-featured" data-index="01">
                         <div class="wid-shine"></div>
                         <div class="wid-top">
-                            <span class="wid-num">01</span>
                             <div class="wid-icon-wrap">
                                 <i class="fas fa-code"></i>
                             </div>
@@ -306,7 +243,6 @@
                     <div class="wid-card" data-index="02">
                         <div class="wid-shine"></div>
                         <div class="wid-top">
-                            <span class="wid-num">02</span>
                             <div class="wid-icon-wrap">
                                 <i class="fas fa-database"></i>
                             </div>
@@ -322,7 +258,6 @@
                     <div class="wid-card" data-index="03">
                         <div class="wid-shine"></div>
                         <div class="wid-top">
-                            <span class="wid-num">03</span>
                             <div class="wid-icon-wrap">
                                 <i class="fas fa-paint-brush"></i>
                             </div>
@@ -344,17 +279,7 @@
                     <h2 class="page-title">Resume</h2>
                 </div>
 
-                <!-- Terminal-style CLI readout: compact HUD summary before the timelines. -->
-                <div class="cli-readout" aria-label="Resume summary">
-                    <div class="cli-row">
-                        <span class="cli-key">$ role</span>
-                        <span class="cli-value">CS Student &mdash; Y3</span>
-                    </div>
-                    <div class="cli-row">
-                        <span class="cli-key">$ stack</span>
-                        <span class="cli-value">Next.js / Python / Figma</span>
-                    </div>
-                </div>
+
 
                 <h3 class="section-title"><i class="fas fa-graduation-cap" style="color:var(--accent-color);margin-right:10px;"></i> Education</h3>
                 <div class="timeline">
@@ -366,7 +291,6 @@
                     <div class="timeline-item"><span class="timeline-date">2023 - Present</span><h4 class="timeline-title">Freelance Web Developer</h4><p class="timeline-subtitle">Self-Employed</p><p>Building responsive websites and landing pages for local businesses.</p></div>
                     <div class="timeline-item"><span class="timeline-date">2024</span><h4 class="timeline-title">Graphic Designer</h4><p class="timeline-subtitle">College Event Branding</p><p>Designed visual assets, posters, and social media content for major college events.</p></div>
                 </div>
-<h3 class="section-title">My Skills</h3>
 <h3 class="section-title">My Skills</h3>
 <div class="skills-rail">
  <!-- ── Frontend (→) ── -->
@@ -509,7 +433,7 @@
                                 </div>
                                 <a href="https://hukm-et.vercel.app/" target="_blank" rel="noopener noreferrer" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
                             </div>
-                            <div class="sl-divider"></div>
+
                             <div class="sl-right">
                                 <div class="sl-tags">
                                     <span class="sl-tag">AI Powered</span>
@@ -616,7 +540,7 @@
                                 </a>
                             </div>
 
-                            <div class="sl-divider"></div>
+
 
                             <div class="sl-right">
                                 <div class="sl-tags">
@@ -689,7 +613,7 @@
                                 </div>
                                 <a href="https://techshopethiopia.page.gd" target="_blank" rel="noopener noreferrer" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
                             </div>
-                            <div class="sl-divider"></div>
+
                             <div class="sl-right">
                                 <div class="sl-tags">
                                     <span class="sl-tag">E-Commerce</span>
@@ -752,7 +676,7 @@
                                 </div>
                                 <a href="https://cv-builder-platform.onrender.com" target="_blank" rel="noopener noreferrer" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
                             </div>
-                            <div class="sl-divider"></div>
+
                             <div class="sl-right">
                                 <div class="sl-tags">
                                     <span class="sl-tag">AI Powered</span>
@@ -813,7 +737,7 @@
                                 </div>
                                 <a href="index.html" target="_blank" rel="noopener noreferrer" class="sl-btn">Preview Project <i class="fas fa-arrow-up-right-from-square"></i></a>
                             </div>
-                            <div class="sl-divider"></div>
+
                             <div class="sl-right">
                                 <div class="sl-tags">
                                     <span class="sl-tag">Frontend</span>
@@ -832,42 +756,7 @@
                 <h2 class="page-title">Contact Me</h2>
                 <br><br>
 
-                <!-- Tappable method cards: three one-tap paths (email / call / map)
-                     before the visitor commits to the form. -->
-                <ul class="contact-methods" aria-label="Contact methods">
-                    <li>
-                        <a class="method-card" href="mailto:samuelgirmakebenessa@gmail.com" aria-label="Email Samuel Girma">
-                            <span class="method-icon"><i class="fas fa-envelope"></i></span>
-                            <span class="method-body">
-                                <span class="method-label">Email</span>
-                                <span class="method-value">samuelgirmakebenessa@gmail.com</span>
-                            </span>
-                            <span class="method-chevron" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="method-card" href="tel:+251948998804" id="phoneMethodCard" aria-label="Call or copy phone number">
-                            <span class="method-icon"><i class="fas fa-phone"></i></span>
-                            <span class="method-body">
-                                <span class="method-label">Phone</span>
-                                <span class="method-value" id="phoneDisplayValue">+251 948 998 804</span>
-                            </span>
-                            <span class="method-chevron" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="method-card" href="https://www.google.com/maps/place/Addis+Ababa" target="_blank" rel="noopener noreferrer" aria-label="Open Addis Ababa in Maps">
-                            <span class="method-icon"><i class="fas fa-map-marker-alt"></i></span>
-                            <span class="method-body">
-                                <span class="method-label">Location</span>
-                                <span class="method-value">Addis Ababa, Ethiopia</span>
-                            </span>
-                            <span class="method-chevron" aria-hidden="true"><i class="fas fa-arrow-up-right-from-square"></i></span>
-                        </a>
-                    </li>
-                </ul>
 
-                <div class="form-divider" aria-hidden="true"><span>or drop a message</span></div>
 
                 <form class="contact-form" id="contactForm" novalidate>
                     <div class="form-group float-label"><input type="text" id="name" name="name" class="form-control" placeholder=" " autocomplete="name" required><label for="name">Full Name</label></div>
@@ -1234,69 +1123,9 @@
             setTimeout(function () { document.body.classList.add('assets-loaded'); }, 850);
         });
 
-        /* ï¿½ Live clock (HH:MM) ï¿½ updates once per minute, edge-synced so the
-           minute ticks over exactly when it changes, not on a drift. */
-        (function initClock() {
-            var el = document.getElementById('hud-clock');
-            if (!el) return;
-            function render() {
-                var d = new Date();
-                var hh = String(d.getHours()).padStart(2, '0');
-                var mm = String(d.getMinutes()).padStart(2, '0');
-                el.textContent = hh + ':' + mm;
-            }
-            render();
-            // Align next tick to the next minute boundary
-            var msUntilNextMin = (60 - new Date().getSeconds()) * 1000 + 50;
-            setTimeout(function loop() {
-                render();
-                setTimeout(loop, 60 * 1000);
-            }, msUntilNextMin);
-        })();
 
-        /* ï¿½ Sync HUD section name with active page. Observes `.page.active`
-           class changes and updates the strip label accordingly. */
-        (function initSectionSync() {
-            var label = document.getElementById('hud-section-name');
-            if (!label) return;
-            function sync() {
-                var active = document.querySelector('.page.active');
-                if (active) label.textContent = (active.id || '').toUpperCase();
-            }
-            sync();
-            document.querySelectorAll('.page').forEach(function (p) {
-                new MutationObserver(sync).observe(p, { attributes: true, attributeFilter: ['class'] });
-            });
-        })();
 
-        /* ï¿½ HUD strip scroll-progress sliver. scaleX the pseudo-bar based on
-           .main-content scroll within the active page. rAF throttled. */
-        (function initScrollProgress() {
-            var main = document.querySelector('.main-content');
-            var bar = document.getElementById('hud-strip-progress');
-            if (!main || !bar) return;
-            var ticking = false;
-            function render() {
-                ticking = false;
-                var scrollTop = main.scrollTop;
-                var scrollHeight = main.scrollHeight - main.clientHeight;
-                var ratio = scrollHeight > 0 ? Math.min(1, Math.max(0, scrollTop / scrollHeight)) : 0;
-                bar.style.setProperty('--hud-progress-scale', ratio.toFixed(4));
-            }
-            main.addEventListener('scroll', function () {
-                if (!ticking) {
-                    ticking = true;
-                    requestAnimationFrame(render);
-                }
-            }, { passive: true });
-            render();
-            // Also re-render on page transitions since content height changes
-            document.querySelectorAll('.page').forEach(function (p) {
-                new MutationObserver(function () {
-                    requestAnimationFrame(render);
-                }).observe(p, { attributes: true, attributeFilter: ['class'] });
-            });
-        })();
+
 
         /* ï¿½ Dock indicator: slide the pill to whichever dock-item is active.
            Uses a CSS variable so the slide is GPU-composited. */
@@ -1410,38 +1239,7 @@
             }, { passive: true });
         })();
 
-        /* Phone copy-to-clipboard for desktop users */
-        (function initPhoneCopy() {
-            var phoneCard = document.getElementById('phoneMethodCard');
-            var phoneDisplay = document.getElementById('phoneDisplayValue');
-            if (!phoneCard || !phoneDisplay) return;
-            var phoneNumber = '+251948998804';
 
-            phoneCard.addEventListener('click', function(e) {
-                var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                if (!isMobile) {
-                    e.preventDefault();
-                    if (navigator.clipboard && navigator.clipboard.writeText) {
-                        navigator.clipboard.writeText(phoneNumber).then(function() {
-                            var original = phoneDisplay.textContent;
-                            phoneDisplay.textContent = 'Copied to clipboard!';
-                            phoneDisplay.style.color = '#22C55E';
-                            setTimeout(function() {
-                                phoneDisplay.textContent = original;
-                                phoneDisplay.style.color = '';
-                            }, 2000);
-                        }).catch(function() {
-                            var range = document.createRange();
-                            range.selectNode(phoneDisplay);
-                            window.getSelection().removeAllRanges();
-                            window.getSelection().addRange(range);
-                        });
-                    } else {
-                        window.open('mailto:samuelgirmakebenessa@gmail.com?subject=Contact via Portfolio', '_blank');
-                    }
-                }
-            });
-        })();
 
     </script>
 </body>
