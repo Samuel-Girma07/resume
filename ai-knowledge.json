@@ -220,7 +220,7 @@
       "tech": [
         "JavaScript"
       ],
-      "updated": "2026-07-11T20:05:14Z"
+      "updated": "2026-07-15T17:14:52Z"
     },
     {
       "name": "resume",
@@ -228,7 +228,7 @@
       "tech": [
         "CSS"
       ],
-      "updated": "2026-07-11T19:15:26Z"
+      "updated": "2026-07-12T03:40:25Z"
     },
     {
       "name": "music",
@@ -303,12 +303,6 @@
         "HTML"
       ],
       "updated": "2026-04-03T07:51:11Z"
-    },
-    {
-      "name": "schoolgame",
-      "description": "",
-      "tech": [],
-      "updated": "2026-04-03T07:48:35Z"
     },
     {
       "name": "Recommendation",
@@ -390,7 +384,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-07-12T03:40:20.973Z",
-    "repo_count": 26
+    "last_sync": "2026-07-19T03:36:37.926Z",
+    "repo_count": 25
   }
 }
