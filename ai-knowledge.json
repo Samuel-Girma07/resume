@@ -215,18 +215,18 @@
   ],
   "other_repos": [
     {
-      "name": "cphelperbot",
-      "description": "",
-      "tech": [],
-      "updated": "2026-07-28T10:45:00Z"
-    },
-    {
       "name": "resume",
       "description": "",
       "tech": [
         "CSS"
       ],
-      "updated": "2026-07-26T03:41:34Z"
+      "updated": "2026-08-03T08:52:17Z"
+    },
+    {
+      "name": "cphelperbot",
+      "description": "",
+      "tech": [],
+      "updated": "2026-07-28T10:45:00Z"
     },
     {
       "name": "-CV-Builder-Platform",
@@ -390,7 +390,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-08-02T03:38:42.496Z",
+    "last_sync": "2026-08-03T08:53:01.470Z",
     "repo_count": 26
   }
 }
