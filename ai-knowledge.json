@@ -220,7 +220,7 @@
       "tech": [
         "CSS"
       ],
-      "updated": "2026-08-03T09:35:31Z"
+      "updated": "2026-08-03T09:36:48Z"
     },
     {
       "name": "cphelperbot",
@@ -257,12 +257,6 @@
       "description": "",
       "tech": [],
       "updated": "2026-06-01T11:02:09Z"
-    },
-    {
-      "name": "porto",
-      "description": "",
-      "tech": [],
-      "updated": "2026-06-01T10:18:21Z"
     },
     {
       "name": "act-gpa-calculator",
@@ -390,7 +384,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-08-03T09:36:27.094Z",
-    "repo_count": 26
+    "last_sync": "2026-08-09T02:18:38.750Z",
+    "repo_count": 25
   }
 }
