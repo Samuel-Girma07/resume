@@ -16,6 +16,12 @@
     },
     "experience": [
       {
+        "role": "Frontend Developer Intern",
+        "company": "Vintage Technologies PLC",
+        "period": "2025-Present",
+        "description": "Building a multi-role Learning Management System (LMS) dashboard with Next.js and TypeScript, developing UI features across 5 distinct user roles in a production engineering environment, and collaborating with backend engineers to integrate REST APIs and curriculum workflows"
+      },
+      {
         "role": "Freelance Web Developer",
         "period": "2023-Present",
         "description": "Building responsive websites and landing pages for local businesses"
