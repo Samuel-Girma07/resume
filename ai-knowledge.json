@@ -221,26 +221,26 @@
   ],
   "other_repos": [
     {
+      "name": "-CV-Builder-Platform",
+      "description": "",
+      "tech": [
+        "JavaScript"
+      ],
+      "updated": "2026-08-19T17:52:35Z"
+    },
+    {
       "name": "resume",
       "description": "",
       "tech": [
         "CSS"
       ],
-      "updated": "2026-08-19T17:20:01Z"
+      "updated": "2026-08-19T17:51:19Z"
     },
     {
       "name": "cphelperbot",
       "description": "",
       "tech": [],
       "updated": "2026-07-28T10:45:00Z"
-    },
-    {
-      "name": "-CV-Builder-Platform",
-      "description": "",
-      "tech": [
-        "JavaScript"
-      ],
-      "updated": "2026-07-15T17:14:52Z"
     },
     {
       "name": "music",
@@ -390,7 +390,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-08-19T17:41:22.860Z",
+    "last_sync": "2026-08-23T01:50:36.008Z",
     "repo_count": 25
   }
 }
