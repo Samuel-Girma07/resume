@@ -221,12 +221,28 @@
   ],
   "other_repos": [
     {
+      "name": "bighabesha-shop",
+      "description": "",
+      "tech": [
+        "JavaScript"
+      ],
+      "updated": "2026-08-28T19:15:14Z"
+    },
+    {
+      "name": "nobagrade",
+      "description": "",
+      "tech": [
+        "Python"
+      ],
+      "updated": "2026-08-26T19:30:06Z"
+    },
+    {
       "name": "-CV-Builder-Platform",
       "description": "",
       "tech": [
         "JavaScript"
       ],
-      "updated": "2026-08-19T17:52:35Z"
+      "updated": "2026-08-23T13:27:41Z"
     },
     {
       "name": "resume",
@@ -234,7 +250,7 @@
       "tech": [
         "CSS"
       ],
-      "updated": "2026-08-19T17:51:19Z"
+      "updated": "2026-08-23T01:50:50Z"
     },
     {
       "name": "cphelperbot",
@@ -390,7 +406,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-08-23T01:50:36.008Z",
-    "repo_count": 25
+    "last_sync": "2026-08-30T05:06:27.723Z",
+    "repo_count": 27
   }
 }
