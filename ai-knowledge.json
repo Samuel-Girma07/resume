@@ -224,9 +224,17 @@
       "name": "bighabesha-shop",
       "description": "",
       "tech": [
-        "JavaScript"
+        "HTML"
       ],
-      "updated": "2026-08-28T19:15:14Z"
+      "updated": "2026-09-05T17:37:35Z"
+    },
+    {
+      "name": "resume",
+      "description": "",
+      "tech": [
+        "CSS"
+      ],
+      "updated": "2026-08-30T05:07:17Z"
     },
     {
       "name": "nobagrade",
@@ -243,14 +251,6 @@
         "JavaScript"
       ],
       "updated": "2026-08-23T13:27:41Z"
-    },
-    {
-      "name": "resume",
-      "description": "",
-      "tech": [
-        "CSS"
-      ],
-      "updated": "2026-08-23T01:50:50Z"
     },
     {
       "name": "cphelperbot",
@@ -406,7 +406,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-08-30T05:06:27.723Z",
+    "last_sync": "2026-09-06T04:17:14.408Z",
     "repo_count": 27
   }
 }
