@@ -221,20 +221,20 @@
   ],
   "other_repos": [
     {
+      "name": "resume",
+      "description": "",
+      "tech": [
+        "CSS"
+      ],
+      "updated": "2026-09-13T04:31:45Z"
+    },
+    {
       "name": "bighabesha-shop",
       "description": "",
       "tech": [
         "HTML"
       ],
       "updated": "2026-09-09T15:48:40Z"
-    },
-    {
-      "name": "resume",
-      "description": "",
-      "tech": [
-        "CSS"
-      ],
-      "updated": "2026-09-06T04:17:19Z"
     },
     {
       "name": "nobagrade",
@@ -406,7 +406,7 @@
     }
   ],
   "_meta": {
-    "last_sync": "2026-09-13T04:31:39.010Z",
+    "last_sync": "2026-09-20T04:39:31.755Z",
     "repo_count": 27
   }
 }
